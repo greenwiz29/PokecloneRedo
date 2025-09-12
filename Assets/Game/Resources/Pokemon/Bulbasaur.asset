@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15ddb0b24272b6109ad97542dc7ba963, type: 3}
+  m_Name: Bulbasaur
+  m_EditorClassIdentifier: 
+  name: Bulbasaur
+  description: A bulbasaur
+  frontSprite: {fileID: 21300000, guid: ebfdba9b053aca1a282b016896c43bba, type: 3}
+  backSprite: {fileID: 21300000, guid: aacaae602a38f884ab9e02e43de3736d, type: 3}
+  type1: 4
+  type2: 7
+  maxHP: 45
+  attack: 49
+  defense: 49
+  spAttack: 65
+  spDefense: 65
+  speed: 45
+  expYield: 65
+  growthRate: 1
+  catchRate: 255
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: d6d7f5d17e381c7de85d5e218f6edf93, type: 2}
+    levelLearned: 1
+  - moveBase: {fileID: 11400000, guid: d017063ff934bbe3ca502cc5d1bec0a9, type: 2}
+    levelLearned: 4
+  - moveBase: {fileID: 11400000, guid: dea694b551dc00c45b931cb61d4bb095, type: 2}
+    levelLearned: 7
+  - moveBase: {fileID: 11400000, guid: b779b8ecaca856e1dbea21652c961ebc, type: 2}
+    levelLearned: 5
+  learnableByItems: []
+  evolutions:
+  - evolvesInto: {fileID: 11400000, guid: c8beb122e19a711a18e5a4f7038dab8f, type: 2}
+    requiredLevel: 16

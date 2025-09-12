@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15ddb0b24272b6109ad97542dc7ba963, type: 3}
+  m_Name: ExpBall
+  m_EditorClassIdentifier: 
+  name: ExpBall
+  description: A weak ball full of wisdom for whoever breaks it
+  frontSprite: {fileID: -6134421028427622431, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
+  backSprite: {fileID: -6134421028427622431, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
+  type1: 10
+  type2: 9
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: d6d7f5d17e381c7de85d5e218f6edf93, type: 2}
+    levelLearned: 1
+  - moveBase: {fileID: 11400000, guid: a85be218eee16db62a797e38fca89547, type: 2}
+    levelLearned: 1
+  catchRate: 0
+  maxHP: 1
+  attack: 1
+  defense: 1
+  spAttack: 1
+  spDefense: 1
+  speed: 1
+  expYield: 1023
+  growthRate: 0
