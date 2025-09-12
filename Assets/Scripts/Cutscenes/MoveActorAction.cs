@@ -8,10 +8,10 @@ public class MoveActorAction : CutsceneAction
     [SerializeField] CutsceneActor actor;
     [SerializeField] List<Vector2> movePatterns;
 
-	public override IEnumerator Play()
-	{
+    public override IEnumerator Play()
+    {
         var character = actor.Character;
-		foreach (var movePattern in movePatterns)
+        foreach (var movePattern in movePatterns)
         {
             yield return character.Move(movePattern, checkCollisions: false);
         }

@@ -95,10 +95,8 @@ public class Character : MonoBehaviour
 
         if (xDiff == 0 || yDiff == 0)
         {
-
             animator.MoveX = Mathf.Clamp(xDiff, -1f, 1f);
             animator.MoveY = Mathf.Clamp(yDiff, -1f, 1f);
-
         }
 
     }
@@ -109,15 +107,6 @@ public class Character : MonoBehaviour
         pos.y = Mathf.Floor(pos.y) + 0.5f + OffsetY;
 
         transform.position = pos;
-    }
-
-    private bool IsWalkable(Vector3 targetPos)
-    {
-        if (Physics2D.OverlapCircle(targetPos, 0.2f, GlobalSettings.I.SolidObjectsLayer | GlobalSettings.I.InteractablesLayer) != null)
-        {
-            return false;
-        }
-        return true;
     }
 
 }

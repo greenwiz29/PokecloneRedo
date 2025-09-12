@@ -31,6 +31,8 @@ public class GlobalSettings : MonoSingleton<GlobalSettings>
 
     void Awake()
     {
+        base.Awake();
+        
         statusColors = new Dictionary<ConditionID, Color>(){
             {ConditionID.psn, psnColor},
             {ConditionID.brn, brnColor},

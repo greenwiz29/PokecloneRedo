@@ -79,6 +79,9 @@ public class CharacterAnimator : MonoBehaviour
 
     public void SetFacingDirection(FacingDirection dir)
     {
+        MoveX = 0;
+        MoveY = 0;
+        
         switch (dir)
         {
             case FacingDirection.Right:
