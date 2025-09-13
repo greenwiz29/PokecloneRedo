@@ -25,8 +25,10 @@ public class Cutscene : MonoBehaviour, IPlayerTriggerable
 
     public void AddAction(CutsceneAction action)
     {
+#if UNITY_EDITOR
         Undo.RegisterCompleteObjectUndo(this, "Add Cutscene Action");
-        
+#endif
+
         actions ??= new List<CutsceneAction>();
         action.Name = action.GetType().ToString();
         actions.Add(action);
