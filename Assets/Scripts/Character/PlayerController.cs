@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour, ISavable
 
     public void HandleUpdate()
     {
-        if (!character.IsMoving)
+        if (!character.IsMoving && GameController.I.State == GameState.FreeRoam)
         {
             input.x = Input.GetAxisRaw("Horizontal");
             input.y = Input.GetAxisRaw("Vertical");

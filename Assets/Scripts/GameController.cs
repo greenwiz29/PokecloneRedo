@@ -121,6 +121,7 @@ public class GameController : MonoBehaviour
 
     public void StartCutsceneState()
     {
+        playerController.Character.Animator.IsMoving = false;
         state = GameState.Cutscene;
     }
     public void StartFreeRoamState()
