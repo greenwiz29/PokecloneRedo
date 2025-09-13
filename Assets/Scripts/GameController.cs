@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using GDEUtils.StateMachine;
 using UnityEngine;
 
 public enum GameState { FreeRoam, Battle, Pause, Dialog, Cutscene, Menu, PartyScreen, Bag, Evolution, Shop }
@@ -19,7 +20,8 @@ public class GameController : MonoBehaviour
     public GameState State => state;
 
     GameState state, prevState, preEvoState;
-    MenuController menuController;
+
+    public StateMachine<GameController> stateMachine { get; private set; }
 
     void Awake()
     {
@@ -38,16 +40,12 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
+        stateMachine = new StateMachine<GameController>(this);
+        stateMachine.Push(FreeRoamState.I);
+
         battleSystem.OnBattleOver += EndBattle;
 
         partyScreen.Init();
-
-        menuController = GetComponent<MenuController>();
-        menuController.OnBack += () =>
-        {
-            state = GameState.FreeRoam;
-        };
-        menuController.OnMenuSelected += OnMenuSelected;
 
         DialogManager.I.OnShowDialog += () =>
         {
@@ -82,30 +80,6 @@ public class GameController : MonoBehaviour
         {
             state = GameState.FreeRoam;
         };
-    }
-
-    private void OnMenuSelected(int selectedItem)
-    {
-        switch (selectedItem)
-        {
-            case 0: // Pokemon
-                partyScreen.gameObject.SetActive(true);
-                partyScreen.SetPartyData();
-                state = GameState.PartyScreen;
-                break;
-            case 1: // Bag
-                inventoryUI.gameObject.SetActive(true);
-                state = GameState.Bag;
-                break;
-            case 2: // Save
-                SavingSystem.i.Save("saveSlot1");
-                state = GameState.FreeRoam;
-                break;
-            case 3: // Load
-                SavingSystem.i.Load("saveSlot1");
-                state = GameState.FreeRoam;
-                break;
-        }
     }
 
     public void PauseGame(bool pause)
@@ -181,28 +155,18 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        stateMachine.Execute();
+
         switch (state)
         {
-            case GameState.FreeRoam:
-                playerController.HandleUpdate();
-
-                if (Input.GetKeyDown(KeyCode.Return))
-                {
-                    menuController.OpenMenu();
-                    state = GameState.Menu;
-                }
-                break;
             case GameState.Cutscene:
-                playerController.HandleUpdate();            
+                playerController.HandleUpdate();
                 break;
             case GameState.Battle:
                 battleSystem.HandleUpdate();
                 break;
             case GameState.Dialog:
                 DialogManager.I.HandleUpdate();
-                break;
-            case GameState.Menu:
-                menuController.HandleUpdate();
                 break;
             case GameState.PartyScreen:
                 Action onSelected = () =>
@@ -233,7 +197,6 @@ public class GameController : MonoBehaviour
                 Action onBack = () =>
                 {
                     partyScreen.gameObject.SetActive(false);
-                    menuController.OpenMenu();
                     state = GameState.Menu;
                 };
                 partyScreen.HandleUpdate(onSelected, onBack);
@@ -243,13 +206,11 @@ public class GameController : MonoBehaviour
                 {
                     // TODO: Options for switching, summary, etc.
                     inventoryUI.gameObject.SetActive(false);
-                    menuController.OpenMenu();
                     state = GameState.Menu;
                 };
                 onBack = () =>
                 {
                     inventoryUI.gameObject.SetActive(false);
-                    menuController.OpenMenu();
                     state = GameState.Menu;
                 };
                 inventoryUI.HandleUpdate(onBack);
@@ -279,4 +240,21 @@ public class GameController : MonoBehaviour
         else
             StartCoroutine(Fader.I.FadeOut(0.5f));
     }
+
+#if UNITY_EDITOR
+    private void OnGUI()
+    {
+		var style = new GUIStyle
+		{
+			fontSize = 25
+		};
+		style.normal.textColor = Color.black;
+
+        GUILayout.Label("State Stack", style);
+        foreach (var s in stateMachine.StateStack)
+        {
+            GUILayout.Label(s.GetType().Name, style);
+        }
+    }
+#endif
 }

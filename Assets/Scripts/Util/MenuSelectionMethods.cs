@@ -2,38 +2,51 @@ using UnityEngine;
 
 public class MenuSelectionMethods
 {
+    static float selectionTimer = 0.2f;
     public static void HandleListSelection(ref int selection, int maxOptions)
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        float v = Input.GetAxis("Vertical");
+
+        if (selectionTimer == 0 && Mathf.Abs(v) > 0.2f)
         {
-            selection++;
-            if (selection > maxOptions)
-                selection = 0;
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            selection--;
+            selection += -(int)Mathf.Sign(v);
+
             if (selection < 0)
-                selection = maxOptions;
+            {
+                selection = maxOptions - 1;
+            }
+            else if (selection >= maxOptions)
+            {
+                selection = 0;
+            }
+
+            selection = Mathf.Clamp(selection, 0, maxOptions - 1);
+            selectionTimer = 0.2f;
         }
-        selection = Mathf.Clamp(selection, 0, maxOptions);
+        UpdateSelectionTimer();
     }
 
     public static void HandleCategorySelection(ref int selectedCategory, int maxOptions)
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        float h = Input.GetAxis("Horizontal");
+
+        if (selectionTimer == 0 && Mathf.Abs(h) > 0.2f)
         {
-            selectedCategory++;
-            if (selectedCategory > maxOptions)
-                selectedCategory = 0;
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            selectedCategory--;
+            selectedCategory += -(int)Mathf.Sign(h);
+
             if (selectedCategory < 0)
-                selectedCategory = maxOptions;
+            {
+                selectedCategory = maxOptions - 1;
+            }
+            else if (selectedCategory >= maxOptions)
+            {
+                selectedCategory = 0;
+            }
+
+            selectedCategory = Mathf.Clamp(selectedCategory, 0, maxOptions - 1);
+            selectionTimer = 0.2f;
         }
-        selectedCategory = Mathf.Clamp(selectedCategory, 0, maxOptions);
+        UpdateSelectionTimer();
     }
 
     public static void HandleGridSelection(ref int selection, int maxOptions)
@@ -60,4 +73,15 @@ public class MenuSelectionMethods
         selection = Mathf.Clamp(selection, 0, maxOptions - 1);
     }
 
+    static void UpdateSelectionTimer()
+    {
+        if (selectionTimer > 0)
+        {
+            selectionTimer -= Time.deltaTime;
+        }
+        if (selectionTimer < 0)
+        {
+            selectionTimer = 0;
+        }
+    }
 }
