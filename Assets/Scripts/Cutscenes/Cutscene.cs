@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class Cutscene : MonoBehaviour, IPlayerTriggerable
@@ -24,6 +25,8 @@ public class Cutscene : MonoBehaviour, IPlayerTriggerable
 
     public void AddAction(CutsceneAction action)
     {
+        Undo.RegisterCompleteObjectUndo(this, "Add Cutscene Action");
+        
         actions ??= new List<CutsceneAction>();
         action.Name = action.GetType().ToString();
         actions.Add(action);
