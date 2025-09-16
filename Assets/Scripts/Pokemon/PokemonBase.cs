@@ -12,16 +12,18 @@ public class PokemonBase : ScriptableObject
 
     [Header("Sprites")]
     [Header("Normal")]
-    [SerializeField] Sprite frontSprite, backSprite;
+    [SerializeField] Sprite frontSprite;
+    [SerializeField] Sprite backSprite;
     [SerializeField] List<Sprite> walkDownSprites, walkUpSprites, walkLeftSprites, walkRightSprites;
 
     [Header("Shiny")]
-    [SerializeField] Sprite frontSpriteShiny, backSpriteShiny;
+    [SerializeField] Sprite frontSpriteShiny;
+    [SerializeField] Sprite  backSpriteShiny;
     [SerializeField] List<Sprite> walkDownSpritesShiny, walkUpSpritesShiny, walkLeftSpritesShiny, walkRightSpritesShiny;
 
-
     [Header("Stats")]
-    [SerializeField] PokemonType type1, type2;
+    [SerializeField] PokemonType type1;
+    [SerializeField] PokemonType  type2;
 
     // Base Stats
     [SerializeField] int maxHP, attack, defense, spAttack, spDefense, speed;
@@ -30,6 +32,7 @@ public class PokemonBase : ScriptableObject
     [SerializeField] int expYield;
     [SerializeField] int catchRate = 255;
 
+    [Header("Moves")]
     [SerializeField] List<LearnableMove> learnableMoves;
     [SerializeField] List<MoveBase> learnableByItems;
 
