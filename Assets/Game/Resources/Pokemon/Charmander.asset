@@ -16,6 +16,32 @@ MonoBehaviour:
   description: A charmander
   frontSprite: {fileID: 21300000, guid: 9e29a63ca8d70d0bcb88438f7602604c, type: 3}
   backSprite: {fileID: 21300000, guid: ed8e1d9976a1fd94d961840d8f6e7764, type: 3}
+  walkDownSprites:
+  - {fileID: -4178046375966092550, guid: 695256ac98e10515fa4fb4e0c1baca49, type: 3}
+  - {fileID: -4178046375966092550, guid: 3ac6eb87b33e28466bc2003c3d897e57, type: 3}
+  walkUpSprites:
+  - {fileID: -4178046375966092550, guid: b9c42fb61322d7153b547ebdfdaacd8f, type: 3}
+  - {fileID: -4178046375966092550, guid: 4f6799b99524103d99ab4f0b87c31266, type: 3}
+  walkLeftSprites:
+  - {fileID: -4178046375966092550, guid: 44619cb0f84ca4b95a40347c5af156ff, type: 3}
+  - {fileID: -4178046375966092550, guid: 81e75f54c6b9fe2789965e04ba7316ee, type: 3}
+  walkRightSprites:
+  - {fileID: -4178046375966092550, guid: f2f22afda565a5a3ea5b95ba8997f586, type: 3}
+  - {fileID: -4178046375966092550, guid: 16b8392213d450c07a13f38643daee1d, type: 3}
+  frontSpriteShiny: {fileID: -4178046375966092550, guid: 13e51043b5107124786fd8c0c4eb4dbe, type: 3}
+  backSpriteShiny: {fileID: -4178046375966092550, guid: f7b4ef5b749c44a51a9921d91a7e041b, type: 3}
+  walkDownSpritesShiny:
+  - {fileID: -4178046375966092550, guid: 2b76b7d628568dc939c476893b6b1227, type: 3}
+  - {fileID: -4178046375966092550, guid: 09d42dfacb957de8ebb8ef14adf005f9, type: 3}
+  walkUpSpritesShiny:
+  - {fileID: -4178046375966092550, guid: 69f75ec5b7d3b9588b6f9a05db56d652, type: 3}
+  - {fileID: -4178046375966092550, guid: ace7ef9c10e2129d4b995f18a27f5f8b, type: 3}
+  walkLeftSpritesShiny:
+  - {fileID: -4178046375966092550, guid: 5770bfca759a93d4e8e7f3af5a7a2378, type: 3}
+  - {fileID: -4178046375966092550, guid: 6672fc10a4d4a8af49b37778921c11ca, type: 3}
+  walkRightSpritesShiny:
+  - {fileID: -4178046375966092550, guid: 7ae59ca36d68c054f96458e8b04986ee, type: 3}
+  - {fileID: -4178046375966092550, guid: e866f4e84b7e05d01a4958d590560f79, type: 3}
   type1: 2
   type2: 0
   maxHP: 39
@@ -25,7 +51,6 @@ MonoBehaviour:
   spDefense: 50
   speed: 65
   expYield: 65
-  growthRate: 1
   catchRate: 255
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: d6d7f5d17e381c7de85d5e218f6edf93, type: 2}
@@ -46,3 +71,4 @@ MonoBehaviour:
   evolutions:
   - evolvesInto: {fileID: 11400000, guid: f688b165844afb8ee9657ee98b69078f, type: 2}
     requiredLevel: 16
+    requiredItem: {fileID: 0}

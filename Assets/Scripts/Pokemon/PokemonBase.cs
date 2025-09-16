@@ -10,8 +10,17 @@ public class PokemonBase : ScriptableObject
     [TextArea]
     [SerializeField] string description;
 
+    [Header("Sprites")]
+    [Header("Normal")]
     [SerializeField] Sprite frontSprite, backSprite;
+    [SerializeField] List<Sprite> walkDownSprites, walkUpSprites, walkLeftSprites, walkRightSprites;
 
+    [Header("Shiny")]
+    [SerializeField] Sprite frontSpriteShiny, backSpriteShiny;
+    [SerializeField] List<Sprite> walkDownSpritesShiny, walkUpSpritesShiny, walkLeftSpritesShiny, walkRightSpritesShiny;
+
+
+    [Header("Stats")]
     [SerializeField] PokemonType type1, type2;
 
     // Base Stats
