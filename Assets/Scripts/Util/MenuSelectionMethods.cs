@@ -32,7 +32,7 @@ public class MenuSelectionMethods
 
         if (selectionTimer == 0 && Mathf.Abs(h) > 0.2f)
         {
-            selectedCategory += -(int)Mathf.Sign(h);
+            selectedCategory += (int)Mathf.Sign(h);
 
             if (selectedCategory < 0)
             {
@@ -49,28 +49,35 @@ public class MenuSelectionMethods
         UpdateSelectionTimer();
     }
 
-    public static void HandleGridSelection(ref int selection, int maxOptions)
+    public static void HandleGridSelection(ref int selection, int maxOptions, int columns = 2)
     {
-        // TODO: Update keybindings here to allow control customization
-        // Might also involve switching to Unity's new input system.
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            ++selection;
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            --selection;
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            selection += 2;
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            selection -= 2;
-        }
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
 
-        selection = Mathf.Clamp(selection, 0, maxOptions - 1);
+        if (selectionTimer == 0 && (Mathf.Abs(h) > 0.2f || Mathf.Abs(v) > 0.2f))
+        {
+            if (Mathf.Abs(h) > Mathf.Abs(v))
+            {
+                selection += (int)Mathf.Sign(h);
+            }
+            else
+            {
+                selection += -(int)Mathf.Sign(v) * columns;
+            }            
+
+            if (selection < 0)
+            {
+                selection = maxOptions - 1;
+            }
+            else if (selection >= maxOptions)
+            {
+                selection = 0;
+            }
+
+            selection = Mathf.Clamp(selection, 0, maxOptions - 1);
+            selectionTimer = 0.2f;
+        }
+        UpdateSelectionTimer();        
     }
 
     static void UpdateSelectionTimer()
