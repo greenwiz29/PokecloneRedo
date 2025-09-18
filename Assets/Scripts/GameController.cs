@@ -167,40 +167,7 @@ public class GameController : MonoBehaviour
                 break;
             case GameState.Dialog:
                 DialogManager.I.HandleUpdate();
-                break;
-            case GameState.PartyScreen:
-                Action onSelected = () =>
-                {
-                    // int selectedChoice = 0;
-
-                    // StartCoroutine(DialogManager.I.ShowDialogText("Choose an action", true, true,
-                    //     new List<string>() { "Swap", "Summary", "Cancel" },
-                    //     (choiceIndex) =>
-                    //     {
-                    //         selectedChoice = choiceIndex; // This doesn't seem to be working. selectedChoice always 0
-                    //     }));
-
-                    // if (selectedChoice == 0)
-                    // {
-                    //     // Swap pokemon
-                    // }
-                    // else if (selectedChoice == 1)
-                    // {
-                    //     // Summary
-                    // }
-                    // else if (selectedChoice == 2)
-                    // {
-                    //     // Cancel - return to selection
-                    //     return;
-                    // }
-                };
-                Action onBack = () =>
-                {
-                    partyScreen.gameObject.SetActive(false);
-                    state = GameState.Menu;
-                };
-                partyScreen.HandleUpdate(onSelected, onBack);
-                break;
+                break;            
             case GameState.Bag:
                 Action<ItemBase> onItemUsed = (itemUsed) =>
                 {
@@ -208,7 +175,7 @@ public class GameController : MonoBehaviour
                     inventoryUI.gameObject.SetActive(false);
                     state = GameState.Menu;
                 };
-                onBack = () =>
+                Action onBack = () =>
                 {
                     inventoryUI.gameObject.SetActive(false);
                     state = GameState.Menu;

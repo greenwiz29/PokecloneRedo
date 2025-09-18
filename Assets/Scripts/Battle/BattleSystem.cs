@@ -707,18 +707,18 @@ public class BattleSystem : MonoBehaviour
             partyScreen.gameObject.SetActive(false);
 
             // player's previous 'mon fainted
-            if (partyScreen.CalledFrom == BattleState.ActionSelection)
+            // if (partyScreen.CalledFrom == BattleState.ActionSelection)
             {
                 StartCoroutine(RunTurns(BattleAction.Switch));
             }
-            else
+            // else
             {
                 // switched from menu
                 state = BattleState.Busy;
-                bool isTrainerAboutToUse = partyScreen.CalledFrom == BattleState.AboutToUse;
-                StartCoroutine(SwitchPokemon(selectedMember, isTrainerAboutToUse));
+                // bool isTrainerAboutToUse = partyScreen.CalledFrom == BattleState.AboutToUse;
+                // StartCoroutine(SwitchPokemon(selectedMember, isTrainerAboutToUse));
             }
-            partyScreen.CalledFrom = null;
+            // partyScreen.CalledFrom = null;
         };
         Action onBack = () =>
         {
@@ -728,17 +728,17 @@ public class BattleSystem : MonoBehaviour
                 return;
             }
 
-            if (partyScreen.CalledFrom == BattleState.AboutToUse)
+            // if (partyScreen.CalledFrom == BattleState.AboutToUse)
             {
                 StartCoroutine(SendNextTrainerPokemon());
             }
-            else
+            // else
                 ActionSelection();
 
-            partyScreen.CalledFrom = null;
+            // partyScreen.CalledFrom = null;
         };
 
-        partyScreen.HandleUpdate(onSelected, onBack);
+        // partyScreen.HandleUpdate(onSelected, onBack);
     }
 
     private void HandleAboutToUse()
@@ -780,7 +780,7 @@ public class BattleSystem : MonoBehaviour
 
     private void OpenPartyScreen()
     {
-        partyScreen.CalledFrom = state;
+        // partyScreen.CalledFrom = state;
         state = BattleState.PartyScreen;
         partyScreen.SetPartyData();
         partyScreen.gameObject.SetActive(true);

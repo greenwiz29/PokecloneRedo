@@ -4,12 +4,14 @@ using UnityEngine;
 
 namespace GDEUtils.UI
 {
+    public enum SelectionMode { LIST, GRID }
+
     public class SelectionUI<T> : MonoBehaviour where T : ISelectableItem
     {
         [SerializeField] float selectionSpeed = 5;
         float selectionTimer;
         List<T> items;
-        int selection = 0;
+        protected int selection = 0;
 
         public event Action<int> OnSelected;
         public event Action OnBack;
@@ -19,13 +21,22 @@ namespace GDEUtils.UI
         {
             this.items = items;
             selectionTimer = 1 / selectionSpeed;
+            items.ForEach(i => i.Init());
             UpdateSelectionUI();
         }
 
-        public virtual void HandleUpdate()
+        public virtual void HandleUpdate(SelectionMode mode = SelectionMode.LIST)
         {
             int prev = selection;
-            HandleListSelection();
+            switch (mode)
+            {
+                case SelectionMode.LIST:
+                    HandleListSelection();
+                    break;
+                case SelectionMode.GRID:
+                    HandleGridSelection();
+                    break;
+            }
 
             if (selection != prev)
             {
@@ -44,7 +55,7 @@ namespace GDEUtils.UI
             }
         }
 
-        private void UpdateSelectionUI()
+		private void UpdateSelectionUI()
         {
             for (int i = 0; i < items.Count; i++)
             {
@@ -56,6 +67,11 @@ namespace GDEUtils.UI
         {
             MenuSelectionMethods.HandleListSelection(ref selection, items.Count);
         }
+
+		void HandleGridSelection()
+		{
+			MenuSelectionMethods.HandleGridSelection(ref selection, items.Count);
+		}
 
         void UpdateSelectionTimer()
         {

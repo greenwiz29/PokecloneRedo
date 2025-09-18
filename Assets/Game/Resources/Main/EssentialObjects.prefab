@@ -730,6 +730,7 @@ GameObject:
   - component: {fileID: 511414769608254224}
   - component: {fileID: 7571777759640150602}
   - component: {fileID: 694204465090066973}
+  - component: {fileID: 6917850895616271927}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -903,6 +904,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuController: {fileID: 6642302106534158756}
+--- !u!114 &6917850895616271927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177379073849594759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee718559233b89e389df449e9658dcb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partyScreen: {fileID: 2652963119434699890}
 --- !u!1 &1439176550826066877
 GameObject:
   m_ObjectHideFlags: 0

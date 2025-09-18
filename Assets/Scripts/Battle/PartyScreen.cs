@@ -1,23 +1,17 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using GDEUtils.UI;
 using TMPro;
 using UnityEngine;
 
-public class PartyScreen : MonoBehaviour
+public class PartyScreen : SelectionUI<TextSlot>
 {
     [SerializeField] TMP_Text messageText;
     List<PartyMemberUI> memberSlots;
 
     PokemonParty party;
     List<Pokemon> partyMembers;
-    /// <summary>
-    /// The BattleState from which the party screen was called.
-    /// </br>Can be ActionSelection, RunningTurn, AboutToUse, etc.
-    /// </summary>
-    public BattleState? CalledFrom { get; set; }
-    int selection = 0;
-
+    
     public Pokemon SelectedPokemon => partyMembers[selection];
 
     public void Init()
@@ -50,36 +44,10 @@ public class PartyScreen : MonoBehaviour
             }
         }
 
-        UpdateMemberSelection(selection);
+        var textSlots = memberSlots.Select(m => m.GetComponent<TextSlot>()).ToList();
+        SetItems(textSlots.Take(partyMembers.Count).ToList());
 
         messageText.text = "Choose a Pokemon";
-    }
-
-    public void HandleUpdate(Action OnSelected, Action OnBack)
-    {
-        int prevSelection = selection;
-
-        MenuSelectionMethods.HandleGridSelection(ref selection, partyMembers.Count);
-
-        if (selection != prevSelection)
-            UpdateMemberSelection(selection);
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            OnBack?.Invoke();
-        }
-        else if (Input.GetKeyDown(KeyCode.Space))
-        {
-            OnSelected?.Invoke();
-        }
-    }
-
-    public void UpdateMemberSelection(int selection)
-    {
-        for (int i = 0; i < partyMembers.Count; i++)
-        {
-            memberSlots[i].SetSelected(i == selection);
-        }
     }
 
     public void ShowIfTMIsUseable(TMItem tmItem)

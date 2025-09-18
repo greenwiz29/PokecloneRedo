@@ -1,6 +1,4 @@
-using System;
 using GDEUtils.StateMachine;
-using UnityEditor;
 using UnityEngine;
 
 public class GameMenuState : State<GameController>
@@ -33,9 +31,7 @@ public class GameMenuState : State<GameController>
 		switch (selectedItem)
         {
             case 0: // Pokemon
-                // partyScreen.gameObject.SetActive(true);
-                // partyScreen.SetPartyData();
-                // state = GameState.PartyScreen;
+                gc.stateMachine.Push(GamePartyState.I);
                 break;
             case 1: // Bag
                 // inventoryUI.gameObject.SetActive(true);
@@ -55,11 +51,6 @@ public class GameMenuState : State<GameController>
 	public override void Execute()
     {
         menuController.HandleUpdate();
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            gc.stateMachine.Pop();
-        }
     }
 
     public override void Exit()
