@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using GDEUtils.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public enum InventoryUIState { ItemSelection, PartySelection, Busy, MoveToForget }
 
-public class InventoryUI : MonoBehaviour
+public class InventoryUI : SelectionUI<TextSlot>
 {
     [SerializeField] GameObject itemList;
     [SerializeField] ItemSlotUI itemSlotUI;
