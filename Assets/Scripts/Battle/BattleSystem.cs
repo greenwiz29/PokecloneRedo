@@ -5,29 +5,11 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum BattleAction
-{
-    Move,
-    Switch,
-    Item,
-    Run,
-}
+public enum BattleAction { Move, Switch, Item, Run, }
 
-public enum BattleState
-{
-    Start,
-    ActionSelection,
-    MoveSelection,
-    RunningTurn,
-    Busy,
-    PartyScreen,
-    BattleOver,
-    AboutToUse,
-    MoveToForget,
-    Bag
-}
+public enum BattleState { Start, ActionSelection, MoveSelection, RunningTurn, Busy, PartyScreen, BattleOver, AboutToUse, MoveToForget, Bag }
 
-public enum BattleTrigger { LongGrass, Water }
+public enum BattleTrigger { LongGrass, Water, Cave }
 
 public class BattleSystem : MonoBehaviour
 {
@@ -45,7 +27,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] Image backgroundImage;
     [SerializeField] Sprite longGrassBG;
     [SerializeField] Sprite waterBG;
-    // [SerializeField] Sprite caveBG;
+    [SerializeField] Sprite caveBG;
 
     /// <summary>
     /// Event to indicate the end of a battle.
@@ -175,9 +157,9 @@ public class BattleSystem : MonoBehaviour
             case BattleTrigger.Water:
                 backgroundImage.sprite = waterBG;
                 break;
-                // case BattleTrigger.Cave:
-                //     backgroundImage.sprite = caveBG;
-                //     break;
+            case BattleTrigger.Cave:
+                backgroundImage.sprite = caveBG;
+                break;
         }
     }
 
