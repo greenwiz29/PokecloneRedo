@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using GDEUtils.StateMachine;
 using UnityEngine;
 
@@ -6,7 +7,6 @@ public class UseItemState : State<GameController>
 {
     [SerializeField] PartyScreen partyScreen;
     [SerializeField] InventoryUI inventoryUI;
-
 
     public static UseItemState I { get; private set; }
     void Awake()
@@ -100,9 +100,25 @@ public class UseItemState : State<GameController>
         {
             yield return DialogManager.I.ShowDialogText($"{pokemon.Name} is trying to learn {item.Move.Name}", false);
             yield return DialogManager.I.ShowDialogText($"But it cannot know more than {Pokemon.maxMoves} moves at once.", false);
-            // yield return ChooseMoveToForget(pokemon, item.Move);
+            yield return DialogManager.I.ShowDialogText($"Choose a move to forget.", true, false);
+            MoveToForgetState.I.NewMove = item.Move;
+            MoveToForgetState.I.CurrentMoves = pokemon.Moves.Select(m => m.Base).ToList();
+            yield return gc.stateMachine.PushAndWait(MoveToForgetState.I);
+            int moveIndex = MoveToForgetState.I.Selection;
+            var moveToLearn = item.Move;
+            if (moveIndex == -1 || moveIndex == Pokemon.maxMoves)
+            {
+                // new move was selected, or player canceled out.
+                // TODO: prompt if new move should be abandoned
+                yield return DialogManager.I.ShowDialogText($"{pokemon.Name} did not learn {moveToLearn.Name}", false);
+            }
+            else
+            {
+                // Forget selected move and learn new move
+                yield return DialogManager.I.ShowDialogText($"{pokemon.Name} forgot {pokemon.Moves[moveIndex].Base.Name} and learned {moveToLearn.Name}", false);
 
-            // yield return new WaitUntil(() => state != InventoryUIState.MoveToForget);
+                pokemon.Moves[moveIndex] = new Move(moveToLearn);
+            }
         }
     }
 

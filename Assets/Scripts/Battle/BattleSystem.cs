@@ -605,29 +605,29 @@ public class BattleSystem : MonoBehaviour
                 HandleAboutToUse();
                 break;
             case BattleState.MoveToForget:
-                moveToForgetUI.HandleUpdate((moveIndex) =>
-                {
-                    var pokemon = playerUnit.Pokemon;
-                    moveToForgetUI.gameObject.SetActive(false);
-                    dialogBox.EnableMoveDetails(false);
-                    if (moveIndex == Pokemon.maxMoves)
-                    {
-                        // new move was selected
-                        // TODO: prompt if new move should be abandoned
-                        StartCoroutine(dialogBox.TypeDialog($"{pokemon.Name} did not learn {moveToLearn.Name}"));
-                    }
-                    else
-                    {
-                        // Forget selected move and learn new move
-                        StartCoroutine(dialogBox.TypeDialog($"{pokemon.Name} forgot {pokemon.Moves[moveIndex].Base.Name} and learned {moveToLearn.Name}"));
+                // moveToForgetUI.HandleUpdate((moveIndex) =>
+                // {
+                //     var pokemon = playerUnit.Pokemon;
+                //     moveToForgetUI.gameObject.SetActive(false);
+                //     dialogBox.EnableMoveDetails(false);
+                //     if (moveIndex == Pokemon.maxMoves)
+                //     {
+                //         // new move was selected
+                //         // TODO: prompt if new move should be abandoned
+                //         StartCoroutine(dialogBox.TypeDialog($"{pokemon.Name} did not learn {moveToLearn.Name}"));
+                //     }
+                //     else
+                //     {
+                //         // Forget selected move and learn new move
+                //         StartCoroutine(dialogBox.TypeDialog($"{pokemon.Name} forgot {pokemon.Moves[moveIndex].Base.Name} and learned {moveToLearn.Name}"));
 
-                        pokemon.Moves[moveIndex] = new Move(moveToLearn);
-                        dialogBox.SetMoveNames(pokemon.Moves);
-                    }
+                //         pokemon.Moves[moveIndex] = new Move(moveToLearn);
+                //         dialogBox.SetMoveNames(pokemon.Moves);
+                //     }
 
-                    moveToLearn = null;
-                    state = BattleState.RunningTurn;
-                });
+                //     moveToLearn = null;
+                //     state = BattleState.RunningTurn;
+                // });
                 break;
             case BattleState.Bag:
                 // inventoryUI.HandleUpdate(onBagBack, onItemUsed);
