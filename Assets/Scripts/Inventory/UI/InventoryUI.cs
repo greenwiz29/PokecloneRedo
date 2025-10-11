@@ -32,11 +32,12 @@ public class InventoryUI : SelectionUI<TextSlot>
     void Start()
     {
         UpdateItemList();
+        SetSelectionSettings(GDEUtils.UI.SelectionMode.LIST);
 
         inventory.OnUpdated += UpdateItemList;
     }
 
-    public override void HandleUpdate(SelectionMode mode = SelectionMode.LIST)
+    public override void HandleUpdate()
     {
         int prevCategory = selectedCategory;
 
@@ -49,7 +50,7 @@ public class InventoryUI : SelectionUI<TextSlot>
             categoryText.text = Inventory.ItemCategories[selectedCategory];
         }
 
-        base.HandleUpdate(mode);
+        base.HandleUpdate();
     }
 
     private void ResetSelection()

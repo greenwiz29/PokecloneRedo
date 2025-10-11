@@ -173,10 +173,10 @@ public class GameController : MonoBehaviour
 		};
 		style.normal.textColor = Color.black;
 
-        GUILayout.Label("State Stack", style);
+        GUILayout.Label(" State Stack", style);
         foreach (var s in stateMachine.StateStack)
         {
-            GUILayout.Label(s.GetType().Name, style);
+            GUILayout.Label(" " + s.GetType().Name, style);
         }
     }
 #endif

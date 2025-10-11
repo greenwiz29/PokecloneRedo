@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using GDEUtils.StateMachine;
 using UnityEngine;
@@ -35,6 +34,7 @@ public class MoveToForgetState : State<GameController>
 
         moveSelectionUI.gameObject.SetActive(true);
         moveSelectionUI.SetMoveData(CurrentMoves, NewMove);
+        moveSelectionUI.SetSelectionSettings(GDEUtils.UI.SelectionMode.LIST);
         moveSelectionUI.OnSelected += OnMoveSelected;
         moveSelectionUI.OnBack += OnBack;
     }

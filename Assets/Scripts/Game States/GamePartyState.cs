@@ -20,13 +20,14 @@ public class GamePartyState : State<GameController>
         gc = owner;
         partyScreen.gameObject.SetActive(true);
         partyScreen.SetPartyData();
+        partyScreen.SetSelectionSettings(GDEUtils.UI.SelectionMode.GRID, 2);
         partyScreen.OnSelected += OnPokemonSelected;
         partyScreen.OnBack += OnBack;
     }
 
     public override void Execute()
     {
-        partyScreen.HandleUpdate(SelectionMode.GRID);
+        partyScreen.HandleUpdate();
     }
 
     public override void Exit()

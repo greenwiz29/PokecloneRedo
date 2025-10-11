@@ -16,7 +16,15 @@ namespace GDEUtils.UI
         public event Action<int> OnSelected;
         public event Action OnBack;
 
+        SelectionMode mode;
+        int gridWidth;
 
+        public void SetSelectionSettings(SelectionMode selectionMode, int gridWidth = 2)
+        {
+            mode = selectionMode;
+            this.gridWidth = gridWidth;
+        }
+        
         public void SetItems(List<T> items)
         {
             this.items = items;
@@ -25,7 +33,7 @@ namespace GDEUtils.UI
             UpdateSelectionUI();
         }
 
-        public virtual void HandleUpdate(SelectionMode mode = SelectionMode.LIST)
+        public virtual void HandleUpdate()
         {
             int prev = selection;
             switch (mode)
@@ -34,7 +42,7 @@ namespace GDEUtils.UI
                     HandleListSelection();
                     break;
                 case SelectionMode.GRID:
-                    HandleGridSelection();
+                    HandleGridSelection(gridWidth);
                     break;
             }
 
@@ -68,9 +76,9 @@ namespace GDEUtils.UI
             MenuSelectionMethods.HandleListSelection(ref selection, items.Count);
         }
 
-		void HandleGridSelection()
+		void HandleGridSelection(int cols)
 		{
-			MenuSelectionMethods.HandleGridSelection(ref selection, items.Count);
+			MenuSelectionMethods.HandleGridSelection(ref selection, items.Count, cols);
 		}
 
         void UpdateSelectionTimer()

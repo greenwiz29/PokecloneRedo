@@ -452,6 +452,7 @@ GameObject:
   - component: {fileID: 747696915464948568}
   - component: {fileID: 2785957120970914273}
   - component: {fileID: 2507121358999777757}
+  - component: {fileID: 895001564904941375}
   m_Layer: 0
   m_Name: BagText (TMP)
   m_TagString: Untagged
@@ -577,6 +578,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &895001564904941375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 781154135968398740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bacfba212e15bb8e855f041cfaca971, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TextSlot
+  text: {fileID: 2507121358999777757}
 --- !u!1 &1145600260356169786
 GameObject:
   m_ObjectHideFlags: 0
@@ -588,6 +602,7 @@ GameObject:
   - component: {fileID: 9105858983577926660}
   - component: {fileID: 781694570689006659}
   - component: {fileID: 145739549430570753}
+  - component: {fileID: 6304523018512921549}
   m_Layer: 0
   m_Name: MoveText (TMP) (3)
   m_TagString: Untagged
@@ -713,6 +728,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6304523018512921549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1145600260356169786}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bacfba212e15bb8e855f041cfaca971, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TextSlot
+  text: {fileID: 145739549430570753}
 --- !u!1 &1177379073849594759
 GameObject:
   m_ObjectHideFlags: 0
@@ -1150,6 +1178,7 @@ GameObject:
   - component: {fileID: 1078756584289540251}
   - component: {fileID: 7288240966554811000}
   - component: {fileID: 1322855047968263864}
+  - component: {fileID: 6889810591876999271}
   m_Layer: 0
   m_Name: FightText (TMP)
   m_TagString: Untagged
@@ -1275,6 +1304,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6889810591876999271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2149535344709344467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bacfba212e15bb8e855f041cfaca971, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TextSlot
+  text: {fileID: 1322855047968263864}
 --- !u!1 &2426400608523204195
 GameObject:
   m_ObjectHideFlags: 0
@@ -1422,6 +1464,7 @@ GameObject:
   - component: {fileID: 8386299071532599373}
   - component: {fileID: 7262245388508810198}
   - component: {fileID: 5276906444194848505}
+  - component: {fileID: 7522727550831186680}
   m_Layer: 0
   m_Name: MoveText (TMP) (1)
   m_TagString: Untagged
@@ -1549,6 +1592,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7522727550831186680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2472078634364070489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bacfba212e15bb8e855f041cfaca971, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TextSlot
+  text: {fileID: 5276906444194848505}
 --- !u!1 &2721404255267885703
 GameObject:
   m_ObjectHideFlags: 0
@@ -1639,6 +1695,7 @@ GameObject:
   - component: {fileID: 3488771340810939490}
   - component: {fileID: 7492818758781336831}
   - component: {fileID: 530643523418701708}
+  - component: {fileID: 4077353067297076884}
   m_Layer: 0
   m_Name: MoveText (TMP)
   m_TagString: Untagged
@@ -1766,6 +1823,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &4077353067297076884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2738991307860341284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bacfba212e15bb8e855f041cfaca971, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TextSlot
+  text: {fileID: 530643523418701708}
 --- !u!1 &2916641702352246355
 GameObject:
   m_ObjectHideFlags: 0
@@ -1777,6 +1847,7 @@ GameObject:
   - component: {fileID: 8034030395460320687}
   - component: {fileID: 8896131668777058541}
   - component: {fileID: 7172806852079649551}
+  - component: {fileID: 2749542179171006446}
   m_Layer: 0
   m_Name: RunText (TMP)
   m_TagString: Untagged
@@ -1902,6 +1973,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2749542179171006446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2916641702352246355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bacfba212e15bb8e855f041cfaca971, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TextSlot
+  text: {fileID: 7172806852079649551}
 --- !u!1 &3001925810950505050
 GameObject:
   m_ObjectHideFlags: 0
@@ -2315,6 +2399,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6893677893573434649}
   - component: {fileID: 4156954448985156416}
+  - component: {fileID: 6552004216303913164}
+  - component: {fileID: 7334268813237238169}
   m_Layer: 0
   m_Name: BattleSystem
   m_TagString: Untagged
@@ -2365,7 +2451,34 @@ MonoBehaviour:
   backgroundImage: {fileID: 920377738362756917}
   longGrassBG: {fileID: 4422032505096542742, guid: 5e92e4381a92d5649bd2246f7decdb7b, type: 3}
   waterBG: {fileID: 1106511937541109406, guid: 5e92e4381a92d5649bd2246f7decdb7b, type: 3}
-  caveBG: {fileID: 0}
+  caveBG: {fileID: 2754896833546307751, guid: 5e92e4381a92d5649bd2246f7decdb7b, type: 3}
+--- !u!114 &6552004216303913164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4112715559801872306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc68b9e479487a3af8da8d29a2223d44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ActionSelectionState
+  selectionUI: {fileID: 1397792547104527826}
+--- !u!114 &7334268813237238169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4112715559801872306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f381ab666750224ab3ba8fd90f668e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MoveSelectionState
+  selectionUI: {fileID: 5513314424871197035}
+  moveDetailsUI: {fileID: 6524218952188233367}
 --- !u!1 &4362439269692282268
 GameObject:
   m_ObjectHideFlags: 0
@@ -2550,6 +2663,7 @@ GameObject:
   - component: {fileID: 3628648717376004012}
   - component: {fileID: 3925430421120904335}
   - component: {fileID: 9205234110624455938}
+  - component: {fileID: 2598078230020115361}
   m_Layer: 0
   m_Name: MoveText (TMP) (2)
   m_TagString: Untagged
@@ -2675,6 +2789,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2598078230020115361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5093758811202707037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bacfba212e15bb8e855f041cfaca971, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TextSlot
+  text: {fileID: 9205234110624455938}
 --- !u!1 &5153202628236285509
 GameObject:
   m_ObjectHideFlags: 0
@@ -2915,6 +3042,7 @@ GameObject:
   - component: {fileID: 548799560686683261}
   - component: {fileID: 3933680313340246554}
   - component: {fileID: 2500085654609363887}
+  - component: {fileID: 6776810101990458647}
   m_Layer: 0
   m_Name: PokemonText (TMP)
   m_TagString: Untagged
@@ -3040,6 +3168,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6776810101990458647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5805909315785093056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bacfba212e15bb8e855f041cfaca971, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TextSlot
+  text: {fileID: 2500085654609363887}
 --- !u!1 &5928742034177339436
 GameObject:
   m_ObjectHideFlags: 0
@@ -3870,6 +4011,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1136947063928273104}
   - component: {fileID: 520873450196113585}
+  - component: {fileID: 1397792547104527826}
   m_Layer: 0
   m_Name: ActionSelector
   m_TagString: Untagged
@@ -3924,6 +4066,19 @@ MonoBehaviour:
   m_Spacing: {x: 40, y: 20}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &1397792547104527826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7578431383007969968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15b965701fc45b94fbb05b45dfc99761, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ActionSelectionUI
+  selectionSpeed: 5
 --- !u!1 &7639520753635779565
 GameObject:
   m_ObjectHideFlags: 0
@@ -4389,6 +4544,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5334978381574270631}
   - component: {fileID: 1680292001053463942}
+  - component: {fileID: 5513314424871197035}
   m_Layer: 0
   m_Name: MoveSelector
   m_TagString: Untagged
@@ -4443,6 +4599,25 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 30}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &5513314424871197035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8994725980343435456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1237898ff144f67eabf807700785be42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MoveSelectionUI
+  selectionSpeed: 5
+  moveTexts:
+  - {fileID: 4077353067297076884}
+  - {fileID: 7522727550831186680}
+  - {fileID: 2598078230020115361}
+  - {fileID: 6304523018512921549}
+  dialogBox: {fileID: 8049680926776435146}
 --- !u!1 &9208448425390737715
 GameObject:
   m_ObjectHideFlags: 0

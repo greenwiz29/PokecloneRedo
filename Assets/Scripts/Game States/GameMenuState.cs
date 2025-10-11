@@ -27,7 +27,8 @@ public class GameMenuState : State<GameController>
 	}
 
 	private void OnSelected(int selectedItem)
-	{
+    {
+        menuController.SetSelectionSettings(GDEUtils.UI.SelectionMode.LIST);
 		switch (selectedItem)
         {
             case 0: // Pokemon

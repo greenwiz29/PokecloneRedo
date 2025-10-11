@@ -15,5 +15,8 @@ public class TextSlot : MonoBehaviour, ISelectableItem
         text.color = selected ? GlobalSettings.I.HighlightedColor : GlobalSettings.I.DefaultFontColor;
     }
 
-	
+	public void SetText(string text)
+    {
+        this.text.text = text;
+    }
 }

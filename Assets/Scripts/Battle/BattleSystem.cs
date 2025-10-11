@@ -53,6 +53,9 @@ public class BattleSystem : MonoBehaviour
 
     BattleTrigger trigger;
     public StateMachine<BattleSystem> StateMachine { get; private set; }
+    public BattleDialogBox DialogBox => dialogBox;
+    public BattleUnit PlayerUnit => playerUnit;
+    public BattleUnit EnemyUnit => enemyUnit;
 
     void Awake()
     {
@@ -95,6 +98,7 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator SetupBattle()
     {
+        StateMachine = new StateMachine<BattleSystem>(this);
         escapeAttempts = 0;
 
         playerUnit.Clear();
@@ -135,7 +139,7 @@ public class BattleSystem : MonoBehaviour
 
         partyScreen.Init();
 
-        ActionSelection();
+        StateMachine.ChangeState(ActionSelectionState.I);
     }
 
     private IEnumerator SendOutPlayerPokemon(Pokemon pokemon)
@@ -573,14 +577,10 @@ public class BattleSystem : MonoBehaviour
 
     public void HandleUpdate()
     {
+        StateMachine.Execute();
+
         switch (state)
         {
-            case BattleStateEnum.ActionSelection:
-                HandleActionSelection();
-                break;
-            case BattleStateEnum.MoveSelection:
-                HandleMoveSelection();
-                break;
             case BattleStateEnum.PartyScreen:
                 HandlePartyScreenSelection();
                 break;
@@ -618,43 +618,8 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    private void HandleActionSelection()
-    {
-        int prev = currentAction;
-        MenuSelectionMethods.HandleGridSelection(ref currentAction, dialogBox.ActionCount);
-
-        if (currentAction != prev)
-            dialogBox.UpdateActionSelection(currentAction);
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            switch (currentAction)
-            {
-                case 0: // Fight
-                    MoveSelection();
-                    break;
-                case 1: // Bag
-                    OpenBag();
-                    break;
-                case 2: // Switch Pokemon
-                    OpenPartyScreen();
-                    break;
-                case 3: // Run
-                    StartCoroutine(RunTurns(BattleAction.Run));
-                    break;
-            }
-        }
-    }
-
     private void HandleMoveSelection()
     {
-        int prev = currentMove;
-
-        MenuSelectionMethods.HandleGridSelection(ref currentMove, playerUnit.Pokemon.Moves.Count);
-
-        if (currentMove != prev)
-            dialogBox.UpdateMoveSelection(currentMove, playerUnit.Pokemon.Moves[currentMove]);
-
         if (Input.GetKeyDown(KeyCode.Space))
         {
             var move = playerUnit.Pokemon.Moves[currentMove];
