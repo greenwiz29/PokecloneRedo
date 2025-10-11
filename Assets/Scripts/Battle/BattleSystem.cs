@@ -630,7 +630,7 @@ public class BattleSystem : MonoBehaviour
                 });
                 break;
             case BattleState.Bag:
-                inventoryUI.HandleUpdate(onBagBack, onItemUsed);
+                // inventoryUI.HandleUpdate(onBagBack, onItemUsed);
                 break;
         }
     }

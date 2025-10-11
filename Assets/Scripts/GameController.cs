@@ -167,21 +167,7 @@ public class GameController : MonoBehaviour
                 break;
             case GameState.Dialog:
                 DialogManager.I.HandleUpdate();
-                break;            
-            case GameState.Bag:
-                Action<ItemBase> onItemUsed = (itemUsed) =>
-                {
-                    // TODO: Options for switching, summary, etc.
-                    inventoryUI.gameObject.SetActive(false);
-                    state = GameState.Menu;
-                };
-                Action onBack = () =>
-                {
-                    inventoryUI.gameObject.SetActive(false);
-                    state = GameState.Menu;
-                };
-                inventoryUI.HandleUpdate(onBack);
-                break;
+                break; 
             case GameState.Shop:
                 ShopController.I.HandleUpdate();
                 break;

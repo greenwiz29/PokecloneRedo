@@ -34,8 +34,7 @@ public class GameMenuState : State<GameController>
                 gc.stateMachine.Push(GamePartyState.I);
                 break;
             case 1: // Bag
-                // inventoryUI.gameObject.SetActive(true);
-                // state = GameState.Bag;
+                gc.stateMachine.Push(InventoryState.I);
                 break;
             case 2: // Save
                 SavingSystem.i.Save("saveSlot1");

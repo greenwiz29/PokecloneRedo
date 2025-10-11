@@ -1,4 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace GDEUtils.StateMachine
 {
@@ -27,6 +30,13 @@ namespace GDEUtils.StateMachine
             CurrentState.Enter(owner);
         }
 
+        public IEnumerator PushAndWait(State<T> newState)
+        {
+            var oldState = CurrentState;
+            Push(newState);
+            yield return new WaitUntil(() => CurrentState == oldState);
+        }
+
         public void Pop()
         {
             StateStack.Pop();
@@ -42,6 +52,11 @@ namespace GDEUtils.StateMachine
                 CurrentState.Exit();
             }
             Push(newState);
+        }
+
+        public State<T> GetPrevState()
+        {
+            return StateStack.ElementAt(1);
         }
     }
 }

@@ -55,7 +55,7 @@ namespace GDEUtils.UI
             }
         }
 
-		private void UpdateSelectionUI()
+		public virtual void UpdateSelectionUI()
         {
             for (int i = 0; i < items.Count; i++)
             {

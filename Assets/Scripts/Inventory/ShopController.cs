@@ -65,10 +65,10 @@ public class ShopController : MonoSingleton<ShopController>
         {
             case ShopState.Selling:
                 // Handle selling logic
-                inventoryUI.HandleUpdate(OnBackFromSelling, (selectedItem) =>
-                {
-                    StartCoroutine(SellItem(selectedItem));
-                });
+                // inventoryUI.HandleUpdate(OnBackFromSelling, (selectedItem) =>
+                // {
+                //     StartCoroutine(SellItem(selectedItem));
+                // });
                 break;
             case ShopState.Buying:
                 shopUI.HandleUpdate();
