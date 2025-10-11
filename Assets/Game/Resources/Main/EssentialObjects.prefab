@@ -734,6 +734,7 @@ GameObject:
   - component: {fileID: 2197471767496488715}
   - component: {fileID: 8714043152788150533}
   - component: {fileID: 3737100721589122957}
+  - component: {fileID: 6922311245077721922}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -960,6 +961,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveToForgetState
   moveSelectionUI: {fileID: 2837142522017723057}
+--- !u!114 &6922311245077721922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177379073849594759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1f96db75abeb6b9a879738ed3ea470f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BattleState
+  battleSystem: {fileID: 4156954448985156416}
 --- !u!1 &1439176550826066877
 GameObject:
   m_ObjectHideFlags: 0
@@ -2351,6 +2365,7 @@ MonoBehaviour:
   backgroundImage: {fileID: 920377738362756917}
   longGrassBG: {fileID: 4422032505096542742, guid: 5e92e4381a92d5649bd2246f7decdb7b, type: 3}
   waterBG: {fileID: 1106511937541109406, guid: 5e92e4381a92d5649bd2246f7decdb7b, type: 3}
+  caveBG: {fileID: 0}
 --- !u!1 &4362439269692282268
 GameObject:
   m_ObjectHideFlags: 0

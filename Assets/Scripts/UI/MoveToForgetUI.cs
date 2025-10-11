@@ -8,7 +8,6 @@ using UnityEngine;
 public class MoveToForgetUI : SelectionUI<TextSlot>
 {
     [SerializeField] List<TMP_Text> moveTexts;
-    public event Action<int> OnSelectionChanged;
 
     public void SetMoveData(List<MoveBase> currentMoves, MoveBase newMove)
     {

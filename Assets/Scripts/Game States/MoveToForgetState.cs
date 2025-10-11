@@ -13,6 +13,8 @@ public class MoveToForgetState : State<GameController>
     // Inputs that must be set before entering the state
     public List<MoveBase> CurrentMoves { get; set; }
     public MoveBase NewMove { get; set; }
+
+    // Output
     public int Selection { get; private set; }
 
     /// <summary>

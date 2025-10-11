@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using GDEUtils.StateMachine;
+using UnityEditorInternal;
 using UnityEngine;
 
 public enum GameState { FreeRoam, Battle, Pause, Dialog, Cutscene, Menu, PartyScreen, Bag, Evolution, Shop }
@@ -22,6 +23,7 @@ public class GameController : MonoBehaviour
     GameState state, prevState, preEvoState;
 
     public StateMachine<GameController> stateMachine { get; private set; }
+    public Camera WorldCamera => worldCamera;
 
     void Awake()
     {
@@ -42,8 +44,6 @@ public class GameController : MonoBehaviour
     {
         stateMachine = new StateMachine<GameController>(this);
         stateMachine.Push(FreeRoamState.I);
-
-        battleSystem.OnBattleOver += EndBattle;
 
         partyScreen.Init();
 
@@ -112,44 +112,18 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void EndBattle(bool playerWon)
-    {
-        state = GameState.FreeRoam;
-        battleSystem.gameObject.SetActive(false);
-        worldCamera.gameObject.SetActive(true);
-
-        if (trainer != null && playerWon)
-        {
-            trainer.BattleLost();
-            trainer = null;
-        }
-    }
-
     public void StartBattle(BattleTrigger trigger)
     {
-        state = GameState.Battle;
-        battleSystem.gameObject.SetActive(true);
-        worldCamera.gameObject.SetActive(false);
-
-        var playerParty = playerController.GetComponent<PokemonParty>();
-        var wildPokemon = CurrentScene.GetComponent<MapArea>().GetRandomWildPokemon(trigger);
-        var wildCopy = new Pokemon(wildPokemon.Base, wildPokemon.Level);
-
-        battleSystem.StartBattle(playerParty, wildCopy, trigger);
+        BattleState.I.Trigger = trigger;
+        BattleState.I.Trainer = null;
+        stateMachine.Push(BattleState.I);        
     }
 
-    TrainerController trainer;
-    public void StartTrainerBattle(TrainerController trainer)
+    public void StartTrainerBattle(TrainerController trainer, BattleTrigger trigger = BattleTrigger.LongGrass)
     {
-        state = GameState.Battle;
-        battleSystem.gameObject.SetActive(true);
-        worldCamera.gameObject.SetActive(false);
-
-        this.trainer = trainer;
-        var playerParty = playerController.GetComponent<PokemonParty>();
-        var trainerParty = trainer.GetComponent<PokemonParty>();
-
-        battleSystem.StartTrainerBattle(playerParty, trainerParty);
+        BattleState.I.Trigger = trigger;
+        BattleState.I.Trainer = trainer;
+        stateMachine.Push(BattleState.I); 
     }
 
     // Update is called once per frame
@@ -162,9 +136,6 @@ public class GameController : MonoBehaviour
             case GameState.Cutscene:
                 playerController.HandleUpdate();
                 break;
-            case GameState.Battle:
-                battleSystem.HandleUpdate();
-                break;
             case GameState.Dialog:
                 DialogManager.I.HandleUpdate();
                 break; 
@@ -174,7 +145,6 @@ public class GameController : MonoBehaviour
             default:
                 break;
         }
-
     }
 
     public void SetCurrentScene(SceneDetails currScene)
