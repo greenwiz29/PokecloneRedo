@@ -41,6 +41,7 @@ public class ActionSelectionState : State<BattleSystem>
         switch (selection)
         {
             case 0: // Fight
+                bs.SelectedAction = BattleAction.Move;
                 MoveSelectionState.I.Moves = bs.PlayerUnit.Pokemon.Moves;
                 bs.StateMachine.ChangeState(MoveSelectionState.I);
                 break;
@@ -51,7 +52,8 @@ public class ActionSelectionState : State<BattleSystem>
                 // OpenPartyScreen();
                 break;
             case 3: // Run
-                // StartCoroutine(RunTurns(BattleAction.Run));
+                bs.SelectedAction = BattleAction.Run;
+                bs.StateMachine.ChangeState(RunTurnState.I);
                 break;
         }
     }

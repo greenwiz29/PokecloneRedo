@@ -2401,6 +2401,7 @@ GameObject:
   - component: {fileID: 4156954448985156416}
   - component: {fileID: 6552004216303913164}
   - component: {fileID: 7334268813237238169}
+  - component: {fileID: 8914588920272214639}
   m_Layer: 0
   m_Name: BattleSystem
   m_TagString: Untagged
@@ -2441,13 +2442,12 @@ MonoBehaviour:
   enemyUnit: {fileID: 692010071996918228}
   dialogBox: {fileID: 8049680926776435146}
   partyScreen: {fileID: 6632624015277805434}
-  struggle: {fileID: 11400000, guid: 1d5ac65aa5543b949bc68a4d601515e5, type: 2}
   playerImage: {fileID: 7844319024171480244}
   trainerImage: {fileID: 4431235339613738714}
   pokeballSprite: {fileID: 4002987008596416472, guid: a1c64683f1df6e73a82a9ec86eaa618c, type: 3}
   moveToForgetUI: {fileID: 8290533584259174790}
-  statChangesUI: {fileID: 6135335521000741116}
   inventoryUI: {fileID: 3337526289168574943}
+  statChangesUI: {fileID: 6135335521000741116}
   backgroundImage: {fileID: 920377738362756917}
   longGrassBG: {fileID: 4422032505096542742, guid: 5e92e4381a92d5649bd2246f7decdb7b, type: 3}
   waterBG: {fileID: 1106511937541109406, guid: 5e92e4381a92d5649bd2246f7decdb7b, type: 3}
@@ -2479,6 +2479,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MoveSelectionState
   selectionUI: {fileID: 5513314424871197035}
   moveDetailsUI: {fileID: 6524218952188233367}
+--- !u!114 &8914588920272214639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4112715559801872306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ada85810bd9673ff4868a56728e19454, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RunTurnState
+  struggle: {fileID: 11400000, guid: 1d5ac65aa5543b949bc68a4d601515e5, type: 2}
 --- !u!1 &4362439269692282268
 GameObject:
   m_ObjectHideFlags: 0
