@@ -16,6 +16,7 @@ public class BattleState : State<GameController>
     // Input. Must be set before Enter runs
     public BattleTrigger Trigger { get; set; }
     public TrainerController Trainer { get; set; }
+    public BattleSystem BattleSystem => battleSystem;
 
     void Awake()
     {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using GDEUtils.StateMachine;
 using UnityEngine;
 
@@ -49,12 +50,24 @@ public class ActionSelectionState : State<BattleSystem>
                 // OpenBag();
                 break;
             case 2: // Switch Pokemon
-                // OpenPartyScreen();
+                StartCoroutine(GoToPartyState());
                 break;
             case 3: // Run
                 bs.SelectedAction = BattleAction.Run;
                 bs.StateMachine.ChangeState(RunTurnState.I);
                 break;
+        }
+    }
+
+    IEnumerator GoToPartyState()
+    {
+        yield return GameController.I.stateMachine.PushAndWait(PartyState.I);
+        var selectedPokemon = PartyState.I.SelectedPokemon;
+        if(selectedPokemon != null)
+        {
+            bs.SelectedAction = BattleAction.Switch;
+            bs.SelectedPokemon = selectedPokemon;
+            bs.StateMachine.ChangeState(RunTurnState.I);
         }
     }
 }

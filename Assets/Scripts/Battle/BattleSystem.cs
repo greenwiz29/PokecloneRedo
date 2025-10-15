@@ -30,7 +30,6 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] Sprite caveBG;
 
     BattleStateEnum state;
-    int currentAction, currentMove;
     bool aboutToUseChoice;
 
     PokemonParty playerParty, trainerParty;
@@ -41,8 +40,6 @@ public class BattleSystem : MonoBehaviour
     TrainerController trainer;
     public int EscapeAttempts { get; set; }
     MoveBase moveToLearn;
-    Action onBagBack;
-    Action<ItemBase> onItemUsed;
 
     /// <summary>
     /// Event to indicate the end of a battle.
@@ -58,6 +55,7 @@ public class BattleSystem : MonoBehaviour
     public PartyScreen PartyScreen => partyScreen;
     public int SelectedMove { get; set; }
     public BattleAction SelectedAction { get; set; }
+    public Pokemon SelectedPokemon { get; set; }
     public bool IsBattleOver { get; private set; }
     public bool IsTrainerBattle => isTrainerBattle;
     public PokemonParty PlayerParty => playerParty;
@@ -66,16 +64,16 @@ public class BattleSystem : MonoBehaviour
 
     void Awake()
     {
-        onBagBack = () =>
-        {
-            inventoryUI.gameObject.SetActive(false);
-            state = BattleStateEnum.ActionSelection;
-        };
+        // onBagBack = () =>
+        // {
+        //     inventoryUI.gameObject.SetActive(false);
+        //     state = BattleStateEnum.ActionSelection;
+        // };
 
-        onItemUsed = (usedItem) =>
-        {
-            StartCoroutine(OnItemUsed(usedItem));
-        };
+        // onItemUsed = (usedItem) =>
+        // {
+        //     StartCoroutine(OnItemUsed(usedItem));
+        // };
     }
 
     public void StartBattle(PokemonParty playerParty, Pokemon wildPokemon, BattleTrigger trigger = BattleTrigger.LongGrass)
@@ -182,9 +180,6 @@ public class BattleSystem : MonoBehaviour
 
         switch (state)
         {
-            case BattleStateEnum.PartyScreen:
-                HandlePartyScreenSelection();
-                break;
             case BattleStateEnum.AboutToUse:
                 HandleAboutToUse();
                 break;
@@ -219,76 +214,7 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    private void HandleMoveSelection()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            var move = playerUnit.Pokemon.Moves[currentMove];
-            if (move.PP <= 0)
-                return;
 
-            dialogBox.EnableMoveSelector(false);
-            dialogBox.EnableDialogText(true);
-            // StartCoroutine(RunTurns(BattleAction.Move));
-        }
-        else if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ActionSelection();
-        }
-    }
-
-    private void HandlePartyScreenSelection()
-    {
-        Action onSelected = () =>
-        {
-            var selectedMember = partyScreen.SelectedPokemon;
-            if (selectedMember.HP <= 0)
-            {
-                partyScreen.SetMessageText($"You can't send out a fainted pokemon");
-                return;
-            }
-            if (selectedMember == playerUnit.Pokemon)
-            {
-                partyScreen.SetMessageText($"{selectedMember.Base.Name} is already out.");
-                return;
-            }
-
-            partyScreen.gameObject.SetActive(false);
-
-            // player's previous 'mon fainted
-            // if (partyScreen.CalledFrom == BattleState.ActionSelection)
-            {
-                // StartCoroutine(RunTurns(BattleAction.Switch));
-            }
-            // else
-            {
-                // switched from menu
-                state = BattleStateEnum.Busy;
-                // bool isTrainerAboutToUse = partyScreen.CalledFrom == BattleState.AboutToUse;
-                // StartCoroutine(SwitchPokemon(selectedMember, isTrainerAboutToUse));
-            }
-            // partyScreen.CalledFrom = null;
-        };
-        Action onBack = () =>
-        {
-            if (playerUnit.Pokemon.HP <= 0)
-            {
-                partyScreen.SetMessageText("You must choose a pokemon to continue");
-                return;
-            }
-
-            // if (partyScreen.CalledFrom == BattleState.AboutToUse)
-            {
-                StartCoroutine(SendNextTrainerPokemon());
-            }
-            // else
-            ActionSelection();
-
-            // partyScreen.CalledFrom = null;
-        };
-
-        // partyScreen.HandleUpdate(onSelected, onBack);
-    }
 
     private void HandleAboutToUse()
     {
@@ -335,8 +261,9 @@ public class BattleSystem : MonoBehaviour
         partyScreen.gameObject.SetActive(true);
     }
 
-    IEnumerator SwitchPokemon(Pokemon newPokemon, bool isTrainerAboutToUse = false)
+    public IEnumerator SwitchPokemon(Pokemon newPokemon)
     {
+        dialogBox.EnableDialogText(true);
         if (playerUnit.Pokemon.HP > 0)
         {
             yield return dialogBox.TypeDialog($"Come back, {playerUnit.Pokemon.Name}");
@@ -345,15 +272,6 @@ public class BattleSystem : MonoBehaviour
         }
 
         yield return SendOutPlayerPokemon(newPokemon);
-
-        if (isTrainerAboutToUse)
-        {
-            yield return SendNextTrainerPokemon();
-        }
-        else
-        {
-            state = BattleStateEnum.RunningTurn;
-        }
     }
 
     IEnumerator SendNextTrainerPokemon()
@@ -365,26 +283,6 @@ public class BattleSystem : MonoBehaviour
         yield return dialogBox.TypeDialog($"{trainer.Name} sent out {next.Name}");
 
         state = BattleStateEnum.RunningTurn;
-    }
-
-    private void MoveSelection()
-    {
-        state = BattleStateEnum.MoveSelection;
-        dialogBox.EnableActionSelector(false);
-        dialogBox.EnableDialogText(false);
-        dialogBox.EnableMoveSelector(true);
-        dialogBox.UpdateMoveSelection(currentMove, playerUnit.Pokemon.Moves[currentMove]);
-    }
-
-    private void ActionSelection()
-    {
-        state = BattleStateEnum.ActionSelection;
-        dialogBox.EnableDialogText(true);
-        dialogBox.SetDialog("Choose an action.");
-        dialogBox.EnableActionSelector(true);
-        dialogBox.EnableMoveSelector(false);
-        partyScreen.gameObject.SetActive(false);
-        dialogBox.UpdateActionSelection(currentAction);
     }
 
     IEnumerator AboutToUse(Pokemon newPokemon)

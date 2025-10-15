@@ -43,6 +43,6 @@ public class InventoryState : State<GameController>
         if (inventoryUI.Category == ItemCategories.KEY)
             return; // For now, key items can't be used directly
         else
-            gc.stateMachine.Push(GamePartyState.I);
+            gc.stateMachine.Push(PartyState.I);
     }
 }

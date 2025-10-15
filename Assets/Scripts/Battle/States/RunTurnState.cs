@@ -18,7 +18,6 @@ public class RunTurnState : State<BattleSystem>
 
     BattleUnit playerUnit;
     BattleUnit enemyUnit;
-    PartyScreen partyScreen;
     BattleDialogBox dialogBox;
 
 
@@ -30,7 +29,6 @@ public class RunTurnState : State<BattleSystem>
         playerUnit = bs.PlayerUnit;
         enemyUnit = bs.EnemyUnit;
         dialogBox = bs.DialogBox;
-        partyScreen = bs.PartyScreen;
 
         StartCoroutine(RunTurns(bs.SelectedAction));
     }
@@ -64,7 +62,7 @@ public class RunTurnState : State<BattleSystem>
                 break;
 
             case BattleAction.Switch:
-                // yield return SwitchPokemon(partyScreen.SelectedPokemon);
+                yield return bs.SwitchPokemon(bs.SelectedPokemon);
 
                 yield return RunEnemyTurn();
                 break;
@@ -260,7 +258,7 @@ public class RunTurnState : State<BattleSystem>
         return UnityEngine.Random.Range(1, 101) <= moveAccuracy;
     }
 
-    void CheckForBattleOver(BattleUnit faintedUnit)
+    IEnumerator CheckForBattleOver(BattleUnit faintedUnit)
     {
         if (faintedUnit.IsPlayerUnit)
         {
@@ -271,7 +269,8 @@ public class RunTurnState : State<BattleSystem>
             }
             else
             {
-                // OpenPartyScreen();
+                yield return GameController.I.stateMachine.PushAndWait(PartyState.I);
+                yield return bs.SwitchPokemon(PartyState.I.SelectedPokemon);
             }
         }
         else
@@ -307,7 +306,7 @@ public class RunTurnState : State<BattleSystem>
             yield return bs.ApplyExpGain(faintedUnit, true, damageDetails);
         }
 
-        CheckForBattleOver(faintedUnit);
+        yield return CheckForBattleOver(faintedUnit);
     }
 
     IEnumerator ShowDamageDetails(DamageDetails details)
