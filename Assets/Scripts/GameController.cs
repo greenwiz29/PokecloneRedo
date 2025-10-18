@@ -1,8 +1,8 @@
+using System;
 using System.Collections;
 using GDEUtils.StateMachine;
 using UnityEngine;
 
-public enum GameState { FreeRoam, Battle, Pause, Dialog, Cutscene, Menu, PartyScreen, Bag, Evolution, Shop }
 public class GameController : MonoBehaviour
 {
     [SerializeField] PlayerController playerController;
@@ -14,10 +14,6 @@ public class GameController : MonoBehaviour
     public SceneDetails PreviousScene { get; private set; }
     public PlayerController Player => playerController;
     public PartyScreen PartyScreen => partyScreen;
-
-    public GameState State => state;
-
-    GameState state, prevState;
 
     public StateMachine<GameController> stateMachine { get; private set; }
     public Camera WorldCamera => worldCamera;
@@ -52,28 +48,16 @@ public class GameController : MonoBehaviour
         {
             stateMachine.Pop();
         };
-
-        ShopController.I.OnStart += () =>
-        {
-            // prevState = state;
-            state = GameState.Shop;
-        };
-
-        ShopController.I.OnEnd += () =>
-        {
-            state = GameState.FreeRoam;
-        };
     }
 
     public void PauseGame(bool pause)
     {
         if (pause)
         {
-            prevState = state;
-            state = GameState.Pause;
+            stateMachine.Push(PauseState.I);
         }
         else
-            state = prevState;
+            stateMachine.Pop();
     }
 
     public void OnEnterTrainerView(TrainerController trainer)
@@ -103,15 +87,6 @@ public class GameController : MonoBehaviour
     void Update()
     {
         stateMachine.Execute();
-
-        switch (state)
-        {
-            case GameState.Shop:
-                ShopController.I.HandleUpdate();
-                break;
-            default:
-                break;
-        }
     }
 
     public void SetCurrentScene(SceneDetails currScene)

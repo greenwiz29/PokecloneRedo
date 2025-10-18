@@ -755,7 +755,6 @@ GameObject:
   - component: {fileID: 7914476470353451843}
   - component: {fileID: 5945841063796015268}
   - component: {fileID: 2780139383235761338}
-  - component: {fileID: 511414769608254224}
   - component: {fileID: 7571777759640150602}
   - component: {fileID: 694204465090066973}
   - component: {fileID: 6917850895616271927}
@@ -765,6 +764,9 @@ GameObject:
   - component: {fileID: 6922311245077721922}
   - component: {fileID: 4845137372067963554}
   - component: {fileID: 6313674923832620431}
+  - component: {fileID: 9014828139034214450}
+  - component: {fileID: 4641640880999337393}
+  - component: {fileID: 9127775459540200859}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -800,10 +802,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 1825084380565844524}
-  battleSystem: {fileID: 4156954448985156416}
   worldCamera: {fileID: 3647784352261256994}
   partyScreen: {fileID: 2652963119434699890}
-  inventoryUI: {fileID: 5740217837521900334}
 --- !u!114 &5169825686388547538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -893,26 +893,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fd7cae6c303aef869f2ab84e6b6096c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  printTrace: 0
   evolutionUI: {fileID: 7352475837077565385}
   pokemonImage: {fileID: 2798777541937345568}
---- !u!114 &511414769608254224
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1177379073849594759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfbcb32a8124a113fb84bff7e73d10d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  printTrace: 0
-  inventoryUI: {fileID: 5740217837521900334}
-  shopUI: {fileID: 4835641392407788900}
-  walletUI: {fileID: 6101201222589308589}
-  countSelectorUI: {fileID: 3897825924504881265}
 --- !u!114 &7571777759640150602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1028,6 +1010,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4adb8eecec1e50fab8328c347d5b1558, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CutsceneState
+--- !u!114 &9014828139034214450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177379073849594759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b43018a35d395edcb2be63956099c8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShopMenuState
+--- !u!114 &4641640880999337393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177379073849594759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db1a35f6b11b00c52969d23214e78afa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShopBuyingState
+  shopUI: {fileID: 4835641392407788900}
+  walletUI: {fileID: 6101201222589308589}
+  countSelectorUI: {fileID: 3897825924504881265}
+--- !u!114 &9127775459540200859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177379073849594759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d46ee85feb949b49faef63b06fc3560e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShopSellingState
+  inventoryUI: {fileID: 5740217837521900334}
+  shopUI: {fileID: 4835641392407788900}
+  walletUI: {fileID: 6101201222589308589}
+  countSelectorUI: {fileID: 3897825924504881265}
 --- !u!1 &1439176550826066877
 GameObject:
   m_ObjectHideFlags: 0
@@ -2472,8 +2497,6 @@ MonoBehaviour:
   playerImage: {fileID: 7844319024171480244}
   trainerImage: {fileID: 4431235339613738714}
   pokeballSprite: {fileID: 4002987008596416472, guid: a1c64683f1df6e73a82a9ec86eaa618c, type: 3}
-  moveToForgetUI: {fileID: 8290533584259174790}
-  inventoryUI: {fileID: 3337526289168574943}
   statChangesUI: {fileID: 6135335521000741116}
   backgroundImage: {fileID: 920377738362756917}
   longGrassBG: {fileID: 4422032505096542742, guid: 5e92e4381a92d5649bd2246f7decdb7b, type: 3}
@@ -5012,17 +5035,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 698053347843391915, guid: 90cbf27bceb55eb8aaaec807cfeb82b6, type: 3}
   m_PrefabInstance: {fileID: 2566234982726619135}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3337526289168574943 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 994274504432838176, guid: 90cbf27bceb55eb8aaaec807cfeb82b6, type: 3}
-  m_PrefabInstance: {fileID: 2566234982726619135}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbd052be8f4e378d0ad9d61133a09459, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &3904348135383935916
 PrefabInstance:
   m_ObjectHideFlags: 0

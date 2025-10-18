@@ -10,6 +10,7 @@ public class Merchant : MonoBehaviour
     
     public IEnumerator Trade()
     {
-        yield return ShopController.I.StartTrading(this);
+        ShopMenuState.I.AvailableItems = AvailableItems;
+        yield return GameController.I.stateMachine.PushAndWait(ShopMenuState.I);
     }
 }

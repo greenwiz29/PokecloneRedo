@@ -59,7 +59,10 @@ public class InventoryState : State<GameController>
         else
         {
             SelectedItem = inventoryUI.SelectedItem;
-            StartCoroutine(SelectPokemonAndUseItem());
+            if (gc.stateMachine.GetPrevState() != ShopSellingState.I)
+                StartCoroutine(SelectPokemonAndUseItem());
+            else
+                gc.stateMachine.Pop();
         }
     }
 
@@ -83,7 +86,7 @@ public class InventoryState : State<GameController>
                 yield break;
             }
         }
-        
+
         if (SelectedItem is PokeballItem)
         {
             inventory.UseItem(SelectedItem, null);
