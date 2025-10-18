@@ -1,21 +1,34 @@
 using System;
+using System.Collections;
 using GDEUtils.StateMachine;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class InventoryState : State<GameController>
 {
     [SerializeField] InventoryUI inventoryUI;
 
     public static InventoryState I { get; private set; }
+
+    // Output
+    public ItemBase SelectedItem { get; private set; }
+
     void Awake()
     {
         I = this;
     }
 
+    void Start()
+    {
+        inventory = Inventory.GetPlayerInventory();
+    }
+
     GameController gc;
+    Inventory inventory;
     public override void Enter(GameController owner)
     {
         gc = owner;
+        SelectedItem = null;
         inventoryUI.gameObject.SetActive(true);
         inventoryUI.OnSelected += OnItemSelected;
         inventoryUI.OnBack += OnBack;
@@ -35,6 +48,7 @@ public class InventoryState : State<GameController>
 
     private void OnBack()
     {
+        SelectedItem = null;
         gc.stateMachine.Pop();
     }
 
@@ -43,6 +57,48 @@ public class InventoryState : State<GameController>
         if (inventoryUI.Category == ItemCategories.KEY)
             return; // For now, key items can't be used directly
         else
-            gc.stateMachine.Push(PartyState.I);
+        {
+            SelectedItem = inventoryUI.SelectedItem;
+            StartCoroutine(SelectPokemonAndUseItem());
+        }
+    }
+
+    IEnumerator SelectPokemonAndUseItem()
+    {
+        var prevState = gc.stateMachine.GetPrevState();
+
+        if (prevState == BattleState.I)
+        {
+            if (!SelectedItem.CanUseInBattle)
+            {
+                yield return DialogManager.I.ShowDialogText("You can't use that here!");
+                yield break;
+            }
+        }
+        else
+        {
+            if (!SelectedItem.CanUseOutOfBattle)
+            {
+                yield return DialogManager.I.ShowDialogText("You can't use that here!");
+                yield break;
+            }
+        }
+        
+        if (SelectedItem is PokeballItem)
+        {
+            inventory.UseItem(SelectedItem, null);
+            gc.stateMachine.Pop();
+            yield break;
+        }
+
+        yield return gc.stateMachine.PushAndWait(PartyState.I);
+
+        if (prevState == BattleState.I)
+        {
+            if (UseItemState.I.ItemUsed)
+            {
+                gc.stateMachine.Pop();
+            }
+        }
     }
 }

@@ -72,7 +72,14 @@ public class RunTurnState : State<BattleSystem>
                 break;
 
             case BattleAction.Item:
-                dialogBox.EnableActionSelector(false);
+                if (bs.SelectedItem is PokeballItem)
+                {
+                    yield return bs.ThrowPokeball(bs.SelectedItem as PokeballItem);
+                    if (bs.IsBattleOver)
+                    {
+                        yield break;
+                    }
+                }
                 yield return RunEnemyTurn();
                 break;
 

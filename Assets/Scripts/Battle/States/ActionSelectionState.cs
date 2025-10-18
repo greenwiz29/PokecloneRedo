@@ -47,7 +47,7 @@ public class ActionSelectionState : State<BattleSystem>
                 bs.StateMachine.ChangeState(MoveSelectionState.I);
                 break;
             case 1: // Bag
-                // OpenBag();
+                StartCoroutine(GoToInventoryState());
                 break;
             case 2: // Switch Pokemon
                 StartCoroutine(GoToPartyState());
@@ -63,10 +63,22 @@ public class ActionSelectionState : State<BattleSystem>
     {
         yield return GameController.I.stateMachine.PushAndWait(PartyState.I);
         var selectedPokemon = PartyState.I.SelectedPokemon;
-        if(selectedPokemon != null)
+        if (selectedPokemon != null)
         {
             bs.SelectedAction = BattleAction.Switch;
             bs.SelectedPokemon = selectedPokemon;
+            bs.StateMachine.ChangeState(RunTurnState.I);
+        }
+    }
+    
+    IEnumerator GoToInventoryState()
+    {
+        yield return GameController.I.stateMachine.PushAndWait(InventoryState.I);
+        var item = InventoryState.I.SelectedItem;
+        if(item != null)
+        {
+            bs.SelectedAction = BattleAction.Item;
+            bs.SelectedItem = item;
             bs.StateMachine.ChangeState(RunTurnState.I);
         }
     }

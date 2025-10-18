@@ -56,26 +56,12 @@ public class BattleSystem : MonoBehaviour
     public int SelectedMove { get; set; }
     public BattleAction SelectedAction { get; set; }
     public Pokemon SelectedPokemon { get; set; }
+    public ItemBase SelectedItem { get; set; }
     public bool IsBattleOver { get; private set; }
     public bool IsTrainerBattle => isTrainerBattle;
     public PokemonParty PlayerParty => playerParty;
     public PokemonParty TrainerParty => trainerParty;
     public TrainerController Trainer => trainer;
-
-
-    void Awake()
-    {
-        // onBagBack = () =>
-        // {
-        //     inventoryUI.gameObject.SetActive(false);
-        //     state = BattleStateEnum.ActionSelection;
-        // };
-
-        // onItemUsed = (usedItem) =>
-        // {
-        //     StartCoroutine(OnItemUsed(usedItem));
-        // };
-    }
 
     public void StartBattle(PokemonParty playerParty, Pokemon wildPokemon, BattleTrigger trigger = BattleTrigger.LongGrass)
     {
@@ -215,8 +201,6 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-
-
     private void HandleAboutToUse()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
@@ -282,18 +266,6 @@ public class BattleSystem : MonoBehaviour
         yield return dialogBox.TypeDialog($"{trainer.Name} sent out {next.Name}");
 
         state = BattleStateEnum.RunningTurn;
-    }
-
-    IEnumerator AboutToUse(Pokemon newPokemon)
-    {
-        state = BattleStateEnum.Busy;
-        yield return dialogBox.TypeDialog(
-            $"{trainer.Name} is about to use {newPokemon.Name}. Do you want to switch pokemon?"
-        );
-
-        state = BattleStateEnum.AboutToUse;
-        dialogBox.EnableChoiceBox(true);
-        dialogBox.UpdateChoiceBoxSelection(aboutToUseChoice);
     }
 
     IEnumerator ChooseMoveToForget(Pokemon pokemon, MoveBase newMove)
@@ -432,14 +404,12 @@ public class BattleSystem : MonoBehaviour
         // yield return RunTurns(BattleAction.Item);
     }
 
-    IEnumerator ThrowPokeball(PokeballItem pokeballItem)
+    public IEnumerator ThrowPokeball(PokeballItem pokeballItem)
     {
-        state = BattleStateEnum.Busy;
-
+        dialogBox.EnableDialogText(true);
         if (isTrainerBattle)
         {
             yield return dialogBox.TypeDialog($"You can't steal another trainer's pokemon!");
-            state = BattleStateEnum.RunningTurn;
             yield break;
         }
 
@@ -494,7 +464,6 @@ public class BattleSystem : MonoBehaviour
             }
 
             Destroy(pokeball);
-            state = BattleStateEnum.RunningTurn;
         }
     }
 
@@ -509,7 +478,7 @@ public class BattleSystem : MonoBehaviour
         yield return enemyUnit.PlayCaptureAnimation();
 
         yield return pokeball
-            .transform.DOMoveY(enemyUnit.transform.position.y - 2f, 0.5f)
+            .transform.DOMoveY(enemyUnit.transform.position.y - 1.75f, 0.5f)
             .WaitForCompletion();
         // Aiming for bouncing, but it's not great.
         // yield return pokeball.transform.DOJump(enemyUnit.transform.position - new Vector3(0, 2), 1f, 3, 0.5f).WaitForCompletion();

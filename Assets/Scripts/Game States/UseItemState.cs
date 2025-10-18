@@ -9,6 +9,10 @@ public class UseItemState : State<GameController>
     [SerializeField] InventoryUI inventoryUI;
 
     public static UseItemState I { get; private set; }
+
+    // Output
+    public bool ItemUsed { get; private set; }
+
     void Awake()
     {
         I = this;
@@ -19,6 +23,7 @@ public class UseItemState : State<GameController>
     public override void Enter(GameController owner)
     {
         gc = owner;
+        ItemUsed = false;
         StartCoroutine(UseItem());
     }
 
@@ -37,7 +42,10 @@ public class UseItemState : State<GameController>
             case ItemCategories.RECOVERY:
                 usedItem = inventory.UseItem(item, pokemon);
                 if (usedItem != null)
+                {
+                    ItemUsed = true;
                     yield return DialogManager.I.ShowDialogText($"You used {usedItem.Name} on {pokemon.Name}.");
+                }
                 else
                     yield return DialogManager.I.ShowDialogText("It won't have any effect.");
                 break;

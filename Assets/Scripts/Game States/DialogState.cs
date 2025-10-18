@@ -1,6 +1,4 @@
 using GDEUtils.StateMachine;
-using UnityEditorInternal;
-using UnityEngine;
 
 public class DialogState : State<GameController>
 {
