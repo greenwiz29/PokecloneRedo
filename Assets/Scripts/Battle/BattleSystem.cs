@@ -60,6 +60,7 @@ public class BattleSystem : MonoBehaviour
     public bool IsTrainerBattle => isTrainerBattle;
     public PokemonParty PlayerParty => playerParty;
     public PokemonParty TrainerParty => trainerParty;
+    public TrainerController Trainer => trainer;
 
 
     void Awake()
@@ -218,13 +219,11 @@ public class BattleSystem : MonoBehaviour
 
     private void HandleAboutToUse()
     {
-        bool prevChoice = aboutToUseChoice;
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
         {
             aboutToUseChoice = !aboutToUseChoice;
         }
 
-        if (aboutToUseChoice != prevChoice)
             dialogBox.UpdateChoiceBoxSelection(aboutToUseChoice);
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -274,7 +273,7 @@ public class BattleSystem : MonoBehaviour
         yield return SendOutPlayerPokemon(newPokemon);
     }
 
-    IEnumerator SendNextTrainerPokemon()
+    public IEnumerator SendNextTrainerPokemon()
     {
         state = BattleStateEnum.Busy;
         var next = trainerParty.GetHealthyPokemon();

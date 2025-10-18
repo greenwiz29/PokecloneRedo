@@ -763,6 +763,8 @@ GameObject:
   - component: {fileID: 8714043152788150533}
   - component: {fileID: 3737100721589122957}
   - component: {fileID: 6922311245077721922}
+  - component: {fileID: 4845137372067963554}
+  - component: {fileID: 6313674923832620431}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -1002,6 +1004,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattleState
   battleSystem: {fileID: 4156954448985156416}
+--- !u!114 &4845137372067963554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177379073849594759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b125da3059edc6e42aaf0aff6344eba1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogState
+--- !u!114 &6313674923832620431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177379073849594759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4adb8eecec1e50fab8328c347d5b1558, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CutsceneState
 --- !u!1 &1439176550826066877
 GameObject:
   m_ObjectHideFlags: 0
@@ -2402,6 +2428,7 @@ GameObject:
   - component: {fileID: 6552004216303913164}
   - component: {fileID: 7334268813237238169}
   - component: {fileID: 8914588920272214639}
+  - component: {fileID: 2573582742698238220}
   m_Layer: 0
   m_Name: BattleSystem
   m_TagString: Untagged
@@ -2492,6 +2519,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RunTurnState
   struggle: {fileID: 11400000, guid: 1d5ac65aa5543b949bc68a4d601515e5, type: 2}
+--- !u!114 &2573582742698238220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4112715559801872306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ef0a7dd92376626fa803fa4d6ad7fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AboutToUseState
 --- !u!1 &4362439269692282268
 GameObject:
   m_ObjectHideFlags: 0

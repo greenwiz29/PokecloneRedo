@@ -37,7 +37,7 @@ public class ShopUI : MonoBehaviour
     {
         int prevItem = selectedItem;
 
-        MenuSelectionMethods.HandleListSelection(ref selectedItem, availableItems.Count - 1);
+        MenuSelectionMethods.HandleListSelection(ref selectedItem, availableItems.Count);
 
         if (selectedItem != prevItem)
         {

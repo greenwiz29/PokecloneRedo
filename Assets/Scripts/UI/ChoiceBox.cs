@@ -43,7 +43,7 @@ public class ChoiceBox : MonoBehaviour
     void Update()
     {
         int prev = currentChoice;
-        MenuSelectionMethods.HandleListSelection(ref currentChoice, choiceTexts.Count - 1);
+        MenuSelectionMethods.HandleListSelection(ref currentChoice, choiceTexts.Count);
 
         if (currentChoice != prev)
             UpdateMenuSelection(currentChoice);

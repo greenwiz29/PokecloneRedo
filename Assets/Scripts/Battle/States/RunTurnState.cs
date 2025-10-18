@@ -3,6 +3,9 @@ using System.Linq;
 using GDEUtils.StateMachine;
 using UnityEngine;
 
+/// <summary>
+/// Make sure to set <see cref="Moves"/> before pushing this state!
+/// </summary>
 public class RunTurnState : State<BattleSystem>
 {
     [SerializeField] MoveBase struggle;
@@ -11,6 +14,7 @@ public class RunTurnState : State<BattleSystem>
     /// Make sure to set <see cref="Moves"/> before pushing this state!
     /// </summary>
     public static RunTurnState I { get; private set; }
+
     void Awake()
     {
         I = this;
@@ -286,7 +290,8 @@ public class RunTurnState : State<BattleSystem>
                 }
                 else
                 {
-                    // StartCoroutine(AboutToUse(next));
+                    AboutToUseState.I.NewPokemon = next;
+                    yield return bs.StateMachine.PushAndWait(AboutToUseState.I);
                 }
             }
         }
