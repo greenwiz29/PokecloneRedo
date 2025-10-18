@@ -16,14 +16,34 @@ MonoBehaviour:
   description: butterfree
   frontSprite: {fileID: 21300000, guid: 91d78714fbef3147398e4d544fd16fae, type: 3}
   backSprite: {fileID: 21300000, guid: 3c596c72f9ab23f928040c24e70d9d40, type: 3}
+  walkDownSprites:
+  - {fileID: -1540426309290004842, guid: 39448e950d08895339421b2ce2bd3124, type: 3}
+  - {fileID: -1540426309290004842, guid: c1dac904da5e23a818488c342d24ebf8, type: 3}
+  walkUpSprites:
+  - {fileID: -1540426309290004842, guid: 8e96047a46bef52d7915cc50a6e793ab, type: 3}
+  - {fileID: -1540426309290004842, guid: cd3bbf843d0cb6761872f6e5afb7e4af, type: 3}
+  walkLeftSprites:
+  - {fileID: -1540426309290004842, guid: 8e1d28a8571b7de2cbbdfde020a8dc9a, type: 3}
+  - {fileID: -1540426309290004842, guid: cb282fe8bb4c3132dbf33dc2436a9b6b, type: 3}
+  walkRightSprites:
+  - {fileID: -1540426309290004842, guid: 7cbed2ad4c153f6c6be3b5af7e9a114f, type: 3}
+  - {fileID: -1540426309290004842, guid: 6a222de602c8a68918025e4de1abfe1d, type: 3}
+  frontSpriteShiny: {fileID: -1540426309290004842, guid: 4043d22fa971a6a2f9183fbc2e15ae0e, type: 3}
+  backSpriteShiny: {fileID: -1540426309290004842, guid: ff896f3925991f405ae0869656db207a, type: 3}
+  walkDownSpritesShiny:
+  - {fileID: -1540426309290004842, guid: 01f8a89193d29b5588771c15e4b82d3a, type: 3}
+  - {fileID: -1540426309290004842, guid: 225c371c1f0cd40b58900a6d53ad3cac, type: 3}
+  walkUpSpritesShiny:
+  - {fileID: -1540426309290004842, guid: 74cca8336edd36730a88e60dd8256724, type: 3}
+  - {fileID: -1540426309290004842, guid: 5d7b1ef4f0707280a9c083df76431ed9, type: 3}
+  walkLeftSpritesShiny:
+  - {fileID: -1540426309290004842, guid: cd6a310192b5573d4bebeaad38f48548, type: 3}
+  - {fileID: -1540426309290004842, guid: 7ef79a28a68652e9985c8f7fbdffbe58, type: 3}
+  walkRightSpritesShiny:
+  - {fileID: -1540426309290004842, guid: 8a123eb935b053cc0a95b131564b6938, type: 3}
+  - {fileID: -1540426309290004842, guid: ac67f94f493849fe3b09c603fbb97852, type: 3}
   type1: 13
   type2: 5
-  learnableMoves:
-  - moveBase: {fileID: 11400000, guid: d017063ff934bbe3ca502cc5d1bec0a9, type: 2}
-    levelLearned: 1
-  - moveBase: {fileID: 11400000, guid: b779b8ecaca856e1dbea21652c961ebc, type: 2}
-    levelLearned: 10
-  catchRate: 255
   maxHP: 60
   attack: 45
   defense: 50
@@ -31,4 +51,11 @@ MonoBehaviour:
   spDefense: 80
   speed: 70
   expYield: 178
-  growthRate: 1
+  catchRate: 255
+  learnableMoves:
+  - moveBase: {fileID: 11400000, guid: d017063ff934bbe3ca502cc5d1bec0a9, type: 2}
+    levelLearned: 1
+  - moveBase: {fileID: 11400000, guid: b779b8ecaca856e1dbea21652c961ebc, type: 2}
+    levelLearned: 10
+  learnableByItems: []
+  evolutions: []

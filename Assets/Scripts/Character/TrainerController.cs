@@ -49,6 +49,7 @@ public class TrainerController : MonoBehaviour, IInteractable, ISavable
 
     public IEnumerator TriggerTrainerBattle(PlayerController player)
     {
+        GameController.I.stateMachine.Push(CutsceneState.I);
         exclamation.SetActive(true);
         yield return new WaitForSeconds(0.5f);
         exclamation.SetActive(false);
@@ -61,6 +62,8 @@ public class TrainerController : MonoBehaviour, IInteractable, ISavable
         yield return character.Move(moveVec);
 
         yield return DialogManager.I.ShowDialog(preBattleDialog);
+
+        GameController.I.stateMachine.Pop();
 
         GameController.I.StartTrainerBattle(this);
     }

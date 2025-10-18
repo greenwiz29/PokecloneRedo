@@ -837,6 +837,7 @@ GameObject:
   - component: {fileID: 6282740146859700587}
   - component: {fileID: 4447902707065318193}
   - component: {fileID: 711081302965872206}
+  - component: {fileID: 885431397146950517}
   m_Layer: 0
   m_Name: PartyMember
   m_TagString: Untagged
@@ -925,6 +926,19 @@ MonoBehaviour:
   hpBar: {fileID: 7693067304922760744}
   expBar: {fileID: 1034858355129851123}
   messageText: {fileID: 8372597490511276784}
+--- !u!114 &885431397146950517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7562514318852145090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bacfba212e15bb8e855f041cfaca971, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 5531729324470329393}
 --- !u!1 &8064638206255494260
 GameObject:
   m_ObjectHideFlags: 0

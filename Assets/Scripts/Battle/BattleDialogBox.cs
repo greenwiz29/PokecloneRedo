@@ -57,6 +57,8 @@ public class BattleDialogBox : MonoBehaviour
         choiceBox.SetActive(enable);
     }
 
+    public bool IsChoiceBoxEnabled => choiceBox.activeSelf;
+
     public void UpdateActionSelection(int selection)
     {
         for (int i = 0; i < actionTexts.Count; i++)

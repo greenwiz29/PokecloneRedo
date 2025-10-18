@@ -120,6 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83db86bb9660a3297b71f5f636317458, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionSpeed: 5
   moveTexts:
   - {fileID: 4374705656227782324}
   - {fileID: 8999382461242963807}
@@ -137,6 +138,7 @@ GameObject:
   - component: {fileID: 545863233090624722}
   - component: {fileID: 6580744118260440812}
   - component: {fileID: 4927644986914374853}
+  - component: {fileID: 5101719654497908371}
   m_Layer: 0
   m_Name: Move5Text (TMP)
   m_TagString: Untagged
@@ -262,6 +264,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &5101719654497908371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082121414060620297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bacfba212e15bb8e855f041cfaca971, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TextSlot
+  text: {fileID: 4927644986914374853}
 --- !u!1 &3439769777270285327
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,6 +288,7 @@ GameObject:
   - component: {fileID: 120347990085749547}
   - component: {fileID: 3079458728202285748}
   - component: {fileID: 605612212147720504}
+  - component: {fileID: 3603392927348812334}
   m_Layer: 0
   m_Name: Move3Text (TMP)
   m_TagString: Untagged
@@ -398,6 +414,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3603392927348812334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3439769777270285327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bacfba212e15bb8e855f041cfaca971, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TextSlot
+  text: {fileID: 605612212147720504}
 --- !u!1 &5909628534460995525
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,6 +438,7 @@ GameObject:
   - component: {fileID: 7996629183802909822}
   - component: {fileID: 4141117012646846331}
   - component: {fileID: 4374705656227782324}
+  - component: {fileID: 2426639498388416254}
   m_Layer: 0
   m_Name: Move1Text (TMP)
   m_TagString: Untagged
@@ -534,6 +564,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2426639498388416254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5909628534460995525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bacfba212e15bb8e855f041cfaca971, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TextSlot
+  text: {fileID: 4374705656227782324}
 --- !u!1 &6615925643032239042
 GameObject:
   m_ObjectHideFlags: 0
@@ -545,6 +588,7 @@ GameObject:
   - component: {fileID: 5072575386022807523}
   - component: {fileID: 6607752282576113051}
   - component: {fileID: 8999382461242963807}
+  - component: {fileID: 8968448172071995742}
   m_Layer: 0
   m_Name: Move2Text (TMP)
   m_TagString: Untagged
@@ -670,6 +714,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8968448172071995742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6615925643032239042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bacfba212e15bb8e855f041cfaca971, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TextSlot
+  text: {fileID: 8999382461242963807}
 --- !u!1 &9127860151762282644
 GameObject:
   m_ObjectHideFlags: 0
@@ -681,6 +738,7 @@ GameObject:
   - component: {fileID: 8860388671333542447}
   - component: {fileID: 6519500082330497870}
   - component: {fileID: 3368079779850406408}
+  - component: {fileID: 5935668693733705878}
   m_Layer: 0
   m_Name: Move4Text (TMP)
   m_TagString: Untagged
@@ -806,3 +864,16 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &5935668693733705878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9127860151762282644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bacfba212e15bb8e855f041cfaca971, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TextSlot
+  text: {fileID: 3368079779850406408}

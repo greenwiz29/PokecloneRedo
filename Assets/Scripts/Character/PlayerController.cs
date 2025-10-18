@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour, ISavable
 
     public void HandleUpdate()
     {
-        if (!character.IsMoving && GameController.I.State == GameState.FreeRoam)
+        if (!character.IsMoving && GameController.I.stateMachine.CurrentState == FreeRoamState.I)
         {
             input.x = Input.GetAxisRaw("Horizontal");
             input.y = Input.GetAxisRaw("Vertical");
@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour, ISavable
         IPlayerTriggerable triggerable = null;
         foreach (var collider in colliders)
         {
-            if (collider.TryGetComponent<IPlayerTriggerable>(out triggerable))
+            if (collider.TryGetComponent(out triggerable))
             {
                 if (triggerable == currentlyInTrigger && !triggerable.TriggerRepeatedly)
                     break;

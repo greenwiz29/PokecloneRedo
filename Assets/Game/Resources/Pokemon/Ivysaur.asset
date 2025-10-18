@@ -16,6 +16,32 @@ MonoBehaviour:
   description: ivysaur
   frontSprite: {fileID: 21300000, guid: d358b84d1db021b85a93dfc056125dc8, type: 3}
   backSprite: {fileID: 21300000, guid: 653a6fe1d97188644a3747cd5e674bc4, type: 3}
+  walkDownSprites:
+  - {fileID: 6937817954938267909, guid: f52cd8d842e8f8fd5aef85089e015d64, type: 3}
+  - {fileID: 6937817954938267909, guid: e8e03ae4c6ddfb2bd99725e302b0ac40, type: 3}
+  walkUpSprites:
+  - {fileID: 6937817954938267909, guid: 6e3e6e157517b6a8f840c1020045eece, type: 3}
+  - {fileID: 6937817954938267909, guid: 10d77ea50d1ea6afa8a8ca502f98913f, type: 3}
+  walkLeftSprites:
+  - {fileID: 6937817954938267909, guid: d0484c9cefa68854e8851a26d78afcbd, type: 3}
+  - {fileID: 6937817954938267909, guid: b3a37dc751f94fde4b2a00bdc76d13e5, type: 3}
+  walkRightSprites:
+  - {fileID: 6937817954938267909, guid: adddb77ec9bc5f03aaa404a64ef1ef9e, type: 3}
+  - {fileID: 6937817954938267909, guid: f8fa3f40996cfbb88ad1b6b14fb2497f, type: 3}
+  frontSpriteShiny: {fileID: 6937817954938267909, guid: a24b96dc87950be1fabd39028b489d6a, type: 3}
+  backSpriteShiny: {fileID: 6937817954938267909, guid: e97050d46a804d7619a2fc14c224bd49, type: 3}
+  walkDownSpritesShiny:
+  - {fileID: 6937817954938267909, guid: f1fd1bf4b0db214888c03aa87aa79730, type: 3}
+  - {fileID: 6937817954938267909, guid: df5a3af90597f4c7ab2393560b863420, type: 3}
+  walkUpSpritesShiny:
+  - {fileID: 6937817954938267909, guid: f4ab4fe82dbe5b7d18c3a3c546c85468, type: 3}
+  - {fileID: 6937817954938267909, guid: 04a355e95ad01de3b8a40b7e9c7c86f8, type: 3}
+  walkLeftSpritesShiny:
+  - {fileID: 6937817954938267909, guid: de63d3e6f742b854dbdb9f8e039506a9, type: 3}
+  - {fileID: 6937817954938267909, guid: cea320c46bf7bb8e3b2bf3154bde0181, type: 3}
+  walkRightSpritesShiny:
+  - {fileID: 6937817954938267909, guid: 3f1a8411b1eb316b3a56ab860b951502, type: 3}
+  - {fileID: 6937817954938267909, guid: db4fa4fb579123a018a7893676839cbf, type: 3}
   type1: 4
   type2: 7
   maxHP: 60
@@ -25,7 +51,6 @@ MonoBehaviour:
   spDefense: 80
   speed: 60
   expYield: 142
-  growthRate: 3
   catchRate: 45
   learnableMoves: []
   learnableByItems: []
