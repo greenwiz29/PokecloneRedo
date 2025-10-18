@@ -1,26 +1,23 @@
-using System;
 using System.Collections;
 using GDEUtils.StateMachine;
-using UnityEditorInternal;
 using UnityEngine;
 
 public enum GameState { FreeRoam, Battle, Pause, Dialog, Cutscene, Menu, PartyScreen, Bag, Evolution, Shop }
 public class GameController : MonoBehaviour
 {
     [SerializeField] PlayerController playerController;
-    [SerializeField] BattleSystem battleSystem;
     [SerializeField] Camera worldCamera;
     [SerializeField] PartyScreen partyScreen;
-    [SerializeField] InventoryUI inventoryUI;
 
     public static GameController I { get; private set; }
     public SceneDetails CurrentScene { get; private set; }
     public SceneDetails PreviousScene { get; private set; }
     public PlayerController Player => playerController;
+    public PartyScreen PartyScreen => partyScreen;
 
     public GameState State => state;
 
-    GameState state, prevState, preEvoState;
+    GameState state, prevState;
 
     public StateMachine<GameController> stateMachine { get; private set; }
     public Camera WorldCamera => worldCamera;
@@ -53,20 +50,7 @@ public class GameController : MonoBehaviour
         };
         DialogManager.I.OnDialogFinished += () =>
         {
-
             stateMachine.Pop();
-        };
-
-        EvolutionManager.I.OnStartEvolution += () =>
-        {
-            preEvoState = state;
-            state = GameState.Evolution;
-        };
-
-        EvolutionManager.I.OnEndEvolution += () =>
-        {
-            state = preEvoState;
-            partyScreen.SetPartyData();
         };
 
         ShopController.I.OnStart += () =>
@@ -122,12 +106,6 @@ public class GameController : MonoBehaviour
 
         switch (state)
         {
-            case GameState.Cutscene:
-                playerController.HandleUpdate();
-                break;
-            case GameState.Dialog:
-                DialogManager.I.HandleUpdate();
-                break; 
             case GameState.Shop:
                 ShopController.I.HandleUpdate();
                 break;

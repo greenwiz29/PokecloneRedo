@@ -63,7 +63,7 @@ public class UseItemState : State<GameController>
                 var evolution = pokemon.CheckForEvolution(item);
                 if (evolution != null)
                 {
-                    yield return EvolutionManager.I.Evolve(pokemon, evolution, null);
+                    yield return EvolutionState.I.Evolve(pokemon, evolution, null);
                     usedItem = inventory.UseItem(item, pokemon);
                 }
                 else
@@ -112,6 +112,7 @@ public class UseItemState : State<GameController>
             MoveToForgetState.I.NewMove = item.Move;
             MoveToForgetState.I.CurrentMoves = pokemon.Moves.Select(m => m.Base).ToList();
             yield return gc.stateMachine.PushAndWait(MoveToForgetState.I);
+            
             int moveIndex = MoveToForgetState.I.Selection;
             var moveToLearn = item.Move;
             if (moveIndex == -1 || moveIndex == Pokemon.maxMoves)

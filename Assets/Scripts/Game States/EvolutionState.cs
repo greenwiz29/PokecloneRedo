@@ -1,19 +1,28 @@
 using System;
 using System.Collections;
+using GDEUtils.StateMachine;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EvolutionManager : MonoSingleton<EvolutionManager>
+public class EvolutionState : State<GameController>
 {
     [SerializeField] GameObject evolutionUI;
     [SerializeField] Image pokemonImage;
 
-    public event Action OnStartEvolution;
-    public event Action OnEndEvolution;
+    public static EvolutionState I { get; private set; }
 
+    void Awake()
+    {
+        I = this;
+    }
+
+    GameController gc;
     public IEnumerator Evolve(Pokemon pokemon, Evolution evolution, StatChangesWrapper statChanges)
     {
-        OnStartEvolution?.Invoke();
+        gc = GameController.I;
+
+        gc.stateMachine.Push(this);
+
         evolutionUI.SetActive(true);
 
         pokemonImage.sprite = pokemon.Base.FrontSprite;
@@ -31,6 +40,8 @@ public class EvolutionManager : MonoSingleton<EvolutionManager>
         yield return DialogManager.I.ShowDialogText($"{oldName} evolved into {pokemon.Name}!");
 
         evolutionUI.SetActive(false);
-        OnEndEvolution?.Invoke();
+        gc.PartyScreen.SetPartyData();
+
+        gc.stateMachine.Pop();
     }
 }

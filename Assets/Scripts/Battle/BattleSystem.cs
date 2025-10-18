@@ -8,8 +8,6 @@ using UnityEngine.UI;
 
 public enum BattleAction { Move, Switch, Item, Run, }
 
-public enum BattleStateEnum { Start, ActionSelection, MoveSelection, RunningTurn, Busy, PartyScreen, BattleOver, AboutToUse, MoveToForget, Bag }
-
 public enum BattleTrigger { LongGrass, Water, Cave }
 
 public class BattleSystem : MonoBehaviour
@@ -19,8 +17,6 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] PartyScreen partyScreen;
     [SerializeField] Image playerImage, trainerImage;
     [SerializeField] GameObject pokeballSprite;
-    [SerializeField] MoveToForgetUI moveToForgetUI;
-    [SerializeField] InventoryUI inventoryUI;
     [SerializeField] StatChangesUI statChangesUI;
 
     [Header("Background Images")]
@@ -29,9 +25,6 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] Sprite waterBG;
     [SerializeField] Sprite caveBG;
 
-    BattleStateEnum state;
-    bool aboutToUseChoice;
-
     PokemonParty playerParty, trainerParty;
     Pokemon wildPokemon;
 
@@ -39,7 +32,6 @@ public class BattleSystem : MonoBehaviour
     PlayerController player;
     TrainerController trainer;
     public int EscapeAttempts { get; set; }
-    MoveBase moveToLearn;
 
     /// <summary>
     /// Event to indicate the end of a battle.
@@ -52,7 +44,6 @@ public class BattleSystem : MonoBehaviour
     public BattleDialogBox DialogBox => dialogBox;
     public BattleUnit PlayerUnit => playerUnit;
     public BattleUnit EnemyUnit => enemyUnit;
-    public PartyScreen PartyScreen => partyScreen;
     public int SelectedMove { get; set; }
     public BattleAction SelectedAction { get; set; }
     public Pokemon SelectedPokemon { get; set; }
@@ -164,84 +155,6 @@ public class BattleSystem : MonoBehaviour
     public void HandleUpdate()
     {
         StateMachine.Execute();
-
-        switch (state)
-        {
-            case BattleStateEnum.AboutToUse:
-                HandleAboutToUse();
-                break;
-            case BattleStateEnum.MoveToForget:
-                // moveToForgetUI.HandleUpdate((moveIndex) =>
-                // {
-                //     var pokemon = playerUnit.Pokemon;
-                //     moveToForgetUI.gameObject.SetActive(false);
-                //     dialogBox.EnableMoveDetails(false);
-                //     if (moveIndex == Pokemon.maxMoves)
-                //     {
-                //         // new move was selected
-                //         // TODO: prompt if new move should be abandoned
-                //         StartCoroutine(dialogBox.TypeDialog($"{pokemon.Name} did not learn {moveToLearn.Name}"));
-                //     }
-                //     else
-                //     {
-                //         // Forget selected move and learn new move
-                //         StartCoroutine(dialogBox.TypeDialog($"{pokemon.Name} forgot {pokemon.Moves[moveIndex].Base.Name} and learned {moveToLearn.Name}"));
-
-                //         pokemon.Moves[moveIndex] = new Move(moveToLearn);
-                //         dialogBox.SetMoveNames(pokemon.Moves);
-                //     }
-
-                //     moveToLearn = null;
-                //     state = BattleState.RunningTurn;
-                // });
-                break;
-            case BattleStateEnum.Bag:
-                // inventoryUI.HandleUpdate(onBagBack, onItemUsed);
-                break;
-        }
-    }
-
-    private void HandleAboutToUse()
-    {
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            aboutToUseChoice = !aboutToUseChoice;
-        }
-
-            dialogBox.UpdateChoiceBoxSelection(aboutToUseChoice);
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            // change 'mon
-            dialogBox.EnableChoiceBox(false);
-            if (aboutToUseChoice)
-            {
-                OpenPartyScreen();
-            }
-            else
-                StartCoroutine(SendNextTrainerPokemon());
-        }
-        else if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            dialogBox.EnableChoiceBox(false);
-            // cancel choice, keep current 'mon out
-            // Send out next Pokemon
-            StartCoroutine(SendNextTrainerPokemon());
-        }
-    }
-
-    private void OpenBag()
-    {
-        state = BattleStateEnum.Bag;
-        inventoryUI.gameObject.SetActive(true);
-    }
-
-    private void OpenPartyScreen()
-    {
-        // partyScreen.CalledFrom = state;
-        state = BattleStateEnum.PartyScreen;
-        partyScreen.SetPartyData();
-        partyScreen.gameObject.SetActive(true);
     }
 
     public IEnumerator SwitchPokemon(Pokemon newPokemon)
@@ -259,35 +172,10 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator SendNextTrainerPokemon()
     {
-        state = BattleStateEnum.Busy;
         var next = trainerParty.GetHealthyPokemon();
 
         enemyUnit.Setup(next);
         yield return dialogBox.TypeDialog($"{trainer.Name} sent out {next.Name}");
-
-        state = BattleStateEnum.RunningTurn;
-    }
-
-    IEnumerator ChooseMoveToForget(Pokemon pokemon, MoveBase newMove)
-    {
-        state = BattleStateEnum.Busy;
-
-        moveToLearn = newMove;
-        yield return dialogBox.TypeDialog($"Choose a move to forget.");
-        moveToForgetUI.gameObject.SetActive(true);
-        dialogBox.EnableMoveDetails(true);
-        moveToForgetUI.SetMoveData(pokemon.Moves.Select(m => m.Base).ToList(), newMove);
-
-        state = BattleStateEnum.MoveToForget;
-    }
-
-    private void UpdateMoveDetails(int currentMove)
-    {
-        if (currentMove < playerUnit.Pokemon.Moves.Count)
-            dialogBox.UpdateMoveDetails(playerUnit.Pokemon.Moves[currentMove]);
-        else
-            dialogBox.UpdateMoveDetails(new Move(moveToLearn));
-
     }
 
     public IEnumerator ApplyExpGain(BattleUnit targetUnit, bool unitFainted, DamageDetails damageDetails = null)
@@ -336,7 +224,7 @@ public class BattleSystem : MonoBehaviour
             if (evolution != null)
             {
                 var changes = new StatChangesWrapper();
-                yield return EvolutionManager.I.Evolve(pokemon, evolution, changes);
+                yield return EvolutionState.I.Evolve(pokemon, evolution, changes);
                 playerUnit.Setup(pokemon);
                 partyScreen.SetPartyData();
                 statChanges = changes.Changes;
@@ -367,9 +255,26 @@ public class BattleSystem : MonoBehaviour
                 {
                     yield return dialogBox.TypeDialog($"{pokemon.Name} is trying to learn {newMove.Base.Name}");
                     yield return dialogBox.TypeDialog($"But it cannot know more than {Pokemon.maxMoves} moves at once.");
+                    yield return dialogBox.TypeDialog($"Choose a move to forget.");
                     MoveToForgetState.I.NewMove = newMove.Base;
                     MoveToForgetState.I.CurrentMoves = pokemon.Moves.Select(m => m.Base).ToList();
-                    // yield return bs.StateMachine.PushAndWait(MoveToForgetState.I);
+                    yield return GameController.I.stateMachine.PushAndWait(MoveToForgetState.I);
+
+                    int moveIndex = MoveToForgetState.I.Selection;
+                    var moveToLearn = newMove.Base;
+                    if (moveIndex == -1 || moveIndex == Pokemon.maxMoves)
+                    {
+                        // new move was selected, or player canceled out.
+                        // TODO: prompt if new move should be abandoned
+                        yield return dialogBox.TypeDialog($"{pokemon.Name} did not learn {moveToLearn.Name}");
+                    }
+                    else
+                    {
+                        // Forget selected move and learn new move
+                        yield return dialogBox.TypeDialog($"{pokemon.Name} forgot {pokemon.Moves[moveIndex].Base.Name} and learned {moveToLearn.Name}");
+
+                        pokemon.Moves[moveIndex] = new Move(moveToLearn);
+                    }
                 }
                 newMove = null;
             }
@@ -388,20 +293,6 @@ public class BattleSystem : MonoBehaviour
         playerUnit.Clear();
         enemyUnit.Clear();
         OnBattleOver(playerWon);
-    }
-
-    private IEnumerator OnItemUsed(ItemBase usedItem)
-    {
-        state = BattleStateEnum.Busy;
-        inventoryUI.gameObject.SetActive(false);
-
-        // Check if usedItem is a pokeball
-        if (usedItem is PokeballItem)
-        {
-            yield return ThrowPokeball(usedItem as PokeballItem);
-        }
-
-        // yield return RunTurns(BattleAction.Item);
     }
 
     public IEnumerator ThrowPokeball(PokeballItem pokeballItem)
