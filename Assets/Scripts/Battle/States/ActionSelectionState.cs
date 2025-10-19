@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using GDEUtils.StateMachine;
 using UnityEngine;
@@ -42,8 +41,7 @@ public class ActionSelectionState : State<BattleSystem>
         switch (selection)
         {
             case 0: // Fight
-                bs.SelectedAction = BattleAction.Move;
-                MoveSelectionState.I.Moves = bs.PlayerUnit.Pokemon.Moves;
+                MoveSelectionState.I.Moves = bs.SelectedUnit.Pokemon.Moves;
                 bs.StateMachine.ChangeState(MoveSelectionState.I);
                 break;
             case 1: // Bag
@@ -53,8 +51,10 @@ public class ActionSelectionState : State<BattleSystem>
                 StartCoroutine(GoToPartyState());
                 break;
             case 3: // Run
-                bs.SelectedAction = BattleAction.Run;
-                bs.StateMachine.ChangeState(RunTurnState.I);
+                bs.AddBattleAction(new BattleAction()
+                {
+                    Type = BattleActionType.Run
+                });
                 break;
         }
     }
@@ -65,21 +65,25 @@ public class ActionSelectionState : State<BattleSystem>
         var selectedPokemon = PartyState.I.SelectedPokemon;
         if (selectedPokemon != null)
         {
-            bs.SelectedAction = BattleAction.Switch;
-            bs.SelectedPokemon = selectedPokemon;
-            bs.StateMachine.ChangeState(RunTurnState.I);
+            bs.AddBattleAction(new BattleAction()
+            {
+                Type = BattleActionType.Switch,
+                SelectedPokemon = selectedPokemon
+            });
         }
     }
-    
+
     IEnumerator GoToInventoryState()
     {
         yield return GameController.I.stateMachine.PushAndWait(InventoryState.I);
         var item = InventoryState.I.SelectedItem;
-        if(item != null)
+        if (item != null)
         {
-            bs.SelectedAction = BattleAction.Item;
-            bs.SelectedItem = item;
-            bs.StateMachine.ChangeState(RunTurnState.I);
+            bs.AddBattleAction(new BattleAction()
+            {
+                Type = BattleActionType.Item,
+                SelectedItem = item
+            });
         }
     }
 }

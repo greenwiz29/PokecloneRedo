@@ -3,18 +3,19 @@ using GDEUtils.StateMachine;
 using UnityEngine;
 
 /// <summary>
-/// Make sure to set <see cref="NewPokemon"/> before pushing this state!
+/// Make sure to set <see cref="NewPokemon"/> and <see cref="UnitToSwitch"/> before pushing this state!
 /// </summary>
 public class AboutToUseState : State<BattleSystem>
 {
 
     /// <summary>
-    /// Make sure to set <see cref="NewPokemon"/> before pushing this state!
+    /// Make sure to set <see cref="NewPokemon"/> and <see cref="UnitToSwitch"/> before pushing this state!
     /// </summary>
     public static AboutToUseState I { get; private set; }
 
     // Input
     public Pokemon NewPokemon { get; set; }
+    public BattleUnit UnitToSwitch { get; set; }
 
     void Awake()
     {
@@ -76,14 +77,14 @@ public class AboutToUseState : State<BattleSystem>
         var selectedPokemon = PartyState.I.SelectedPokemon;
         if (selectedPokemon != null)
         {
-            yield return bs.SwitchPokemon(selectedPokemon);
+            yield return bs.SwitchPokemon(selectedPokemon, UnitToSwitch);
         }
         yield return ContinueBattle();
     }
 
     IEnumerator ContinueBattle()
     {
-        yield return bs.SendNextTrainerPokemon();
+        yield return bs.SendNextTrainerPokemon(UnitToSwitch);
         bs.StateMachine.Pop();
     }
 }

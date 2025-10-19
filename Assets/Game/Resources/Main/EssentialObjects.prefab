@@ -2490,8 +2490,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9061d51ed85a0f9f7a0f7e896b5adebc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerUnit: {fileID: 558049495002762824}
-  enemyUnit: {fileID: 692010071996918228}
+  playerUnits:
+  - {fileID: 558049495002762824}
+  enemyUnits:
+  - {fileID: 692010071996918228}
   dialogBox: {fileID: 8049680926776435146}
   partyScreen: {fileID: 6632624015277805434}
   playerImage: {fileID: 7844319024171480244}

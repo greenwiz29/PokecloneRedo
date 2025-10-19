@@ -59,7 +59,12 @@ public class MoveSelectionState : State<BattleSystem>
 
     private void OnMoveSelected(int selection)
     {
-        bs.SelectedMove = selection;
-        bs.StateMachine.ChangeState(RunTurnState.I);
+        // TODO: create Targeting state to select target instead of defaulting to the first unit
+        bs.AddBattleAction(new BattleAction()
+        {
+            Type = BattleActionType.Move,
+            SelectedMove = Moves[selection],
+            Target = bs.EnemyUnits[0]
+        });
     }
 }

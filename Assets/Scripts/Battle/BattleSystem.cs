@@ -1,18 +1,17 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using GDEUtils.StateMachine;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum BattleAction { Move, Switch, Item, Run, }
-
 public enum BattleTrigger { LongGrass, Water, Cave }
 
 public class BattleSystem : MonoBehaviour
 {
-    [SerializeField] BattleUnit playerUnit, enemyUnit;
+    [SerializeField] List<BattleUnit> playerUnits, enemyUnits;
     [SerializeField] BattleDialogBox dialogBox;
     [SerializeField] PartyScreen partyScreen;
     [SerializeField] Image playerImage, trainerImage;
@@ -32,6 +31,9 @@ public class BattleSystem : MonoBehaviour
     PlayerController player;
     TrainerController trainer;
     public int EscapeAttempts { get; set; }
+    int unitCount = 1;
+    int selectedUnit = 0;
+    List<BattleAction> battleActions;
 
     /// <summary>
     /// Event to indicate the end of a battle.
@@ -42,21 +44,19 @@ public class BattleSystem : MonoBehaviour
     BattleTrigger trigger;
     public StateMachine<BattleSystem> StateMachine { get; private set; }
     public BattleDialogBox DialogBox => dialogBox;
-    public BattleUnit PlayerUnit => playerUnit;
-    public BattleUnit EnemyUnit => enemyUnit;
-    public int SelectedMove { get; set; }
-    public BattleAction SelectedAction { get; set; }
-    public Pokemon SelectedPokemon { get; set; }
-    public ItemBase SelectedItem { get; set; }
+    public List<BattleUnit> PlayerUnits => playerUnits;
+    public List<BattleUnit> EnemyUnits => enemyUnits;
     public bool IsBattleOver { get; private set; }
     public bool IsTrainerBattle => isTrainerBattle;
     public PokemonParty PlayerParty => playerParty;
     public PokemonParty TrainerParty => trainerParty;
     public TrainerController Trainer => trainer;
+    public BattleUnit SelectedUnit => playerUnits[selectedUnit];
 
     public void StartBattle(PokemonParty playerParty, Pokemon wildPokemon, BattleTrigger trigger = BattleTrigger.LongGrass)
     {
         this.trigger = trigger;
+        this.unitCount = 1;
 
         this.playerParty = playerParty;
         this.wildPokemon = wildPokemon;
@@ -66,9 +66,10 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(SetupBattle());
     }
 
-    public void StartTrainerBattle(PokemonParty playerParty, PokemonParty trainerParty, BattleTrigger trigger = BattleTrigger.LongGrass)
+    public void StartTrainerBattle(PokemonParty playerParty, PokemonParty trainerParty, BattleTrigger trigger = BattleTrigger.LongGrass, int unitCount = 1)
     {
         this.trigger = trigger;
+        this.unitCount = unitCount;
 
         this.playerParty = playerParty;
         this.trainerParty = trainerParty;
@@ -82,24 +83,33 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator SetupBattle()
     {
         StateMachine = new StateMachine<BattleSystem>(this);
+        battleActions = new List<BattleAction>();
         EscapeAttempts = 0;
+        selectedUnit = 0;
         IsBattleOver = false;
 
-        playerUnit.Clear();
-        enemyUnit.Clear();
+        for (int i = 0; i < unitCount; i++)
+        {
+            playerUnits[i].Clear();
+            enemyUnits[i].Clear();
+        }
 
         SetBackground(trigger);
 
         if (!isTrainerBattle)
         {
-            enemyUnit.gameObject.SetActive(true);
-            enemyUnit.Setup(wildPokemon);
-            yield return dialogBox.TypeDialog($"A wild {enemyUnit.Pokemon.Name} appeared!");
+            enemyUnits[0].gameObject.SetActive(true);
+            enemyUnits[0].Setup(wildPokemon);
+            yield return dialogBox.TypeDialog($"A wild {enemyUnits[0].Pokemon.Name} appeared!");
         }
         else
         {
-            playerUnit.gameObject.SetActive(false);
-            enemyUnit.gameObject.SetActive(false);
+            // Trainer battle
+            for (int i = 0; i < unitCount; i++)
+            {
+                playerUnits[0].gameObject.SetActive(false);
+                enemyUnits[0].gameObject.SetActive(false);
+            }
 
             playerImage.gameObject.SetActive(true);
             trainerImage.gameObject.SetActive(true);
@@ -111,29 +121,31 @@ public class BattleSystem : MonoBehaviour
 
             trainerImage.gameObject.SetActive(false);
 
-            var enemyPokemon = trainerParty.GetHealthyPokemon();
-            enemyUnit.gameObject.SetActive(true);
-            enemyUnit.Setup(enemyPokemon);
-            yield return dialogBox.TypeDialog($"{trainer.Name} sent out {enemyPokemon.Name}!");
+            var enemyPokemon = trainerParty.GetHealthyPokemon(unitCount);
+            for (int i = 0; i < unitCount; i++)
+            {
+                enemyUnits[i].gameObject.SetActive(true);
+                enemyUnits[i].Setup(enemyPokemon[i]);
+            }
+            var enemyPokemonNames = String.Join(" and ", enemyPokemon.Select(p => p.Name));
+            yield return dialogBox.TypeDialog($"{trainer.Name} sent out {enemyPokemonNames}!");
 
             playerImage.gameObject.SetActive(false);
         }
 
-        yield return SendOutPlayerPokemon(playerParty.GetHealthyPokemon());
+        var playerPokemon = playerParty.GetHealthyPokemon(unitCount);
+        for (int i = 0; i < unitCount; i++)
+        {
+            playerUnits[i].gameObject.SetActive(true);
+            playerUnits[i].Setup(playerPokemon[i]);
+        }
+        var pokemonNames = String.Join(" and ", playerPokemon.Select(p => p.Name));
+
+        yield return dialogBox.TypeDialog($"Go, {pokemonNames}!");
 
         partyScreen.Init();
 
         StateMachine.ChangeState(ActionSelectionState.I);
-    }
-
-    private IEnumerator SendOutPlayerPokemon(Pokemon pokemon)
-    {
-        playerUnit.gameObject.SetActive(true);
-        playerUnit.Setup(pokemon);
-
-        dialogBox.SetMoveNames(pokemon.Moves);
-
-        yield return dialogBox.TypeDialog($"Go, {pokemon.Name}!");
     }
 
     private void SetBackground(BattleTrigger trigger)
@@ -152,33 +164,79 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    public void AddBattleAction(BattleAction action)
+    {
+        action.User = SelectedUnit;
+        battleActions.Add(action);
+
+        if (battleActions.Count == unitCount)
+        {
+            // Add enemy actions
+            foreach (var enemy in enemyUnits)
+            {
+                battleActions.Add(new BattleAction()
+                {
+                    Type = BattleActionType.Move,
+                    SelectedMove = enemy.Pokemon.GetRandomMove(),
+                    User = enemy,
+                    Target = playerUnits[UnityEngine.Random.Range(0, playerUnits.Count)]
+                });
+            }
+
+            // Sort actions by priority and speed
+            battleActions = battleActions.OrderByDescending(a => a.Priority).ThenByDescending(a => a.User.Pokemon.Speed).ToList();
+
+            // Run turns
+            RunTurnState.I.BattleActions = battleActions;
+            StateMachine.ChangeState(RunTurnState.I);
+        }
+        else
+        {
+            ++selectedUnit;
+            // Select another action
+            StateMachine.ChangeState(ActionSelectionState.I);
+        }
+    }
+
+    /// <summary>
+    /// Should be called at the end of each turn
+    /// </summary>
+    public void ClearBattleActions()
+    {
+        battleActions.Clear();
+        selectedUnit = 0;
+    }
+
     public void HandleUpdate()
     {
         StateMachine.Execute();
     }
 
-    public IEnumerator SwitchPokemon(Pokemon newPokemon)
+    public IEnumerator SwitchPokemon(Pokemon newPokemon, BattleUnit unitToSwitch)
     {
         dialogBox.EnableDialogText(true);
-        if (playerUnit.Pokemon.HP > 0)
+        if (unitToSwitch.Pokemon.HP > 0)
         {
-            yield return dialogBox.TypeDialog($"Come back, {playerUnit.Pokemon.Name}");
-            playerUnit.PlayFaintAnimation();
+            yield return dialogBox.TypeDialog($"Come back, {unitToSwitch.Pokemon.Name}");
+            unitToSwitch.PlayFaintAnimation();
             yield return new WaitForSeconds(2f);
         }
 
-        yield return SendOutPlayerPokemon(newPokemon);
+        // yield return SendOutPlayerPokemon(newPokemon);
+        unitToSwitch.gameObject.SetActive(true);
+        unitToSwitch.Setup(newPokemon);
+        yield return dialogBox.TypeDialog($"Go, {newPokemon.Name}!");
     }
 
-    public IEnumerator SendNextTrainerPokemon()
+    public IEnumerator SendNextTrainerPokemon(BattleUnit unitToSwitch)
     {
         var next = trainerParty.GetHealthyPokemon();
 
-        enemyUnit.Setup(next);
+        unitToSwitch.Setup(next);
         yield return dialogBox.TypeDialog($"{trainer.Name} sent out {next.Name}");
     }
 
-    public IEnumerator ApplyExpGain(BattleUnit targetUnit, bool unitFainted, DamageDetails damageDetails = null)
+    public IEnumerator ApplyExpGain(BattleUnit sourceUnit, BattleUnit targetUnit, bool unitFainted, DamageDetails damageDetails = null, bool shareExp = true)
     {
         // Exp gain
         int expYield = targetUnit.Pokemon.Base.ExpYield;
@@ -187,6 +245,8 @@ public class BattleSystem : MonoBehaviour
 
         // Base exp gain
         int expGain = Mathf.FloorToInt(expYield * enemyLevel * trainerBonus / 7);
+        if (shareExp)
+            expGain /= unitCount;
 
         // Adjust expGain depending on per-move or fainted
         if (!unitFainted)
@@ -200,22 +260,24 @@ public class BattleSystem : MonoBehaviour
             expGain = (int)(expGain * damageDetails.Crit * damageDetails.TypeEffectiveness);
         }
 
-        var pokemon = playerUnit.Pokemon;
-        var playerHud = playerUnit.HUD;
+        var pokemon = sourceUnit.Pokemon;
+        var playerHud = sourceUnit.HUD;
         pokemon.Exp += expGain;
         yield return dialogBox.TypeDialog($"{pokemon.Name} gained {expGain} exp.");
         yield return playerHud.UpdateEXP(false);
-        yield return HandleLevelUp(pokemon, playerHud);
+        yield return HandleLevelUp(sourceUnit, playerHud);
     }
 
-    private IEnumerator HandleLevelUp(Pokemon pokemon, BattleHUD playerHud)
+    private IEnumerator HandleLevelUp(BattleUnit sourceUnit, BattleHUD playerHud)
     {
+        var pokemon = sourceUnit.Pokemon;
         // Check level up
         var leveledUp = pokemon.CheckForLevelUp(out LearnableMove newMove);
         while (leveledUp != null)
         {
             playerHud.SetLevel();
-            yield return dialogBox.TypeDialog($"{pokemon.Name} grew to level {pokemon.Level}!");
+            if (sourceUnit.IsPlayerUnit)
+                yield return dialogBox.TypeDialog($"{pokemon.Name} grew to level {pokemon.Level}!");
 
             // Show stat changes dialog
             var statChanges = leveledUp;
@@ -225,58 +287,72 @@ public class BattleSystem : MonoBehaviour
             {
                 var changes = new StatChangesWrapper();
                 yield return EvolutionState.I.Evolve(pokemon, evolution, changes);
-                playerUnit.Setup(pokemon);
+                sourceUnit.Setup(pokemon);
                 partyScreen.SetPartyData();
                 statChanges = changes.Changes;
             }
 
-            statChangesUI.gameObject.SetActive(true);
-            statChangesUI.SetStatChanges(statChanges);
+            if (sourceUnit.IsPlayerUnit)
+            {
+                statChangesUI.gameObject.SetActive(true);
+                statChangesUI.SetStatChanges(statChanges);
 
-            yield return new WaitForEndOfFrame();
-            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+                yield return new WaitForEndOfFrame();
+                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
 
-            statChangesUI.SetStats(pokemon);
+                statChangesUI.SetStats(pokemon);
 
-            yield return new WaitForEndOfFrame();
-            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+                yield return new WaitForEndOfFrame();
+                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
 
-            statChangesUI.gameObject.SetActive(false);
+                statChangesUI.gameObject.SetActive(false);
+            }
 
             // Try to learn a new Move
             if (newMove != null)
             {
                 if (pokemon.TryLearnMove(newMove.Base))
                 {
-                    yield return dialogBox.TypeDialog($"{pokemon.Name} learned {newMove.Base.Name}");
-                    dialogBox.SetMoveNames(pokemon.Moves);
+                    if (sourceUnit.IsPlayerUnit)
+                    {
+                        yield return dialogBox.TypeDialog($"{pokemon.Name} learned {newMove.Base.Name}");
+                        dialogBox.SetMoveNames(pokemon.Moves);
+                    }
                 }
                 else
                 {
-                    yield return dialogBox.TypeDialog($"{pokemon.Name} is trying to learn {newMove.Base.Name}");
-                    yield return dialogBox.TypeDialog($"But it cannot know more than {Pokemon.maxMoves} moves at once.");
-                    yield return dialogBox.TypeDialog($"Choose a move to forget.");
-                    MoveToForgetState.I.NewMove = newMove.Base;
-                    MoveToForgetState.I.CurrentMoves = pokemon.Moves.Select(m => m.Base).ToList();
-                    yield return GameController.I.stateMachine.PushAndWait(MoveToForgetState.I);
-
-                    int moveIndex = MoveToForgetState.I.Selection;
                     var moveToLearn = newMove.Base;
-                    if (moveIndex == -1 || moveIndex == Pokemon.maxMoves)
+                    if (sourceUnit.IsPlayerUnit)
                     {
-                        // new move was selected, or player canceled out.
-                        // TODO: prompt if new move should be abandoned
-                        yield return dialogBox.TypeDialog($"{pokemon.Name} did not learn {moveToLearn.Name}");
+                        yield return dialogBox.TypeDialog($"{pokemon.Name} is trying to learn {newMove.Base.Name}");
+                        yield return dialogBox.TypeDialog($"But it cannot know more than {Pokemon.maxMoves} moves at once.");
+                        yield return dialogBox.TypeDialog($"Choose a move to forget.");
+                        MoveToForgetState.I.NewMove = newMove.Base;
+                        MoveToForgetState.I.CurrentMoves = pokemon.Moves.Select(m => m.Base).ToList();
+                        yield return GameController.I.stateMachine.PushAndWait(MoveToForgetState.I);
+
+                        int moveIndex = MoveToForgetState.I.Selection;
+                        if (moveIndex == -1 || moveIndex == Pokemon.maxMoves)
+                        {
+                            // new move was selected, or player canceled out.
+                            // TODO: prompt if new move should be abandoned
+                            yield return dialogBox.TypeDialog($"{pokemon.Name} did not learn {moveToLearn.Name}");
+                        }
+                        else
+                        {
+                            // Forget selected move and learn new move
+                            yield return dialogBox.TypeDialog($"{pokemon.Name} forgot {pokemon.Moves[moveIndex].Base.Name} and learned {moveToLearn.Name}");
+
+                            pokemon.Moves[moveIndex] = new Move(moveToLearn);
+                        }
                     }
                     else
                     {
-                        // Forget selected move and learn new move
-                        yield return dialogBox.TypeDialog($"{pokemon.Name} forgot {pokemon.Moves[moveIndex].Base.Name} and learned {moveToLearn.Name}");
-
-                        pokemon.Moves[moveIndex] = new Move(moveToLearn);
+                        // Enemy pokemon just forget their first move
+                        pokemon.Moves[0] = new Move(moveToLearn);
                     }
+                    newMove = null;
                 }
-                newMove = null;
             }
             yield return playerHud.WaitForHPUpdate();
             yield return playerHud.UpdateEXP(true);
@@ -290,8 +366,13 @@ public class BattleSystem : MonoBehaviour
         IsBattleOver = true;
         playerParty.Party.ForEach(p => p.OnBattleOver());
         partyScreen.Cleanup();
-        playerUnit.Clear();
-        enemyUnit.Clear();
+
+        for (int i = 0; i < unitCount; i++)
+        {
+            playerUnits[i].Clear();
+            enemyUnits[i].Clear();
+        }
+
         OnBattleOver(playerWon);
     }
 
@@ -303,6 +384,8 @@ public class BattleSystem : MonoBehaviour
             yield return dialogBox.TypeDialog($"You can't steal another trainer's pokemon!");
             yield break;
         }
+        var enemyUnit = enemyUnits[0];
+        var playerUnit = playerUnits[0];
 
         yield return dialogBox.TypeDialog($"{player.Name} threw a {pokeballItem.Name.ToLower()}!");
 
@@ -360,6 +443,7 @@ public class BattleSystem : MonoBehaviour
 
     private IEnumerator PlayThrowAnimation(SpriteRenderer pokeball)
     {
+        var enemyUnit = enemyUnits[0];
 
         // Animations
         yield return pokeball
@@ -377,13 +461,17 @@ public class BattleSystem : MonoBehaviour
 
     private IEnumerator CatchPokemon(SpriteRenderer pokeball)
     {
+        var enemyUnit = enemyUnits[0];
         // Pokemon caught!
         yield return dialogBox.TypeDialog($"{enemyUnit.Pokemon.Name} was caught!");
         yield return pokeball.DOFade(0, 1.5f).WaitForCompletion();
 
         playerParty.AddPokemon(enemyUnit.Pokemon);
 
-        yield return ApplyExpGain(enemyUnit, true);
+        foreach (var unit in playerUnits)
+        {
+            yield return ApplyExpGain(unit, enemyUnit, true);
+        }
 
         Destroy(pokeball);
         BattleOver(true);

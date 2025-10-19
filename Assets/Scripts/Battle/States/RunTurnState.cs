@@ -1,27 +1,29 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using GDEUtils.StateMachine;
 using UnityEngine;
 
 /// <summary>
-/// Make sure to set <see cref="Moves"/> before pushing this state!
+/// Make sure to set <see cref="BattleActions"/> before pushing this state!
 /// </summary>
 public class RunTurnState : State<BattleSystem>
 {
     [SerializeField] MoveBase struggle;
 
     /// <summary>
-    /// Make sure to set <see cref="Moves"/> before pushing this state!
+    /// Make sure to set <see cref="BattleActions"/> before pushing this state!
     /// </summary>
     public static RunTurnState I { get; private set; }
+
+    // Inputs
+    public List<BattleAction> BattleActions { get; set; }
 
     void Awake()
     {
         I = this;
     }
 
-    BattleUnit playerUnit;
-    BattleUnit enemyUnit;
     BattleDialogBox dialogBox;
 
 
@@ -30,96 +32,50 @@ public class RunTurnState : State<BattleSystem>
     {
         bs = owner;
 
-        playerUnit = bs.PlayerUnit;
-        enemyUnit = bs.EnemyUnit;
         dialogBox = bs.DialogBox;
 
-        StartCoroutine(RunTurns(bs.SelectedAction));
+        StartCoroutine(RunTurns());
     }
 
 
-    IEnumerator RunTurns(BattleAction playerAction)
+    IEnumerator RunTurns()
     {
-        switch (playerAction)
+        foreach (var action in BattleActions)
         {
-            case BattleAction.Move:
-                playerUnit.Pokemon.CurrentMove = playerUnit.Pokemon.Moves[bs.SelectedMove];
-                enemyUnit.Pokemon.CurrentMove = enemyUnit.Pokemon.GetRandomMove();
-                bool playerGoesFirst = CheckTurnOrder();
+            switch (action.Type)
+            {
+                case BattleActionType.Move:
+                    action.User.Pokemon.CurrentMove = action.SelectedMove;
+                    yield return RunMove(action.User, action.Target, action.SelectedMove);
+                    yield return RunAfterTurn(action.User);
+                    break;
 
-                var firstUnit = playerGoesFirst ? playerUnit : enemyUnit;
-                var secondUnit = playerGoesFirst ? enemyUnit : playerUnit;
-                var secondPokemon = secondUnit.Pokemon;
+                case BattleActionType.Switch:
+                    yield return bs.SwitchPokemon(action.SelectedPokemon, action.User);
+                    break;
 
-                yield return RunMove(firstUnit, secondUnit, firstUnit.Pokemon.CurrentMove);
-                yield return RunAfterTurn(firstUnit);
-                if (bs.IsBattleOver)
-                    yield break;
-
-                if (secondPokemon.HP > 0)
-                {
-                    yield return RunMove(secondUnit, firstUnit, secondUnit.Pokemon.CurrentMove);
-                    yield return RunAfterTurn(secondUnit);
-                    if (bs.IsBattleOver)
-                        yield break;
-                }
-                break;
-
-            case BattleAction.Switch:
-                yield return bs.SwitchPokemon(bs.SelectedPokemon);
-
-                yield return RunEnemyTurn();
-                break;
-
-            case BattleAction.Item:
-                if (bs.SelectedItem is PokeballItem)
-                {
-                    yield return bs.ThrowPokeball(bs.SelectedItem as PokeballItem);
-                    if (bs.IsBattleOver)
+                case BattleActionType.Item:
+                    if (action.SelectedItem is PokeballItem)
                     {
-                        yield break;
+                        yield return bs.ThrowPokeball(action.SelectedItem as PokeballItem);
                     }
-                }
-                yield return RunEnemyTurn();
-                break;
+                    break;
 
-            case BattleAction.Run:
-                yield return TryToRun();
-
-                yield return RunEnemyTurn();
-                break;
+                case BattleActionType.Run:
+                    yield return TryToRun();
+                    break;
+            }
+            if (bs.IsBattleOver)
+            {
+                yield break;
+            }
         }
+        bs.ClearBattleActions();
 
         if (!bs.IsBattleOver)
         {
             bs.StateMachine.ChangeState(ActionSelectionState.I);
         }
-    }
-
-    private IEnumerator RunEnemyTurn()
-    {
-        var enemyMove = enemyUnit.Pokemon.GetRandomMove();
-        yield return RunMove(enemyUnit, playerUnit, enemyMove);
-        yield return RunAfterTurn(enemyUnit);
-        if (bs.IsBattleOver)
-            yield break;
-    }
-
-    private bool CheckTurnOrder()
-    {
-        int playerMovePriority = playerUnit.Pokemon.CurrentMove.Base.Priority;
-        int enemyMovePriority = enemyUnit.Pokemon.CurrentMove.Base.Priority;
-
-        bool playerGoesFirst;
-
-        if (enemyMovePriority > playerMovePriority)
-            playerGoesFirst = false;
-        else if (playerMovePriority > enemyMovePriority)
-            playerGoesFirst = true;
-        else
-            playerGoesFirst = playerUnit.Pokemon.Speed >= enemyUnit.Pokemon.Speed;
-
-        return playerGoesFirst;
     }
 
     private IEnumerator RunMove(BattleUnit source, BattleUnit target, Move move)
@@ -190,7 +146,7 @@ public class RunTurnState : State<BattleSystem>
             }
             else
             {
-                yield return bs.ApplyExpGain(enemyUnit, false, damageDetails);
+                yield return bs.ApplyExpGain(source, target, false, damageDetails, false);
             }
         }
     }
@@ -281,7 +237,7 @@ public class RunTurnState : State<BattleSystem>
             else
             {
                 yield return GameController.I.stateMachine.PushAndWait(PartyState.I);
-                yield return bs.SwitchPokemon(PartyState.I.SelectedPokemon);
+                yield return bs.SwitchPokemon(PartyState.I.SelectedPokemon, faintedUnit);
             }
         }
         else
@@ -298,6 +254,7 @@ public class RunTurnState : State<BattleSystem>
                 else
                 {
                     AboutToUseState.I.NewPokemon = next;
+                    AboutToUseState.I.UnitToSwitch = faintedUnit;
                     yield return bs.StateMachine.PushAndWait(AboutToUseState.I);
                 }
             }
@@ -315,7 +272,10 @@ public class RunTurnState : State<BattleSystem>
 
         if (!faintedUnit.IsPlayerUnit)
         {
-            yield return bs.ApplyExpGain(faintedUnit, true, damageDetails);
+            foreach (var unit in bs.PlayerUnits)
+            {
+                yield return bs.ApplyExpGain(unit, faintedUnit, true, damageDetails);
+            }
         }
 
         yield return CheckForBattleOver(faintedUnit);
@@ -366,8 +326,8 @@ public class RunTurnState : State<BattleSystem>
 
         bs.EscapeAttempts++;
 
-        var playerSpeed = playerUnit.Pokemon.Speed;
-        var enemySpeed = enemyUnit.Pokemon.Speed;
+        var playerSpeed = bs.PlayerUnits[0].Pokemon.Speed;
+        var enemySpeed = bs.EnemyUnits[0].Pokemon.Speed;
 
         if (enemySpeed < playerSpeed)
         {
