@@ -767,6 +767,7 @@ GameObject:
   - component: {fileID: 9014828139034214450}
   - component: {fileID: 4641640880999337393}
   - component: {fileID: 9127775459540200859}
+  - component: {fileID: 2320499982413075763}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -1053,6 +1054,18 @@ MonoBehaviour:
   shopUI: {fileID: 4835641392407788900}
   walletUI: {fileID: 6101201222589308589}
   countSelectorUI: {fileID: 3897825924504881265}
+--- !u!114 &2320499982413075763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177379073849594759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df6e89173be042b39bf80ae34163f07d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PauseState
 --- !u!1 &1439176550826066877
 GameObject:
   m_ObjectHideFlags: 0
