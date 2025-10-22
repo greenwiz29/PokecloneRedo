@@ -11,12 +11,14 @@ public enum BattleTrigger { LongGrass, Water, Cave }
 
 public class BattleSystem : MonoBehaviour
 {
-    [SerializeField] List<BattleUnit> playerUnits, enemyUnits;
+    [SerializeField] BattleUnit playerUnitSingle, enemyUnitSingle;
+    [SerializeField] List<BattleUnit> playerUnitsMulti, enemyUnitsMulti;
     [SerializeField] BattleDialogBox dialogBox;
     [SerializeField] PartyScreen partyScreen;
     [SerializeField] Image playerImage, trainerImage;
     [SerializeField] GameObject pokeballSprite;
     [SerializeField] StatChangesUI statChangesUI;
+    [SerializeField] GameObject singleBattleElements, multiBattleElements;
 
     [Header("Background Images")]
     [SerializeField] Image backgroundImage;
@@ -34,6 +36,7 @@ public class BattleSystem : MonoBehaviour
     int unitCount = 1;
     int selectedUnit = 0;
     List<BattleAction> battleActions;
+    List<BattleUnit> playerUnits, enemyUnits;
 
     /// <summary>
     /// Event to indicate the end of a battle.
@@ -66,7 +69,7 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(SetupBattle());
     }
 
-    public void StartTrainerBattle(PokemonParty playerParty, PokemonParty trainerParty, BattleTrigger trigger = BattleTrigger.LongGrass, int unitCount = 1)
+    public void StartTrainerBattle(PokemonParty playerParty, PokemonParty trainerParty, BattleTrigger trigger = BattleTrigger.LongGrass, int unitCount = 2)
     {
         this.trigger = trigger;
         this.unitCount = unitCount;
@@ -82,6 +85,20 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator SetupBattle()
     {
+        singleBattleElements.SetActive(unitCount == 1);
+        multiBattleElements.SetActive(unitCount > 1);
+
+        if (unitCount == 1)
+        {
+            playerUnits = new List<BattleUnit>() { playerUnitSingle };
+            enemyUnits = new List<BattleUnit>() { enemyUnitSingle };
+        }
+        else if (unitCount > 1)
+        {
+            playerUnits = playerUnitsMulti.GetRange(0, playerUnitsMulti.Count);
+            enemyUnits = enemyUnitsMulti.GetRange(0, enemyUnitsMulti.Count);
+        }
+
         StateMachine = new StateMachine<BattleSystem>(this);
         battleActions = new List<BattleAction>();
         EscapeAttempts = 0;

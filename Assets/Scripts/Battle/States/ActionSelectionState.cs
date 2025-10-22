@@ -20,7 +20,7 @@ public class ActionSelectionState : State<BattleSystem>
         selectionUI.OnSelected += OnActionSelected;
 
         bs.DialogBox.EnableDialogText(true);
-        bs.DialogBox.SetDialog("Choose an action.");
+        bs.DialogBox.SetDialog($"Choose an action for {bs.SelectedUnit.Pokemon.Name}.");
     }
 
     public override void Execute()
