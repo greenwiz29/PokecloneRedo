@@ -53,6 +53,12 @@ public class BattleUnit : MonoBehaviour
         hud.ClearData();
     }
 
+    public void SetSelected(bool isSelected)
+    {
+        image.color = isSelected ? GlobalSettings.I.HighlightedColor : originalColor;
+        // TODO: highligt the unit's HUD as well
+    }
+
     public void PlayEnterAnimation()
     {
         if (isPlayerUnit)

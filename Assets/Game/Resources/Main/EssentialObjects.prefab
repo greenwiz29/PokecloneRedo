@@ -2594,6 +2594,7 @@ GameObject:
   - component: {fileID: 7334268813237238169}
   - component: {fileID: 8914588920272214639}
   - component: {fileID: 2573582742698238220}
+  - component: {fileID: 5531842589432550248}
   m_Layer: 0
   m_Name: BattleSystem
   m_TagString: Untagged
@@ -2702,6 +2703,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ef0a7dd92376626fa803fa4d6ad7fa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AboutToUseState
+--- !u!114 &5531842589432550248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4112715559801872306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e498356c1665186baa663cf775c7973, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TargetSelectionState
 --- !u!1 &4362439269692282268
 GameObject:
   m_ObjectHideFlags: 0

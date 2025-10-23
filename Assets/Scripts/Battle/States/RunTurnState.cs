@@ -251,7 +251,7 @@ public class RunTurnState : State<BattleSystem>
                 {
                     bs.BattleOver(true);
                 }
-                else
+                else if (bs.UnitCount == 1)
                 {
                     AboutToUseState.I.NewPokemon = next;
                     AboutToUseState.I.UnitToSwitch = faintedUnit;

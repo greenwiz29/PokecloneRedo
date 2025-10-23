@@ -55,6 +55,7 @@ public class BattleSystem : MonoBehaviour
     public PokemonParty TrainerParty => trainerParty;
     public TrainerController Trainer => trainer;
     public BattleUnit SelectedUnit => playerUnits[selectedUnit];
+    public int UnitCount => unitCount;
 
     public void StartBattle(PokemonParty playerParty, Pokemon wildPokemon, BattleTrigger trigger = BattleTrigger.LongGrass)
     {
