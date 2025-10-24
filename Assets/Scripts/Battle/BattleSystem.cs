@@ -254,7 +254,7 @@ public class BattleSystem : MonoBehaviour
         yield return dialogBox.TypeDialog($"{trainer.Name} sent out {next.Name}");
     }
 
-    public IEnumerator ApplyExpGain(BattleUnit sourceUnit, BattleUnit targetUnit, bool unitFainted, DamageDetails damageDetails = null, bool shareExp = true)
+    public IEnumerator ApplyExpGain(BattleUnit sourceUnit, BattleUnit targetUnit, bool targetFainted, DamageDetails damageDetails = null, bool shareExp = true)
     {
         // Exp gain
         int expYield = targetUnit.Pokemon.Base.ExpYield;
@@ -267,7 +267,7 @@ public class BattleSystem : MonoBehaviour
             expGain /= unitCount;
 
         // Adjust expGain depending on per-move or fainted
-        if (!unitFainted)
+        if (!targetFainted)
             expGain = (int)Mathf.Clamp(expGain / 50f, 1, float.MaxValue);
         else
             expGain = (int)(expGain * 0.8);

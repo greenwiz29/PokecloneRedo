@@ -142,11 +142,14 @@ public class RunTurnState : State<BattleSystem>
 
             if (target.Pokemon.HP <= 0)
             {
-                yield return HandlePokemonFainted(target, damageDetails);
+                yield return HandlePokemonFainted(target, source, damageDetails);
             }
             else
             {
+                // Apply exp gain for attacker
                 yield return bs.ApplyExpGain(source, target, false, damageDetails, false);
+                // Apply exp gain for defender
+                yield return bs.ApplyExpGain(target, source, false, damageDetails, false);
             }
         }
     }
@@ -191,7 +194,7 @@ public class RunTurnState : State<BattleSystem>
         // Check if source pokemon fainted after status effect
         if (source.Pokemon.HP <= 0)
         {
-            yield return HandlePokemonFainted(source);
+            yield return HandlePokemonFainted(source, null);
         }
     }
 
@@ -261,7 +264,7 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
-    private IEnumerator HandlePokemonFainted(BattleUnit faintedUnit, DamageDetails damageDetails = null)
+    private IEnumerator HandlePokemonFainted(BattleUnit faintedUnit, BattleUnit attackerUnit = null, DamageDetails damageDetails = null)
     {
         string enemy;
         // target unit fainted
@@ -276,6 +279,11 @@ public class RunTurnState : State<BattleSystem>
             {
                 yield return bs.ApplyExpGain(unit, faintedUnit, true, damageDetails);
             }
+        }
+        else
+        {
+            if (attackerUnit != null)
+                yield return bs.ApplyExpGain(attackerUnit, faintedUnit, true, damageDetails, false);
         }
 
         yield return CheckForBattleOver(faintedUnit);
