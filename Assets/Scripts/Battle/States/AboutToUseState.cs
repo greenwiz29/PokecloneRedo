@@ -77,7 +77,7 @@ public class AboutToUseState : State<BattleSystem>
         var selectedPokemon = PartyState.I.SelectedPokemon;
         if (selectedPokemon != null)
         {
-            yield return bs.SwitchPokemon(selectedPokemon, UnitToSwitch);
+            yield return bs.SwitchPokemon(selectedPokemon, bs.PlayerUnits[0]);
         }
         yield return ContinueBattle();
     }

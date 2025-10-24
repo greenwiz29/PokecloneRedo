@@ -70,7 +70,7 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(SetupBattle());
     }
 
-    public void StartTrainerBattle(PokemonParty playerParty, PokemonParty trainerParty, BattleTrigger trigger = BattleTrigger.LongGrass, int unitCount = 2)
+    public void StartTrainerBattle(PokemonParty playerParty, PokemonParty trainerParty, BattleTrigger trigger = BattleTrigger.LongGrass, int unitCount = 1)
     {
         this.trigger = trigger;
         this.unitCount = unitCount;
@@ -230,6 +230,11 @@ public class BattleSystem : MonoBehaviour
         StateMachine.Execute();
     }
 
+    public bool IsPokemonSelectedToShift(Pokemon pokemon)
+    {
+        return battleActions.Any(a => a.Type == BattleActionType.Switch && a.SelectedPokemon == pokemon);
+    }
+
     public IEnumerator SwitchPokemon(Pokemon newPokemon, BattleUnit unitToSwitch)
     {
         dialogBox.EnableDialogText(true);
@@ -240,7 +245,6 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitForSeconds(2f);
         }
 
-        // yield return SendOutPlayerPokemon(newPokemon);
         unitToSwitch.gameObject.SetActive(true);
         unitToSwitch.Setup(newPokemon);
         yield return dialogBox.TypeDialog($"Go, {newPokemon.Name}!");

@@ -12908,6 +12908,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1898861581556339008, guid: 9b8089e465f9001fe8267c1d1971eeb6, type: 3}
+      propertyPath: battleUnitCount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4855576790584464616, guid: 9b8089e465f9001fe8267c1d1971eeb6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.5

@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using System.Linq;
 using GDEUtils.StateMachine;
-using GDEUtils.UI;
 using UnityEngine;
 
 public class PartyState : State<GameController>
@@ -79,6 +77,11 @@ public class PartyState : State<GameController>
             if (battleState.BattleSystem.PlayerUnits.Any(u => u.Pokemon == SelectedPokemon))
             {
                 partyScreen.SetMessageText($"{SelectedPokemon.Base.Name} is already out.");
+                return;
+            }
+            if(battleState.BattleSystem.UnitCount > 1 && battleState.BattleSystem.IsPokemonSelectedToShift(SelectedPokemon))
+            {                
+                partyScreen.SetMessageText($"You can't send {SelectedPokemon.Base.Name} out twice!");
                 return;
             }
 

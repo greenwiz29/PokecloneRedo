@@ -7,6 +7,7 @@ public class TrainerController : MonoBehaviour, IInteractable, ISavable
     [SerializeField] Sprite sprite;
     [SerializeField] GameObject exclamation, fov;
     [SerializeField] Dialog preBattleDialog, postBattleDialog;
+    [SerializeField] int battleUnitCount = 1;
 
     // state
     bool battleLost = false;
@@ -15,6 +16,7 @@ public class TrainerController : MonoBehaviour, IInteractable, ISavable
 
     public string Name { get => name; }
     public Sprite Sprite { get => sprite; }
+    public int BattleUnitCount => battleUnitCount;
 
     void Awake()
     {
