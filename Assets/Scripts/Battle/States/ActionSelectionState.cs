@@ -33,7 +33,7 @@ public class ActionSelectionState : State<BattleSystem>
         selectionUI.gameObject.SetActive(false);
         selectionUI.OnSelected -= OnActionSelected;
 
-        bs.DialogBox.EnableDialogText(false);
+        // bs.DialogBox.EnableDialogText(false);
     }
 
     private void OnActionSelected(int selection)

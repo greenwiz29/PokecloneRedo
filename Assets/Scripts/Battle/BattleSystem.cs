@@ -248,7 +248,8 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator SendNextTrainerPokemon(BattleUnit unitToSwitch)
     {
-        var next = trainerParty.GetHealthyPokemon();
+        var activePokemon = EnemyUnits.Select(u => u.Pokemon).Where(p => p.HP > 0).ToList();
+        var next = trainerParty.GetHealthyPokemon(activePokemon);
 
         unitToSwitch.Setup(next);
         yield return dialogBox.TypeDialog($"{trainer.Name} sent out {next.Name}");
@@ -385,10 +386,16 @@ public class BattleSystem : MonoBehaviour
         playerParty.Party.ForEach(p => p.OnBattleOver());
         partyScreen.Cleanup();
 
-        for (int i = 0; i < unitCount; i++)
+        foreach (var unit in playerUnits)
         {
-            playerUnits[i].Clear();
-            enemyUnits[i].Clear();
+            unit.Clear();
+            unit.gameObject.SetActive(false);            
+        }
+
+        foreach (var unit in enemyUnits)
+        {
+            unit.Clear();
+            unit.gameObject.SetActive(false);
         }
 
         OnBattleOver(playerWon);

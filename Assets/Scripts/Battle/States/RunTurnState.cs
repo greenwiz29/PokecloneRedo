@@ -42,6 +42,9 @@ public class RunTurnState : State<BattleSystem>
     {
         foreach (var action in BattleActions)
         {
+            if (action.IsInvalid)
+                continue;
+
             switch (action.Type)
             {
                 case BattleActionType.Move:
@@ -228,14 +231,33 @@ public class RunTurnState : State<BattleSystem>
         return UnityEngine.Random.Range(1, 101) <= moveAccuracy;
     }
 
-    IEnumerator CheckForBattleOver(BattleUnit faintedUnit)
+    IEnumerator AfterFainting(BattleUnit faintedUnit)
     {
+        //Remove the fainted pokemon's action
+        var actionToRemove = BattleActions.FirstOrDefault(a => a.User == faintedUnit);
+        if (actionToRemove != null)
+        {
+            actionToRemove.IsInvalid = true;
+        }
+        
         if (faintedUnit.IsPlayerUnit)
         {
-            var next = bs.PlayerParty.GetHealthyPokemon();
+            var activePokemon = bs.PlayerUnits.Select(u => u.Pokemon).Where(p => p.HP > 0).ToList();
+            var next = bs.PlayerParty.GetHealthyPokemon(activePokemon);
             if (next == null)
             {
-                bs.BattleOver(false);
+                if (activePokemon.Count == 0)
+                    bs.BattleOver(false);
+                else
+                {
+                    // No new pokmeon to send out, but we still have one active unit, so the battle can continue. Clear the hud for the fainted unit.
+                    faintedUnit.Clear();
+                    bs.PlayerUnits.Remove(faintedUnit);
+
+                    // Attacks targeted at the fainted unit should be changed
+                    var actionsToChange = BattleActions.Where(a => a.Target == faintedUnit).ToList();
+                    actionsToChange.ForEach(a => a.Target = bs.PlayerUnits.First());
+                }
             }
             else
             {
@@ -246,19 +268,38 @@ public class RunTurnState : State<BattleSystem>
         else
         {
             if (!bs.IsTrainerBattle)
+            {
                 bs.BattleOver(true);
+                yield break;
+            }
+            var activePokemon = bs.EnemyUnits.Select(u => u.Pokemon).Where(p => p.HP > 0).ToList();
+            var next = bs.TrainerParty.GetHealthyPokemon(activePokemon);
+            if (next == null)
+            {
+                if (activePokemon.Count == 0)
+                    bs.BattleOver(true);
+                else
+                {
+                    // No new pokmeon to send out, but we still have one active unit, so the battle can continue. Clear the hud for the fainted unit.
+                    faintedUnit.Clear();
+                    bs.EnemyUnits.Remove(faintedUnit);
+
+                    // Attacks targeted at the fainted unit should be changed
+                    var actionsToChange = BattleActions.Where(a => a.Target == faintedUnit).ToList();
+                    actionsToChange.ForEach(a => a.Target = bs.EnemyUnits.First());
+                }
+            }
             else
             {
-                var next = bs.TrainerParty.GetHealthyPokemon();
-                if (next == null)
-                {
-                    bs.BattleOver(true);
-                }
-                else if (bs.UnitCount == 1)
+                if (bs.UnitCount == 1)
                 {
                     AboutToUseState.I.NewPokemon = next;
                     AboutToUseState.I.UnitToSwitch = faintedUnit;
                     yield return bs.StateMachine.PushAndWait(AboutToUseState.I);
+                }
+                else
+                {
+                    yield return bs.SendNextTrainerPokemon(faintedUnit);
                 }
             }
         }
@@ -286,7 +327,7 @@ public class RunTurnState : State<BattleSystem>
                 yield return bs.ApplyExpGain(attackerUnit, faintedUnit, true, damageDetails, false);
         }
 
-        yield return CheckForBattleOver(faintedUnit);
+        yield return AfterFainting(faintedUnit);
     }
 
     IEnumerator ShowDamageDetails(DamageDetails details)
