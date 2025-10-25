@@ -6,7 +6,7 @@ public class GameMenuState : State<GameController>
     [SerializeField] MenuController menuController;
 
     public static GameMenuState I { get; private set; }
-    
+
     void Awake()
     {
         I = this;
@@ -21,18 +21,19 @@ public class GameMenuState : State<GameController>
         menuController.OnBack += OnBack;
     }
 
-	private void OnBack()
-	{
-		gc.stateMachine.Pop();
-	}
+    private void OnBack()
+    {
+        gc.stateMachine.Pop();
+    }
 
-	private void OnSelected(int selectedItem)
+    private void OnSelected(int selectedItem)
     {
         menuController.SetSelectionSettings(GDEUtils.UI.SelectionMode.LIST);
-		switch (selectedItem)
+        switch (selectedItem)
         {
             case 0: // Pokemon
-                gc.stateMachine.Push(PartyState.I);
+                if (gc.Player.Party.Party.Count > 0)
+                    gc.stateMachine.Push(PartyState.I);
                 break;
             case 1: // Bag
                 gc.stateMachine.Push(InventoryState.I);
@@ -46,9 +47,9 @@ public class GameMenuState : State<GameController>
                 OnBack();
                 break;
         }
-	}
+    }
 
-	public override void Execute()
+    public override void Execute()
     {
         menuController.HandleUpdate();
     }

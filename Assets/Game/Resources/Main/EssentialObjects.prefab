@@ -768,6 +768,7 @@ GameObject:
   - component: {fileID: 4641640880999337393}
   - component: {fileID: 9127775459540200859}
   - component: {fileID: 2320499982413075763}
+  - component: {fileID: 944464818102695765}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -1066,6 +1067,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df6e89173be042b39bf80ae34163f07d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PauseState
+--- !u!114 &944464818102695765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177379073849594759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5106b29eaa912e9b39bccf2985578165, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DynamicMenuState
+  dynamicMenuUI: {fileID: 3413003173865766587}
+  itemTextPrefab: {fileID: 4830502035217077108, guid: 86346fb47b1eb9ee59ba7ce02776cf19, type: 3}
 --- !u!1 &1439176550826066877
 GameObject:
   m_ObjectHideFlags: 0
@@ -6256,6 +6271,26 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1365666547008710460, guid: 03502b17c0bab0b9182bb1845c2782c8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1365666547008710460, guid: 03502b17c0bab0b9182bb1845c2782c8, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1365666547008710460, guid: 03502b17c0bab0b9182bb1845c2782c8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1365666547008710460, guid: 03502b17c0bab0b9182bb1845c2782c8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1365666547008710460, guid: 03502b17c0bab0b9182bb1845c2782c8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1400425422235758668, guid: 03502b17c0bab0b9182bb1845c2782c8, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -8252,6 +8287,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8634865572175878460, guid: 03502b17c0bab0b9182bb1845c2782c8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8634865572175878460, guid: 03502b17c0bab0b9182bb1845c2782c8, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8740061360097396843, guid: 03502b17c0bab0b9182bb1845c2782c8, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -8557,6 +8600,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3413003173865766587 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1833646456352281879, guid: 03502b17c0bab0b9182bb1845c2782c8, type: 3}
+  m_PrefabInstance: {fileID: 3904348135383935916}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd58590f6ce223d41bd7a8c085c501e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DynamicMenuUI
 --- !u!114 &3897825924504881265 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 16004455609181149, guid: 03502b17c0bab0b9182bb1845c2782c8, type: 3}

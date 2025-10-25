@@ -24,13 +24,19 @@ namespace GDEUtils.UI
             mode = selectionMode;
             this.gridWidth = gridWidth;
         }
-        
+
         public void SetItems(List<T> items)
         {
             this.items = items;
             selectionTimer = 1 / selectionSpeed;
             items.ForEach(i => i.Init());
             UpdateSelectionUI();
+        }
+        
+        public void ClearItems()
+        {
+            items.ForEach(i => i.Clear());
+            items = null;
         }
 
         public virtual void HandleUpdate()

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using GDEUtils.StateMachine;
 using UnityEngine;
@@ -58,6 +59,18 @@ public class PartyState : State<GameController>
 
     private void OnPokemonSelected(int obj)
     {
+        StartCoroutine(PokemonSelectedAction());
+
+    }
+
+    IEnumerator GoToUseItemState()
+    {
+        yield return gc.stateMachine.PushAndWait(UseItemState.I);
+        gc.stateMachine.Pop();
+    }
+
+    IEnumerator PokemonSelectedAction()
+    {
         SelectedPokemon = partyScreen.SelectedPokemon;
         var prevState = gc.stateMachine.GetPrevState();
 
@@ -69,34 +82,68 @@ public class PartyState : State<GameController>
         else if (prevState == BattleState.I)
         {
             var battleState = BattleState.I;
-            if (SelectedPokemon.HP <= 0)
+            DynamicMenuState.I.MenuItems = new List<string>() { "Switch", "Summary", "Cancel" };
+            yield return gc.stateMachine.PushAndWait(DynamicMenuState.I);
+            int result;
+            if (DynamicMenuState.I.SelectedItem != null)
             {
-                partyScreen.SetMessageText($"You can't send out a fainted pokemon");
-                return;
-            }
-            if (battleState.BattleSystem.PlayerUnits.Any(u => u.Pokemon == SelectedPokemon))
-            {
-                partyScreen.SetMessageText($"{SelectedPokemon.Base.Name} is already out.");
-                return;
-            }
-            if(battleState.BattleSystem.UnitCount > 1 && battleState.BattleSystem.IsPokemonSelectedToShift(SelectedPokemon))
-            {                
-                partyScreen.SetMessageText($"You can't send {SelectedPokemon.Base.Name} out twice!");
-                return;
+                result = (int)DynamicMenuState.I.SelectedItem;
+                switch (result)
+                {
+                    case 0:
+                        // Switch
+                        if (SelectedPokemon.HP <= 0)
+                        {
+                            partyScreen.SetMessageText($"You can't send out a fainted pokemon");
+                            yield break;
+                        }
+                        if (battleState.BattleSystem.PlayerUnits.Any(u => u.Pokemon == SelectedPokemon))
+                        {
+                            partyScreen.SetMessageText($"{SelectedPokemon.Base.Name} is already out.");
+                            yield break;
+                        }
+                        if (battleState.BattleSystem.UnitCount > 1 && battleState.BattleSystem.IsPokemonSelectedToShift(SelectedPokemon))
+                        {
+                            partyScreen.SetMessageText($"You can't send {SelectedPokemon.Base.Name} out twice!");
+                            yield break;
+                        }
+
+                        gc.stateMachine.Pop();
+                        break;
+                    case 1:
+                        // Summary
+                        break;
+                    case 2:
+                    // Cancel
+                    default:
+                        yield break;
+                }
             }
 
-            gc.stateMachine.Pop();
         }
         else
         {
-            // TODO: Open summary screen
-            Debug.Log($"Selected {partyScreen.SelectedPokemon.Base.Name}");
+            DynamicMenuState.I.MenuItems = new List<string>() { "Summary", "Switch", "Cancel" };
+            yield return gc.stateMachine.PushAndWait(DynamicMenuState.I);
+            int result;
+            if (DynamicMenuState.I.SelectedItem != null)
+            {
+                result = (int)DynamicMenuState.I.SelectedItem;
+                switch (result)
+                {
+                    case 0:
+                        // Summary
+                        break;
+                    case 1:
+                        // Switch
+                        break;
+                    case 2:
+                    // Cancel
+                    default:
+                        yield break;
+                }
+            }
         }
-    }
 
-    IEnumerator GoToUseItemState()
-    {
-        yield return gc.stateMachine.PushAndWait(UseItemState.I);
-        gc.stateMachine.Pop();
     }
 }

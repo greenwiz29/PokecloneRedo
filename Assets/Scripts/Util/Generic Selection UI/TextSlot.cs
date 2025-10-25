@@ -5,9 +5,14 @@ public class TextSlot : MonoBehaviour, ISelectableItem
 {
     [SerializeField] TMP_Text text;
 
-    public void Init()
+    public void Clear()
     {
         text.color = GlobalSettings.I.DefaultFontColor;
+    }
+
+    public void Init()
+    {
+        Clear();
     }
     
     public void OnSelectionChanged(bool selected)
