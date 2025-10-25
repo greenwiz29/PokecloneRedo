@@ -286,7 +286,8 @@ public class BattleSystem : MonoBehaviour
         var pokemon = sourceUnit.Pokemon;
         var playerHud = sourceUnit.HUD;
         pokemon.Exp += expGain;
-        yield return dialogBox.TypeDialog($"{pokemon.Name} gained {expGain} exp.");
+        string enemy = !sourceUnit.IsPlayerUnit ? "Enemy " : "";
+        yield return dialogBox.TypeDialog($"{enemy}{pokemon.Name} gained {expGain} exp.");
         yield return playerHud.UpdateEXP(false);
         yield return HandleLevelUp(sourceUnit, playerHud);
     }
@@ -294,13 +295,14 @@ public class BattleSystem : MonoBehaviour
     private IEnumerator HandleLevelUp(BattleUnit sourceUnit, BattleHUD playerHud)
     {
         var pokemon = sourceUnit.Pokemon;
+        string enemy = !sourceUnit.IsPlayerUnit ? "Enemy " : "";
         // Check level up
         var leveledUp = pokemon.CheckForLevelUp(out LearnableMove newMove);
         while (leveledUp != null)
         {
             playerHud.SetLevel();
             if (sourceUnit.IsPlayerUnit)
-                yield return dialogBox.TypeDialog($"{pokemon.Name} grew to level {pokemon.Level}!");
+                yield return dialogBox.TypeDialog($"{enemy}{pokemon.Name} grew to level {pokemon.Level}!");
 
             // Show stat changes dialog
             var statChanges = leveledUp;
