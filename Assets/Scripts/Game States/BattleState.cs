@@ -12,11 +12,13 @@ public class BattleState : State<GameController>
     /// Make sure to set <see cref="Trigger"/> and <see cref="Trainer"/> before pushing this state!
     /// </summary>
     public static BattleState I { get; private set; }
+    public BattleSystem BattleSystem => battleSystem;
 
     // Input. Must be set before Enter runs
     public BattleTrigger Trigger { get; set; }
     public TrainerController Trainer { get; set; }
-    public BattleSystem BattleSystem => battleSystem;
+
+    
 
     void Awake()
     {
@@ -42,7 +44,7 @@ public class BattleState : State<GameController>
         {
             var trainerParty = Trainer.GetComponent<PokemonParty>();
 
-            battleSystem.StartTrainerBattle(playerParty, trainerParty, Trigger);
+            battleSystem.StartTrainerBattle(playerParty, trainerParty, Trigger, Trainer.BattleUnitCount);
         }
 
         battleSystem.OnBattleOver += EndBattle;

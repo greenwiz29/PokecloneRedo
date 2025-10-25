@@ -33,9 +33,19 @@ public class PokemonParty : MonoBehaviour
         }
     }
 
-    public Pokemon GetHealthyPokemon()
+    public Pokemon GetHealthyPokemon(List<Pokemon> excluded = null)
     {
-        return party.Where(p => p.HP > 0).FirstOrDefault();
+        var healthPokemon = party.Where(p => p.HP > 0);
+        if(excluded != null)
+        {
+            healthPokemon = healthPokemon.Where(p => !excluded.Contains(p));
+        }
+        return healthPokemon.FirstOrDefault();
+    }
+    
+    public List<Pokemon> GetHealthyPokemon(int count)
+    {
+        return party.Where(p => p.HP > 0).Take(count).ToList();
     }
 
     public void AddPokemon(Pokemon newPokemon)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using GDEUtils.StateMachine;
 using UnityEngine;
@@ -59,7 +60,27 @@ public class MoveSelectionState : State<BattleSystem>
 
     private void OnMoveSelected(int selection)
     {
-        bs.SelectedMove = selection;
-        bs.StateMachine.ChangeState(RunTurnState.I);
+        StartCoroutine(OnMoveSelectedAsync(selection));
+    }
+    
+    IEnumerator OnMoveSelectedAsync(int selection)
+    {
+        int moveTarget = 0;
+        if (bs.ActiveEnemyUnitsCount > 1)
+        {
+            yield return bs.StateMachine.PushAndWait(TargetSelectionState.I);
+            if (!TargetSelectionState.I.SelectionMade)
+            {
+                yield break;
+            }
+            moveTarget = TargetSelectionState.I.SelectedTarget;
+        }
+
+        bs.AddBattleAction(new BattleAction()
+        {
+            Type = BattleActionType.Move,
+            SelectedMove = Moves[selection],
+            Target = bs.EnemyUnits[moveTarget]
+        });
     }
 }

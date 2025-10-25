@@ -52,7 +52,7 @@ public class NpcController : MonoBehaviour, IInteractable, ISavable
             {
                 yield return pokemonGiver.GivePokemon(initiator.GetComponent<PlayerController>());
             }
-            else if (itemGiver != null && itemGiver.CanBeGiven())
+            if (itemGiver != null && itemGiver.CanBeGiven())
             {
                 yield return itemGiver.GiveItem(initiator.GetComponent<PlayerController>());
             }

@@ -1,7 +1,6 @@
-using System;
 using System.Collections;
+using System.Linq;
 using GDEUtils.StateMachine;
-using GDEUtils.UI;
 using UnityEngine;
 
 public class PartyState : State<GameController>
@@ -48,7 +47,7 @@ public class PartyState : State<GameController>
         if (prevState == BattleState.I)
         {
             var battleState = BattleState.I;
-            if (battleState.BattleSystem.PlayerUnit.Pokemon.HP <= 0)
+            if (battleState.BattleSystem.PlayerUnits.Any(u => u.Pokemon.HP <= 0))
             {
                 partyScreen.SetMessageText("You must choose a pokemon to continue");
                 return;
@@ -75,9 +74,14 @@ public class PartyState : State<GameController>
                 partyScreen.SetMessageText($"You can't send out a fainted pokemon");
                 return;
             }
-            if (SelectedPokemon == battleState.BattleSystem.PlayerUnit.Pokemon)
+            if (battleState.BattleSystem.PlayerUnits.Any(u => u.Pokemon == SelectedPokemon))
             {
                 partyScreen.SetMessageText($"{SelectedPokemon.Base.Name} is already out.");
+                return;
+            }
+            if(battleState.BattleSystem.UnitCount > 1 && battleState.BattleSystem.IsPokemonSelectedToShift(SelectedPokemon))
+            {                
+                partyScreen.SetMessageText($"You can't send {SelectedPokemon.Base.Name} out twice!");
                 return;
             }
 

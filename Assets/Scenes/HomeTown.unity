@@ -12908,6 +12908,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1898861581556339008, guid: 9b8089e465f9001fe8267c1d1971eeb6, type: 3}
+      propertyPath: battleUnitCount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4855576790584464616, guid: 9b8089e465f9001fe8267c1d1971eeb6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.5
@@ -12949,6 +12953,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9154046531521133101, guid: 9b8089e465f9001fe8267c1d1971eeb6, type: 3}
+      propertyPath: party.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154046531521133101, guid: 9b8089e465f9001fe8267c1d1971eeb6, type: 3}
       propertyPath: party.Array.data[0]._base
       value: 
       objectReference: {fileID: 11400000, guid: 88a70188004cee5f08a9b2073969e174, type: 2}
@@ -12962,6 +12970,14 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 88a70188004cee5f08a9b2073969e174, type: 2}
     - target: {fileID: 9154046531521133101, guid: 9b8089e465f9001fe8267c1d1971eeb6, type: 3}
       propertyPath: party.Array.data[1].level
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 9154046531521133101, guid: 9b8089e465f9001fe8267c1d1971eeb6, type: 3}
+      propertyPath: party.Array.data[2]._base
+      value: 
+      objectReference: {fileID: 11400000, guid: 91b504117fe63ee7d843920729763021, type: 2}
+    - target: {fileID: 9154046531521133101, guid: 9b8089e465f9001fe8267c1d1971eeb6, type: 3}
+      propertyPath: party.Array.data[2].level
       value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
