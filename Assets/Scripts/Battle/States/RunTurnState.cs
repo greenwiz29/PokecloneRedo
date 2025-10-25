@@ -316,8 +316,9 @@ public class RunTurnState : State<BattleSystem>
 
         if (!faintedUnit.IsPlayerUnit)
         {
-            foreach (var unit in bs.PlayerUnits)
+            for (int i = 0; i < bs.ActivePlayerUnitsCount; i++)
             {
+                BattleUnit unit = bs.PlayerUnits[i];
                 yield return bs.ApplyExpGain(unit, faintedUnit, true, damageDetails);
             }
         }

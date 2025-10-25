@@ -66,7 +66,7 @@ public class MoveSelectionState : State<BattleSystem>
     IEnumerator OnMoveSelectedAsync(int selection)
     {
         int moveTarget = 0;
-        if (bs.UnitCount > 1)
+        if (bs.ActiveEnemyUnitsCount > 1)
         {
             yield return bs.StateMachine.PushAndWait(TargetSelectionState.I);
             if (!TargetSelectionState.I.SelectionMade)

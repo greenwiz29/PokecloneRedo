@@ -35,14 +35,14 @@ public class TargetSelectionState : State<BattleSystem>
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             selectedTarget++;
-            if (selectedTarget == bs.EnemyUnits.Count)
+            if (selectedTarget == bs.ActiveEnemyUnitsCount)
                 selectedTarget = 0;
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             selectedTarget--;
             if (selectedTarget < 0)
-                selectedTarget = bs.EnemyUnits.Count - 1;
+                selectedTarget = bs.ActiveEnemyUnitsCount - 1;
         }
         
         if (selectedTarget != prevSelection)

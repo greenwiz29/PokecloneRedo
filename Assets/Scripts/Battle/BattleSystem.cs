@@ -56,6 +56,8 @@ public class BattleSystem : MonoBehaviour
     public TrainerController Trainer => trainer;
     public BattleUnit SelectedUnit => playerUnits[selectedUnit];
     public int UnitCount => unitCount;
+    public int ActivePlayerUnitsCount => playerUnits.Count(u => u.Pokemon != null && u.Pokemon.HP > 0);
+    public int ActiveEnemyUnitsCount => enemyUnits.Count(u => u.Pokemon != null && u.Pokemon.HP > 0);
 
     public void StartBattle(PokemonParty playerParty, Pokemon wildPokemon, BattleTrigger trigger = BattleTrigger.LongGrass)
     {
@@ -140,7 +142,7 @@ public class BattleSystem : MonoBehaviour
             trainerImage.gameObject.SetActive(false);
 
             var enemyPokemon = trainerParty.GetHealthyPokemon(unitCount);
-            for (int i = 0; i < unitCount; i++)
+            for (int i = 0; i < enemyPokemon.Count; i++)
             {
                 enemyUnits[i].gameObject.SetActive(true);
                 enemyUnits[i].Setup(enemyPokemon[i]);
@@ -152,7 +154,7 @@ public class BattleSystem : MonoBehaviour
         }
 
         var playerPokemon = playerParty.GetHealthyPokemon(unitCount);
-        for (int i = 0; i < unitCount; i++)
+        for (int i = 0; i < playerPokemon.Count; i++)
         {
             playerUnits[i].gameObject.SetActive(true);
             playerUnits[i].Setup(playerPokemon[i]);
@@ -187,7 +189,7 @@ public class BattleSystem : MonoBehaviour
         action.User = SelectedUnit;
         battleActions.Add(action);
 
-        if (battleActions.Count == unitCount)
+        if (battleActions.Count == ActivePlayerUnitsCount)
         {
             // Add enemy actions
             foreach (var enemy in enemyUnits)
@@ -197,7 +199,7 @@ public class BattleSystem : MonoBehaviour
                     Type = BattleActionType.Move,
                     SelectedMove = enemy.Pokemon.GetRandomMove(),
                     User = enemy,
-                    Target = playerUnits[UnityEngine.Random.Range(0, playerUnits.Count)]
+                    Target = playerUnits[UnityEngine.Random.Range(0, ActivePlayerUnitsCount)]
                 });
             }
 
@@ -269,7 +271,7 @@ public class BattleSystem : MonoBehaviour
         // Base exp gain
         int expGain = Mathf.FloorToInt(expYield * enemyLevel * trainerBonus / 7);
         if (shareExp)
-            expGain /= unitCount;
+            expGain /= ActivePlayerUnitsCount;
 
         // Adjust expGain depending on per-move or fainted
         if (!targetFainted)
@@ -404,6 +406,11 @@ public class BattleSystem : MonoBehaviour
             unit.gameObject.SetActive(false);
         }
 
+        playerUnitSingle.Clear();
+        enemyUnitSingle.Clear();
+        playerUnitsMulti.ForEach(u => u.Clear());
+        enemyUnitsMulti.ForEach(u => u.Clear());
+
         OnBattleOver(playerWon);
     }
 
@@ -499,8 +506,9 @@ public class BattleSystem : MonoBehaviour
 
         playerParty.AddPokemon(enemyUnit.Pokemon);
 
-        foreach (var unit in playerUnits)
+        for (int i = 0; i < ActivePlayerUnitsCount; i++)
         {
+            BattleUnit unit = playerUnits[i];
             yield return ApplyExpGain(unit, enemyUnit, true);
         }
 
