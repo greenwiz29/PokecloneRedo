@@ -57,9 +57,9 @@ public class PartyState : State<GameController>
         gc.stateMachine.Pop();
     }
 
-    private void OnPokemonSelected(int obj)
+    private void OnPokemonSelected(int selection)
     {
-        StartCoroutine(PokemonSelectedAction());
+        StartCoroutine(PokemonSelectedAction(selection));
 
     }
 
@@ -69,7 +69,7 @@ public class PartyState : State<GameController>
         gc.stateMachine.Pop();
     }
 
-    IEnumerator PokemonSelectedAction()
+    IEnumerator PokemonSelectedAction(int selection)
     {
         SelectedPokemon = partyScreen.SelectedPokemon;
         var prevState = gc.stateMachine.GetPrevState();
@@ -112,6 +112,8 @@ public class PartyState : State<GameController>
                         break;
                     case 1:
                         // Summary
+                        SummaryState.I.SelectedPokemonIndex = selection;
+                        yield return gc.stateMachine.PushAndWait(SummaryState.I);
                         break;
                     case 2:
                     // Cancel
@@ -133,6 +135,8 @@ public class PartyState : State<GameController>
                 {
                     case 0:
                         // Summary
+                        SummaryState.I.SelectedPokemonIndex = selection;
+                        yield return gc.stateMachine.PushAndWait(SummaryState.I);
                         break;
                     case 1:
                         // Switch

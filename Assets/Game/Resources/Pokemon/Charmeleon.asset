@@ -56,5 +56,5 @@ MonoBehaviour:
   learnableByItems: []
   evolutions:
   - evolvesInto: {fileID: 11400000, guid: c168d7f267dd2412a9d22ac8b6a62010, type: 2}
-    requiredLevel: -1
+    requiredLevel: 36
     requiredItem: {fileID: 11400000, guid: 11ef074bcdbabd3dca4175c02e05e630, type: 2}

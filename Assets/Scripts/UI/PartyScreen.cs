@@ -29,7 +29,7 @@ public class PartyScreen : SelectionUI<TextSlot>
 
     public void SetPartyData()
     {
-        partyMembers = party.Party;
+        partyMembers = party.Pokemon;
 
         for (int i = 0; i < memberSlots.Count; i++)
         {
@@ -52,9 +52,9 @@ public class PartyScreen : SelectionUI<TextSlot>
 
     public void ShowIfTMIsUseable(TMItem tmItem)
     {
-		for (int i = 0; i < party.Party.Count; i++)
+		for (int i = 0; i < party.Pokemon.Count; i++)
         {
-			Pokemon pokemon = party.Party[i];
+			Pokemon pokemon = party.Pokemon[i];
             string message = tmItem.CanBeTaught(pokemon) ? "ABLE" : "UNABLE";
             message = pokemon.HasMove(tmItem.Move) ? "LEARNED" : message;
 			memberSlots[i].SetMessage(message);
@@ -63,7 +63,7 @@ public class PartyScreen : SelectionUI<TextSlot>
 
     public void ClearMessages()
     {
-		for (int i = 0; i < party.Party.Count; i++)
+		for (int i = 0; i < party.Pokemon.Count; i++)
         {			
 			memberSlots[i].SetMessage("");
         }

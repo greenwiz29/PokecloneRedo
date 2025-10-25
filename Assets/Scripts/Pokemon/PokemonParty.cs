@@ -10,7 +10,7 @@ public class PokemonParty : MonoBehaviour
 
     public event Action OnUpdated;
 
-    public List<Pokemon> Party
+    public List<Pokemon> Pokemon
     {
         get => party;
         set
@@ -63,7 +63,7 @@ public class PokemonParty : MonoBehaviour
 
     public void HealParty()
     {
-        Party.ForEach(p => p.Heal());
+        Pokemon.ForEach(p => p.Heal());
 
         OnUpdated?.Invoke();
     }

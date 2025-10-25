@@ -391,7 +391,7 @@ public class BattleSystem : MonoBehaviour
     public void BattleOver(bool playerWon)
     {
         IsBattleOver = true;
-        playerParty.Party.ForEach(p => p.OnBattleOver());
+        playerParty.Pokemon.ForEach(p => p.OnBattleOver());
         partyScreen.Cleanup();
 
         foreach (var unit in playerUnits)

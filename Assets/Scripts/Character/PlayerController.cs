@@ -98,7 +98,7 @@ public class PlayerController : MonoBehaviour, ISavable
         var saveData = new PlayerSaveData()
         {
             position = new float[] { transform.position.x, transform.position.y },
-            partyData = GetComponent<PokemonParty>().Party.Select(p => p.GetSaveData()).ToList()
+            partyData = GetComponent<PokemonParty>().Pokemon.Select(p => p.GetSaveData()).ToList()
         };
         return saveData;
     }
@@ -110,7 +110,7 @@ public class PlayerController : MonoBehaviour, ISavable
         var pos = saveData.position;
         transform.position = new Vector3(pos[0], pos[1]);
 
-        Party.Party = saveData.partyData.Select(pd => new Pokemon(pd)).ToList();
+        Party.Pokemon = saveData.partyData.Select(pd => new Pokemon(pd)).ToList();
     }
 }
 

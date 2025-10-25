@@ -32,7 +32,7 @@ public class GameMenuState : State<GameController>
         switch (selectedItem)
         {
             case 0: // Pokemon
-                if (gc.Player.Party.Party.Count > 0)
+                if (gc.Player.Party.Pokemon.Count > 0)
                     gc.stateMachine.Push(PartyState.I);
                 break;
             case 1: // Bag

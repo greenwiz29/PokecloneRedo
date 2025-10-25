@@ -769,6 +769,7 @@ GameObject:
   - component: {fileID: 9127775459540200859}
   - component: {fileID: 2320499982413075763}
   - component: {fileID: 944464818102695765}
+  - component: {fileID: 7942011396249908406}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -1081,6 +1082,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DynamicMenuState
   dynamicMenuUI: {fileID: 3413003173865766587}
   itemTextPrefab: {fileID: 4830502035217077108, guid: 86346fb47b1eb9ee59ba7ce02776cf19, type: 3}
+--- !u!114 &7942011396249908406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177379073849594759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b7c5e06535a7c101a6ab9cb66ba578d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SummaryState
+  summaryScreen: {fileID: 6344249746303744524}
 --- !u!1 &1439176550826066877
 GameObject:
   m_ObjectHideFlags: 0
@@ -9727,6 +9741,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b84946de7510800ca349b0c1d855a49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6344249746303744524 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7936550316278763936, guid: 03502b17c0bab0b9182bb1845c2782c8, type: 3}
+  m_PrefabInstance: {fileID: 3904348135383935916}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5c75d905e659e271bbb28c33a5a5495, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SummaryScreenUI
 --- !u!114 &6435887155756136390 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8034380733798898794, guid: 03502b17c0bab0b9182bb1845c2782c8, type: 3}
