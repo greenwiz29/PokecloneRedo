@@ -109,17 +109,17 @@ public class GameController : MonoBehaviour
 #if UNITY_EDITOR
     private void OnGUI()
     {
-		var style = new GUIStyle
-		{
-			fontSize = 25
-		};
-		style.normal.textColor = Color.black;
+		// var style = new GUIStyle
+		// {
+		// 	fontSize = 25
+		// };
+		// style.normal.textColor = Color.black;
 
-        GUILayout.Label(" State Stack", style);
-        foreach (var s in stateMachine.StateStack)
-        {
-            GUILayout.Label(" " + s.GetType().Name, style);
-        }
+        // GUILayout.Label(" State Stack", style);
+        // foreach (var s in stateMachine.StateStack)
+        // {
+        //     GUILayout.Label(" " + s.GetType().Name, style);
+        // }
     }
 #endif
 }
