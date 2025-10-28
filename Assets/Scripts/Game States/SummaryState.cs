@@ -31,11 +31,13 @@ public class SummaryState : State<GameController>
         playerParty = gc.Player.Party.Pokemon;
         summaryScreen.gameObject.SetActive(true);
         summaryScreen.SetBasicDetails(playerParty[SelectedPokemonIndex]);
-        summaryScreen.SetSkills(playerParty[SelectedPokemonIndex]);
+        summaryScreen.ShowPage(selectedPage);
     }
 
+    int selectedPage = 0;
     public override void Execute()
     {
+        // Pokemon selection
         int prevIndex = SelectedPokemonIndex;
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
@@ -57,7 +59,23 @@ public class SummaryState : State<GameController>
         if (SelectedPokemonIndex != prevIndex)
         {
             summaryScreen.SetBasicDetails(playerParty[SelectedPokemonIndex]);
-            summaryScreen.SetSkills(playerParty[SelectedPokemonIndex]);
+            summaryScreen.ShowPage(selectedPage);
+        }
+
+        // Page selection
+        int prevPage = selectedPage;
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            selectedPage = Mathf.Abs(selectedPage - 1) % 2;
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            selectedPage = (selectedPage + 1) % 2;
+        }
+
+        if (selectedPage != prevPage)
+        {
+            summaryScreen.ShowPage(selectedPage);
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
