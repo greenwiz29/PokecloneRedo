@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using GDEUtils.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SummaryScreenUI : MonoBehaviour
+public class SummaryScreenUI : SelectionUI<TextSlot>
 {
     [Header("Basic Details")]
     [SerializeField] TMP_Text nameText;
@@ -11,7 +14,7 @@ public class SummaryScreenUI : MonoBehaviour
     [SerializeField] Image image;
 
     [Header("Pages")]
-    [SerializeField] GameObject skillsPage, movesPage;
+    [SerializeField] GameObject skillsPage, movesPage, effectsPane;
     [SerializeField] TMP_Text pageName;
 
     [Header("Pokemon Skills")]
@@ -21,9 +24,51 @@ public class SummaryScreenUI : MonoBehaviour
 
     [Header("Pokemon Moves")]
     [SerializeField] List<TMP_Text> moveTypes, moveNames, movePPs;
-    [SerializeField] TMP_Text descriptionText;
+    [SerializeField] TMP_Text descriptionText, powerText, accuracyText;
+
+    List<TextSlot> moveSlots;
+    void Start()
+    {
+        moveSlots = moveNames.Select(m => m.GetComponent<TextSlot>()).ToList();
+        effectsPane.SetActive(false);
+        descriptionText.text = "";
+    }
+
+    public bool InMoveSelection
+    {
+        get => inMoveSelection;
+        set
+        {
+            inMoveSelection = value;
+            if (inMoveSelection)
+            {
+                selection = 0;
+                SetItems(moveSlots.Take(_pokemon.Moves.Count).ToList());
+                effectsPane.SetActive(true);
+                SetMoveDetails(selection);
+            }
+            else
+            {
+                ClearItems();
+                effectsPane.SetActive(false);
+            }
+        }
+    }
 
     Pokemon _pokemon;
+    private bool inMoveSelection;
+
+    public override void HandleUpdate()
+    {
+        if (InMoveSelection)
+            base.HandleUpdate();
+    }
+    public override void UpdateSelectionUI()
+    {
+        base.UpdateSelectionUI();
+        SetMoveDetails(selection);
+    }
+
     public void SetBasicDetails(Pokemon pokemon)
     {
         _pokemon = pokemon;
@@ -54,7 +99,7 @@ public class SummaryScreenUI : MonoBehaviour
                 break;
         }
     }
-    
+
     private void SetSkills(Pokemon pokemon)
     {
         hpText.text = $"{pokemon.HP}/{pokemon.MaxHP}";
@@ -91,4 +136,13 @@ public class SummaryScreenUI : MonoBehaviour
             }
         }
     }
+
+    private void SetMoveDetails(int selection)
+    {
+        var move = _pokemon.Moves[selection];
+        descriptionText.text = move.Base.Desc;
+        powerText.text = move.Base.Power + "";
+        accuracyText.text = move.Base.Accuracy + "";
+    }
+
 }

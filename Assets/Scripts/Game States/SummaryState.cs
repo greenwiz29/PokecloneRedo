@@ -37,52 +37,67 @@ public class SummaryState : State<GameController>
     int selectedPage = 0;
     public override void Execute()
     {
-        // Pokemon selection
-        int prevIndex = SelectedPokemonIndex;
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (!summaryScreen.InMoveSelection)
         {
-            SelectedPokemonIndex++;
-            if (SelectedPokemonIndex >= playerParty.Count)
+            // Pokemon selection
+            int prevIndex = SelectedPokemonIndex;
+            if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                SelectedPokemonIndex = 0;
+                SelectedPokemonIndex++;
+                if (SelectedPokemonIndex >= playerParty.Count)
+                {
+                    SelectedPokemonIndex = 0;
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                SelectedPokemonIndex--;
+                if (SelectedPokemonIndex < 0)
+                {
+                    SelectedPokemonIndex = playerParty.Count - 1;
+                }
+            }
+
+            if (SelectedPokemonIndex != prevIndex)
+            {
+                summaryScreen.SetBasicDetails(playerParty[SelectedPokemonIndex]);
+                summaryScreen.ShowPage(selectedPage);
+            }
+
+            // Page selection
+            int prevPage = selectedPage;
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                selectedPage = Mathf.Abs(selectedPage - 1) % 2;
+            }
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                selectedPage = (selectedPage + 1) % 2;
+            }
+
+            if (selectedPage != prevPage)
+            {
+                summaryScreen.ShowPage(selectedPage);
             }
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            SelectedPokemonIndex--;
-            if (SelectedPokemonIndex < 0)
+            if (selectedPage == 1 && !summaryScreen.InMoveSelection)
+                summaryScreen.InMoveSelection = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (summaryScreen.InMoveSelection)
+                summaryScreen.InMoveSelection = false;
+            else
             {
-                SelectedPokemonIndex = playerParty.Count - 1;
+                gc.stateMachine.Pop();
+                return;
             }
         }
 
-        if (SelectedPokemonIndex != prevIndex)
-        {
-            summaryScreen.SetBasicDetails(playerParty[SelectedPokemonIndex]);
-            summaryScreen.ShowPage(selectedPage);
-        }
-
-        // Page selection
-        int prevPage = selectedPage;
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            selectedPage = Mathf.Abs(selectedPage - 1) % 2;
-        }
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            selectedPage = (selectedPage + 1) % 2;
-        }
-
-        if (selectedPage != prevPage)
-        {
-            summaryScreen.ShowPage(selectedPage);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            gc.stateMachine.Pop();
-            return;
-        }
+        summaryScreen.HandleUpdate();
     }
 
     public override void Exit()
