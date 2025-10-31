@@ -5,7 +5,7 @@ public class MenuSelectionMethods
     static float selectionTimer = 0.2f;
     public static void HandleListSelection(ref int selection, int maxOptions)
     {
-        float v = Input.GetAxis("Vertical");
+        float v = Input.GetAxisRaw("Vertical");
 
         if (selectionTimer == 0 && Mathf.Abs(v) > 0.2f)
         {
@@ -28,7 +28,7 @@ public class MenuSelectionMethods
 
     public static void HandleCategorySelection(ref int selectedCategory, int maxOptions)
     {
-        float h = Input.GetAxis("Horizontal");
+        float h = Input.GetAxisRaw("Horizontal");
 
         if (selectionTimer == 0 && Mathf.Abs(h) > 0.2f)
         {
@@ -51,8 +51,8 @@ public class MenuSelectionMethods
 
     public static void HandleGridSelection(ref int selection, int maxOptions, int columns = 2)
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        float h = Input.GetAxisRaw("Horizontal");
+        float v = Input.GetAxisRaw("Vertical");
 
         if (selectionTimer == 0 && (Mathf.Abs(h) > 0.2f || Mathf.Abs(v) > 0.2f))
         {

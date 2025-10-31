@@ -17,6 +17,9 @@ public class PartyState : State<GameController>
         I = this;
     }
 
+    PokemonParty playerParty;
+    bool isSwitchingPosition;
+    int selectedIndexForSwitching = 0;
     GameController gc;
     public override void Enter(GameController owner)
     {
@@ -26,6 +29,7 @@ public class PartyState : State<GameController>
         partyScreen.SetSelectionSettings(GDEUtils.UI.SelectionMode.GRID, 2);
         partyScreen.OnSelected += OnPokemonSelected;
         partyScreen.OnBack += OnBack;
+        playerParty = PokemonParty.GetPlayerParty();
     }
 
     public override void Execute()
@@ -60,7 +64,6 @@ public class PartyState : State<GameController>
     private void OnPokemonSelected(int selection)
     {
         StartCoroutine(PokemonSelectedAction(selection));
-
     }
 
     IEnumerator GoToUseItemState()
@@ -125,6 +128,22 @@ public class PartyState : State<GameController>
         }
         else
         {
+            if (isSwitchingPosition)
+            {
+                if (selectedIndexForSwitching == selection)
+                {
+                    partyScreen.SetMessageText($"You can't switch {SelectedPokemon.Name} with itself!");
+                    yield break;
+                }
+
+                isSwitchingPosition = false;
+                // Swap pokemon
+                (playerParty.Pokemon[selection], playerParty.Pokemon[selectedIndexForSwitching]) = (playerParty.Pokemon[selectedIndexForSwitching], playerParty.Pokemon[selection]);
+                playerParty.PartyUpdated();
+
+                yield break;
+            }
+
             DynamicMenuState.I.MenuItems = new List<string>() { "Summary", "Switch", "Cancel" };
             yield return gc.stateMachine.PushAndWait(DynamicMenuState.I);
             int result;
@@ -140,6 +159,9 @@ public class PartyState : State<GameController>
                         break;
                     case 1:
                         // Switch
+                        isSwitchingPosition = true;
+                        selectedIndexForSwitching = selection;
+                        partyScreen.SetMessageText("Choose a Pokemon to swap spots with.");
                         break;
                     case 2:
                     // Cancel

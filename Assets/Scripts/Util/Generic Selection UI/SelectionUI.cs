@@ -35,7 +35,7 @@ namespace GDEUtils.UI
         
         public void ClearItems()
         {
-            items.ForEach(i => i.Clear());
+            items?.ForEach(i => i.Clear());
             items = null;
         }
 
