@@ -31,18 +31,21 @@ public class GameMenuState : State<GameController>
         menuController.SetSelectionSettings(GDEUtils.UI.SelectionMode.LIST);
         switch (selectedItem)
         {
-            case 0: // Pokemon
+            case 0: // Storage
+                gc.stateMachine.Push(StorageState.I);
+                break;
+            case 1: // Pokemon
                 if (gc.Player.Party.Pokemon.Count > 0)
                     gc.stateMachine.Push(PartyState.I);
                 break;
-            case 1: // Bag
+            case 2: // Bag
                 gc.stateMachine.Push(InventoryState.I);
                 break;
-            case 2: // Save
+            case 3: // Save
                 SavingSystem.i.Save("saveSlot1");
                 OnBack();
                 break;
-            case 3: // Load
+            case 4: // Load
                 SavingSystem.i.Load("saveSlot1");
                 OnBack();
                 break;

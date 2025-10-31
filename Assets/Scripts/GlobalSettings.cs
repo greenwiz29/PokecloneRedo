@@ -4,7 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public class GlobalSettings : MonoSingleton<GlobalSettings>
 {
-    [SerializeField] Color defaultFontColor, highlightedColor;
+    [SerializeField] Color defaultFontColor, highlightedTextColor, highlightedImageColor;
     [SerializeField] LayerMask solidObjectsLayer, interactablesLayer, grassLayer, playerLayer, fovLayer, portalLayer, triggersLayer, ledgesLayer, waterLayer;
     [SerializeField] Color psnColor, brnColor, slpColor, parColor, frzColor;
     [SerializeField] float sellFactor = 0.85f;
@@ -12,7 +12,8 @@ public class GlobalSettings : MonoSingleton<GlobalSettings>
     Dictionary<ConditionID, Color> statusColors;
 
     public Color DefaultFontColor => defaultFontColor;
-    public Color HighlightedColor => highlightedColor;
+    public Color HighlightedTextColor => highlightedTextColor;
+    public Color HighlightedImageColor => highlightedImageColor;
     public LayerMask SolidObjectsLayer => solidObjectsLayer;
     public LayerMask InteractablesLayer => interactablesLayer;
     public LayerMask GrassLayer => grassLayer;

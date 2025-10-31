@@ -55,7 +55,7 @@ public class BattleUnit : MonoBehaviour
 
     public void SetSelected(bool isSelected)
     {
-        image.color = isSelected ? GlobalSettings.I.HighlightedColor : originalColor;
+        image.color = isSelected ? GlobalSettings.I.HighlightedTextColor : originalColor;
         // TODO: highligt the unit's HUD as well
     }
 

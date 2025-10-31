@@ -47,7 +47,7 @@ public class PartyMemberUI : MonoBehaviour
     {
         if (selected)
         {
-            nameText.color = GlobalSettings.I.HighlightedColor;
+            nameText.color = GlobalSettings.I.HighlightedTextColor;
         }
         else
         {

@@ -64,7 +64,7 @@ public class BattleDialogBox : MonoBehaviour
         for (int i = 0; i < actionTexts.Count; i++)
         {
             if (i == selection)
-                actionTexts[i].color = GlobalSettings.I.HighlightedColor;
+                actionTexts[i].color = GlobalSettings.I.HighlightedTextColor;
             else
                 actionTexts[i].color = GlobalSettings.I.DefaultFontColor;
         }
@@ -74,13 +74,13 @@ public class BattleDialogBox : MonoBehaviour
     {
         if (yesSelected)
         {
-            yesText.color = GlobalSettings.I.HighlightedColor;
+            yesText.color = GlobalSettings.I.HighlightedTextColor;
             noText.color = GlobalSettings.I.DefaultFontColor;
         }
         else
         {
             yesText.color = GlobalSettings.I.DefaultFontColor;
-            noText.color = GlobalSettings.I.HighlightedColor;
+            noText.color = GlobalSettings.I.HighlightedTextColor;
         }
     }
 
@@ -100,7 +100,7 @@ public class BattleDialogBox : MonoBehaviour
 		for (int i = 0; i < moveTexts.Count; i++)
 		{
 			if (i == selection)
-				moveTexts[i].color = GlobalSettings.I.HighlightedColor;
+				moveTexts[i].color = GlobalSettings.I.HighlightedTextColor;
 			else
 				moveTexts[i].color = GlobalSettings.I.DefaultFontColor;
 		}

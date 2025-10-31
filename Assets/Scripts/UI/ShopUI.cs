@@ -83,7 +83,7 @@ public class ShopUI : MonoBehaviour
         {
             if (i == selection)
             {
-                slotUIList[i].NameText.color = GlobalSettings.I.HighlightedColor;
+                slotUIList[i].NameText.color = GlobalSettings.I.HighlightedTextColor;
 
                 var item = availableItems[i];
                 itemIcon.sprite = item.Icon;
