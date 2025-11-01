@@ -1,18 +1,24 @@
 using System.Collections.Generic;
+using System.Linq;
 using GDEUtils.UI;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PokemonStorageUI : SelectionUI<ImageSlot>
 {
     [SerializeField] List<ImageSlot> boxSlots;
+    [SerializeField] Image movingPokemonImage;
+    [SerializeField] float movingImageOffset = 50f;
 
     List<BoxPartySlotUI> partySlots = new List<BoxPartySlotUI>();
     List<BoxSlotUI> boxSlotsUI = new List<BoxSlotUI>();
+    List<Image> boxSlotImages = new List<Image>();
 
     PokemonParty party;
     PokemonStorageBox storageBoxes;
     public int SelectedBox { get; private set; } = 0;
     int columns = 8;
+
     void Awake()
     {
         foreach (var slot in boxSlots)
@@ -29,6 +35,9 @@ public class PokemonStorageUI : SelectionUI<ImageSlot>
         }
         party = PokemonParty.GetPlayerParty();
         storageBoxes = PokemonStorageBox.GetPlayerStorageBoxes();
+        boxSlotImages = boxSlots.Select(
+            b => b.transform.GetChild(0).GetComponent<Image>()).ToList();
+        movingPokemonImage.gameObject.SetActive(false);
     }
 
     void Start()
@@ -43,6 +52,16 @@ public class PokemonStorageUI : SelectionUI<ImageSlot>
         SetSelectionSettings(SelectionMode.GRID, columns);
     }
 
+    public override void UpdateSelectionUI()
+    {
+        base.UpdateSelectionUI();
+
+        if (movingPokemonImage.gameObject.activeSelf)
+        {
+            movingPokemonImage.transform.position =
+                boxSlotImages[selection].transform.position + Vector3.up * movingImageOffset;
+        }
+    }
     public void SetDataInPartySlots()
     {
         if (!didStart)
@@ -99,6 +118,8 @@ public class PokemonStorageUI : SelectionUI<ImageSlot>
             int boxSlotIndex = slotIndex - (slotIndex / columns + 1);
             storageBoxes.AddPokemon(pokemon, SelectedBox, boxSlotIndex);
         }
+
+        movingPokemonImage.gameObject.SetActive(false);
     }
 
     public Pokemon TakePokemonFromSlot(int slotIndex)
@@ -121,6 +142,13 @@ public class PokemonStorageUI : SelectionUI<ImageSlot>
             pokemon = storageBoxes.GetPokemon(SelectedBox, boxSlotIndex);
             storageBoxes.RemovePokemon(SelectedBox, boxSlotIndex);
         }
+
+        movingPokemonImage.sprite = boxSlotImages[slotIndex].sprite;
+        movingPokemonImage.transform.position =
+            boxSlotImages[slotIndex].transform.position + Vector3.up * movingImageOffset;
+        boxSlotImages[slotIndex].color = GlobalSettings.I.Transparent;
+        movingPokemonImage.gameObject.SetActive(true);
+
         return pokemon;
     }
 }

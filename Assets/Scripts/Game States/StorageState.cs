@@ -65,9 +65,12 @@ public class StorageState : State<GameController>
                 && storageUI.IsPartySlot(secondSlotIndex))
             {
                 storageUI.PutPokemonInSlot(pokemonToMove, firstSlotIndex);
+
+                storageUI.SetDataInPartySlots();
+                storageUI.SetDataInStorageSlots();
                 return;
             }
-            
+
             storageUI.PutPokemonInSlot(pokemonToMove, secondSlotIndex);
             if (secondPokemon != null)
                 storageUI.PutPokemonInSlot(secondPokemon, firstSlotIndex);
@@ -86,6 +89,9 @@ public class StorageState : State<GameController>
         {
             isMovingPokemon = false;
             storageUI.PutPokemonInSlot(pokemonToMove, selectedSlotToMove);
+            
+            storageUI.SetDataInPartySlots();
+            storageUI.SetDataInStorageSlots();
         }
         else
             gc.stateMachine.Pop();

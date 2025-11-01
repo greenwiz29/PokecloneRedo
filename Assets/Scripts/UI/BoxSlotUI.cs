@@ -16,6 +16,6 @@ public class BoxSlotUI : MonoBehaviour
     public void ClearData()
     {
         image.sprite = null;
-        image.color = new Color(255, 255, 255, 0);
+        image.color = GlobalSettings.I.Transparent;
     }
 }

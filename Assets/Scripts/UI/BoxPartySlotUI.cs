@@ -20,6 +20,6 @@ public class BoxPartySlotUI : MonoBehaviour
         nameText.text = "";
         lvlText.text = "";
         image.sprite = null;
-        image.color = new Color(255, 255, 255, 0);
+        image.color = GlobalSettings.I.Transparent;
     }
 }

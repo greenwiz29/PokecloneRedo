@@ -27,6 +27,7 @@ public class GlobalSettings : MonoSingleton<GlobalSettings>
     public LayerMask CollisionLayers => solidObjectsLayer | interactablesLayer | playerLayer | waterLayer;
 
 	public float SellFactor { get => sellFactor; set => sellFactor = value; }
+    public Color Transparent = new Color(1, 1, 1, 0);
 
 	public Color GetStatusColor(ConditionID condition) => statusColors[condition];
 
