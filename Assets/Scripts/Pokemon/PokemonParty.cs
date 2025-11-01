@@ -47,17 +47,18 @@ public class PokemonParty : MonoBehaviour
         return party.Where(p => p.HP > 0).Take(count).ToList();
     }
 
-    public void AddPokemon(Pokemon newPokemon)
+    public AddedToDestination AddPokemon(Pokemon newPokemon)
     {
         if (party.Count < 6)
         {
             party.Add(newPokemon);
             PartyUpdated();
+            return AddedToDestination.PARTY;
         }
         else
         {
-            // TODO: transfer to PC
-            // PokemonStorageBox.GetPlayerStorageBoxes().AddPokemon(newPokemon, 0, );
+            PokemonStorageBox.GetPlayerStorageBoxes().AddPokemon(newPokemon);
+            return AddedToDestination.STORAGE;
         }
     }
 
@@ -72,3 +73,4 @@ public class PokemonParty : MonoBehaviour
         OnUpdated?.Invoke();
     }
 }
+public enum AddedToDestination { PARTY, STORAGE }

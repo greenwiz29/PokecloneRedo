@@ -397,7 +397,7 @@ public class BattleSystem : MonoBehaviour
         foreach (var unit in playerUnits)
         {
             unit.Clear();
-            unit.gameObject.SetActive(false);            
+            unit.gameObject.SetActive(false);
         }
 
         foreach (var unit in enemyUnits)
@@ -504,7 +504,18 @@ public class BattleSystem : MonoBehaviour
         yield return dialogBox.TypeDialog($"{enemyUnit.Pokemon.Name} was caught!");
         yield return pokeball.DOFade(0, 1.5f).WaitForCompletion();
 
-        playerParty.AddPokemon(enemyUnit.Pokemon);
+        var dest = playerParty.AddPokemon(enemyUnit.Pokemon);
+        string destMessage = "";
+        switch (dest)
+        {
+            case AddedToDestination.PARTY:
+                destMessage = "added to your party!";
+                break;
+            case AddedToDestination.STORAGE:
+                destMessage = "sent to storage!";
+                break;
+        }
+        yield return dialogBox.TypeDialog($"{enemyUnit.Pokemon.Name} was {destMessage}");
 
         for (int i = 0; i < ActivePlayerUnitsCount; i++)
         {

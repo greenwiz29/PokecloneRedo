@@ -22,11 +22,24 @@ public class PokemonGiver : MonoBehaviour, ISavable
         var pokemon = pokemonToGive[selection];
         pokemon.Init();
 
-        player.GetComponent<PokemonParty>().AddPokemon(pokemon);
+        var dest = player.GetComponent<PokemonParty>().AddPokemon(pokemon);
 
         Used = true;
 
         yield return DialogManager.I.ShowDialogText($"You received {pokemon.Name}");
+        
+        string destMessage = "";
+        switch (dest)
+        {
+            case AddedToDestination.PARTY:
+                destMessage = "added to your party!";
+                break;
+            case AddedToDestination.STORAGE:
+                destMessage = "sent to storage!";
+                break;
+        }
+        yield return DialogManager.I.ShowDialogText($"{pokemon.Name} was {destMessage}");
+
     }
 
     public bool CanBeGiven()

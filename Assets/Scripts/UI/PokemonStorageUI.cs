@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GDEUtils.UI;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,7 @@ public class PokemonStorageUI : SelectionUI<ImageSlot>
     [SerializeField] List<ImageSlot> boxSlots;
     [SerializeField] Image movingPokemonImage;
     [SerializeField] float movingImageOffset = 50f;
+    [SerializeField] TMP_Text boxNameText;
 
     List<BoxPartySlotUI> partySlots = new List<BoxPartySlotUI>();
     List<BoxSlotUI> boxSlotsUI = new List<BoxSlotUI>();
@@ -52,6 +54,33 @@ public class PokemonStorageUI : SelectionUI<ImageSlot>
         SetSelectionSettings(SelectionMode.GRID, columns);
     }
 
+    public override void HandleUpdate()
+    {
+        int prevBox = SelectedBox;
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            SelectedBox--;
+            if (SelectedBox < 0)
+                SelectedBox = storageBoxes.MaxBoxes - 1;
+        }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            SelectedBox++;
+            if (SelectedBox == storageBoxes.MaxBoxes)
+                SelectedBox = 0;
+        }
+
+        if (SelectedBox != prevBox)
+        {
+            boxNameText.text = $"Box {SelectedBox + 1}";
+            SetDataInStorageSlots();
+            UpdateSelectionUI();
+            return;
+        }
+
+        base.HandleUpdate();
+    }
+
     public override void UpdateSelectionUI()
     {
         base.UpdateSelectionUI();
@@ -62,6 +91,7 @@ public class PokemonStorageUI : SelectionUI<ImageSlot>
                 boxSlotImages[selection].transform.position + Vector3.up * movingImageOffset;
         }
     }
+
     public void SetDataInPartySlots()
     {
         if (!didStart)
@@ -134,12 +164,18 @@ public class PokemonStorageUI : SelectionUI<ImageSlot>
             }
 
             pokemon = party.Pokemon[partyIndex];
+            if (pokemon == null)
+                return null;
+
             party.Pokemon[partyIndex] = null;
         }
         else
         {
             int boxSlotIndex = slotIndex - (slotIndex / columns + 1);
             pokemon = storageBoxes.GetPokemon(SelectedBox, boxSlotIndex);
+            if (pokemon == null)
+                return null;
+
             storageBoxes.RemovePokemon(SelectedBox, boxSlotIndex);
         }
 
