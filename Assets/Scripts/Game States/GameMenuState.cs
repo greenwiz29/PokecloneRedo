@@ -1,3 +1,4 @@
+using System.Collections;
 using GDEUtils.StateMachine;
 using UnityEngine;
 
@@ -42,14 +43,30 @@ public class GameMenuState : State<GameController>
                 gc.stateMachine.Push(InventoryState.I);
                 break;
             case 3: // Save
-                SavingSystem.i.Save("saveSlot1");
-                OnBack();
+                StartCoroutine(SaveSelected());
                 break;
             case 4: // Load
-                SavingSystem.i.Load("saveSlot1");
-                OnBack();
+                StartCoroutine(LoadSelected());
                 break;
         }
+    }
+
+    IEnumerator SaveSelected()
+    {
+        yield return Fader.I.FadeIn(0.5f);
+        // TODO: select save slot, and confirm if overwriting
+        SavingSystem.i.Save("saveSlot1");
+        yield return Fader.I.FadeOut(0.5f);
+        OnBack();
+    }
+
+    IEnumerator LoadSelected()
+    {
+        yield return Fader.I.FadeIn(0.5f);
+        // TODO: select save slot
+        SavingSystem.i.Load("saveSlot1");
+        yield return Fader.I.FadeOut(0.5f);
+        OnBack();
     }
 
     public override void Execute()
