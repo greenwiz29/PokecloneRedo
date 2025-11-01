@@ -7,6 +7,7 @@ public class ImageSlot : MonoBehaviour, ISelectableItem
     void Awake()
     {
         bgImage = GetComponent<Image>();
+        originalColor = bgImage.color;
     }
 
     Color originalColor;
@@ -17,7 +18,6 @@ public class ImageSlot : MonoBehaviour, ISelectableItem
 
     public void Init()
     {
-        originalColor = bgImage.color;
     }
     
     public void OnSelectionChanged(bool selected)

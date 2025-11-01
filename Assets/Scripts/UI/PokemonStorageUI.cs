@@ -12,6 +12,7 @@ public class PokemonStorageUI : SelectionUI<ImageSlot>
     PokemonParty party;
     PokemonStorageBox storageBoxes;
     public int SelectedBox { get; private set; } = 0;
+    int columns = 8;
     void Awake()
     {
         foreach (var slot in boxSlots)
@@ -39,7 +40,7 @@ public class PokemonStorageUI : SelectionUI<ImageSlot>
             Awake();
 
         SetItems(boxSlots);
-        SetSelectionSettings(SelectionMode.GRID, 8);
+        SetSelectionSettings(SelectionMode.GRID, columns);
     }
 
     public void SetDataInPartySlots()
@@ -55,7 +56,7 @@ public class PokemonStorageUI : SelectionUI<ImageSlot>
             }
             else
             {
-                partySlots[i].Clear();
+                partySlots[i].ClearData();
             }
         }
     }
@@ -70,7 +71,56 @@ public class PokemonStorageUI : SelectionUI<ImageSlot>
                 boxSlotsUI[i].SetData(pokemon);
             }
             else
-                boxSlotsUI[i].Clear();
+                boxSlotsUI[i].ClearData();
         }
+    }
+
+    public bool IsPartySlot(int slotIndex)
+    {
+        return slotIndex % columns == 0;
+    }
+
+    public void PutPokemonInSlot(Pokemon pokemon, int slotIndex)
+    {
+        if (IsPartySlot(slotIndex))
+        {
+            int partyIndex = slotIndex / columns;
+            if (partyIndex >= party.Pokemon.Count)
+            {
+                party.Pokemon.Add(pokemon);
+            }
+            else
+            {
+                party.Pokemon[partyIndex] = pokemon;
+            }
+        }
+        else
+        {
+            int boxSlotIndex = slotIndex - (slotIndex / columns + 1);
+            storageBoxes.AddPokemon(pokemon, SelectedBox, boxSlotIndex);
+        }
+    }
+
+    public Pokemon TakePokemonFromSlot(int slotIndex)
+    {
+        Pokemon pokemon;
+        if (IsPartySlot(slotIndex))
+        {
+            int partyIndex = slotIndex / columns;
+            if (partyIndex >= party.Pokemon.Count)
+            {
+                return null;
+            }
+
+            pokemon = party.Pokemon[partyIndex];
+            party.Pokemon[partyIndex] = null;
+        }
+        else
+        {
+            int boxSlotIndex = slotIndex - (slotIndex / columns + 1);
+            pokemon = storageBoxes.GetPokemon(SelectedBox, boxSlotIndex);
+            storageBoxes.RemovePokemon(SelectedBox, boxSlotIndex);
+        }
+        return pokemon;
     }
 }
