@@ -1,3 +1,4 @@
+using System;
 using GDEUtils.StateMachine;
 using UnityEngine;
 
@@ -15,6 +16,10 @@ public class StorageState : State<GameController>
     {
         gc = owner;
         storageUI.gameObject.SetActive(true);
+        storageUI.SetDataInPartySlots();
+        storageUI.SetDataInStorageSlots();
+        storageUI.OnBack += OnBack;
+        storageUI.OnSelected += OnSlotSelected;
     }
 
     public override void Execute()
@@ -25,5 +30,18 @@ public class StorageState : State<GameController>
     public override void Exit()
     {
         storageUI.gameObject.SetActive(false);
+        storageUI.OnBack -= OnBack;
+        storageUI.OnSelected -= OnSlotSelected;
     }
+
+    private void OnSlotSelected(int selection)
+    {
+        
+    }
+
+    private void OnBack()
+    {
+        gc.stateMachine.Pop();
+    }
+
 }

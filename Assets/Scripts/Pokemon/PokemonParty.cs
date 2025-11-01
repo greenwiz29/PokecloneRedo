@@ -57,6 +57,7 @@ public class PokemonParty : MonoBehaviour
         else
         {
             // TODO: transfer to PC
+            // PokemonStorageBox.GetPlayerStorageBoxes().AddPokemon(newPokemon, 0, );
         }
     }
 

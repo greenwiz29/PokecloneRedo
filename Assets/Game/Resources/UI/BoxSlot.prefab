@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2239814758057272123}
   - component: {fileID: 6053082874686493913}
   - component: {fileID: 8783110028805061965}
+  - component: {fileID: 4258442019029103943}
   m_Layer: 0
   m_Name: BoxSlot
   m_TagString: Untagged
@@ -89,6 +90,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b12a82c0de7ce1dfa6b55442a17a071, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ImageSlot
+--- !u!114 &4258442019029103943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3848101116378481692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e805d1e665450bfba5ea2285815d663, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoxSlotUI
+  image: {fileID: 8190374915032328553}
 --- !u!1 &8642949541360849085
 GameObject:
   m_ObjectHideFlags: 0

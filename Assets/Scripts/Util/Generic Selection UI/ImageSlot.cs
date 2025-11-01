@@ -18,7 +18,6 @@ public class ImageSlot : MonoBehaviour, ISelectableItem
     public void Init()
     {
         originalColor = bgImage.color;
-        Clear();
     }
     
     public void OnSelectionChanged(bool selected)
