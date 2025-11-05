@@ -57,6 +57,11 @@ public class SavingSystem : MonoBehaviour
         File.Delete(GetPath(saveFile));
     }
 
+    public bool CheckIfSaveExists(string saveFile)
+    {
+        return File.Exists(GetPath(saveFile));
+    }
+
     // Used to capture states of all savable objects in the game
     private void CaptureState(Dictionary<string, object> state)
     {

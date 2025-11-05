@@ -3,6 +3,10 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+#if UNITY_EDITOR
+using UnityEditor.SceneManagement;
+#endif
+
 public class SceneDetails : MonoBehaviour
 {
     [SerializeField] List<SceneDetails> connectedScenes;
@@ -25,7 +29,7 @@ public class SceneDetails : MonoBehaviour
 
             // Unload any unconnected scenes
             var prevScene = GameController.I.PreviousScene;
-            if (GameController.I.PreviousScene != null)
+            if (prevScene != null)
             {
                 var previouslyLoadedScenes = prevScene.connectedScenes;
                 foreach (var scene in previouslyLoadedScenes)
@@ -46,13 +50,12 @@ public class SceneDetails : MonoBehaviour
     {
         if (!IsLoaded)
         {
-            var loadOp = SceneManager.LoadSceneAsync(gameObject.name, LoadSceneMode.Additive);
+            var operation = SceneManager.LoadSceneAsync(gameObject.name, LoadSceneMode.Additive);
             IsLoaded = true;
 
-            loadOp.completed += op =>
+            operation.completed += (AsyncOperation op) =>
             {
-                // Restore state for all SavableEntity objects
-                GetSavableEntitiesInScene();
+                savableEntities = GetSavableEntitiesInScene();
                 SavingSystem.i.RestoreEntityStates(savableEntities);
             };
         }
@@ -71,11 +74,33 @@ public class SceneDetails : MonoBehaviour
         }
     }
 
-    private void GetSavableEntitiesInScene()
+#if UNITY_EDITOR
+    [ContextMenu("Open Scene")]
+    public void OpenSceneInEditor()
+    {
+        if (!EditorSceneManager.GetSceneByName(gameObject.name).isLoaded)
+        {
+            string path = $"Assets/Scenes/{gameObject.name}.unity";
+            EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
+        }
+    }
+
+    [ContextMenu("Close Scene")]
+    public void CloseSceneInEditor()
+    {
+        var scene = EditorSceneManager.GetSceneByName(gameObject.name);
+        if (scene.isLoaded)
+        {
+            EditorSceneManager.CloseScene(scene, true);
+        }
+    }
+#endif
+
+    List<SavableEntity> GetSavableEntitiesInScene()
     {
         var currScene = SceneManager.GetSceneByName(gameObject.name);
-        
-        savableEntities = FindObjectsByType<SavableEntity>(FindObjectsSortMode.None).Where(x => x.gameObject.scene == currScene).ToList();
+        var savableEntities = FindObjectsOfType<SavableEntity>().Where(x => x.gameObject.scene == currScene).ToList();
+        return savableEntities;
     }
 
 }
