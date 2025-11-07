@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConditionsDB
+public class StatusConditionsDB
 {
     public static void Init()
     {
@@ -14,11 +14,11 @@ public class ConditionsDB
         }
     }
 
-    public static Dictionary<ConditionID, Condition> Conditions { get; set; } = new Dictionary<ConditionID, Condition>()
+    public static Dictionary<StatusConditionID, StatusCondition> Conditions { get; set; } = new Dictionary<StatusConditionID, StatusCondition>()
     {
         {
-            ConditionID.psn,
-            new Condition()
+            StatusConditionID.psn,
+            new StatusCondition()
             {
                 Name = "Poison",
                 StartMessage = "has been poisoned",
@@ -31,8 +31,8 @@ public class ConditionsDB
             }
         },
         {
-            ConditionID.brn,
-            new Condition()
+            StatusConditionID.brn,
+            new StatusCondition()
             {
                 Name = "Burn",
                 StartMessage = "has been burned",
@@ -45,8 +45,8 @@ public class ConditionsDB
             }
         },
         {
-            ConditionID.par,
-            new Condition()
+            StatusConditionID.par,
+            new StatusCondition()
             {
                 Name = "Paralyzed",
                 StartMessage = "has been paralyzed. It may not be able to move!",
@@ -63,8 +63,8 @@ public class ConditionsDB
             }
         },
         {
-            ConditionID.frz,
-            new Condition()
+            StatusConditionID.frz,
+            new StatusCondition()
             {
                 Name = "Freeze",
                 StartMessage = "has been frozen. It may not be able to move!",
@@ -82,8 +82,8 @@ public class ConditionsDB
             }
         },
         {
-            ConditionID.slp,
-            new Condition()
+            StatusConditionID.slp,
+            new StatusCondition()
             {
                 Name = "Sleep",
                 StartMessage = "has fallen asleep.",
@@ -111,8 +111,8 @@ public class ConditionsDB
 
         // Volatile conditions
         {
-            ConditionID.confusion,
-            new Condition()
+            StatusConditionID.confusion,
+            new StatusCondition()
             {
                 Name = "Confusion",
                 StartMessage = "has become confused.",
@@ -149,11 +149,11 @@ public class ConditionsDB
         }
     };
 
-    public static float GetStatusBonus(Condition condition)
+    public static float GetStatusBonus(StatusCondition condition)
     {
         if (condition == null) return 1f;
         return condition.CatchBonus;
     }
 }
 
-public enum ConditionID { none, psn, brn, par, slp, frz, confusion }
+public enum StatusConditionID { none, psn, brn, par, slp, frz, confusion }

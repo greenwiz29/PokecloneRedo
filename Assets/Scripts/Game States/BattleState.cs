@@ -33,18 +33,19 @@ public class BattleState : State<GameController>
         gc.WorldCamera.gameObject.SetActive(false);
 
         var playerParty = gc.Player.GetComponent<PokemonParty>();
+        var mapArea = gc.CurrentScene.GetComponent<MapArea>();
         if (Trainer == null)
         {
             var wildPokemon = gc.CurrentScene.GetComponent<MapArea>().GetRandomWildPokemon(Trigger);
             var wildCopy = new Pokemon(wildPokemon.Base, wildPokemon.Level);
 
-            battleSystem.StartBattle(playerParty, wildCopy, Trigger);
+            battleSystem.StartBattle(playerParty, wildCopy, Trigger, mapArea.Weather);
         }
         else
         {
             var trainerParty = Trainer.GetComponent<PokemonParty>();
 
-            battleSystem.StartTrainerBattle(playerParty, trainerParty, Trigger, Trainer.BattleUnitCount);
+            battleSystem.StartTrainerBattle(playerParty, trainerParty, Trigger, Trainer.BattleUnitCount, mapArea.Weather);
         }
 
         battleSystem.OnBattleOver += EndBattle;

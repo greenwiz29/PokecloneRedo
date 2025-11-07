@@ -6,6 +6,7 @@ using UnityEngine;
 public class MapArea : MonoBehaviour
 {
     [SerializeField] List<PokemonEncounterRecord> wildPoolGrass, wildPoolInWater;
+    [SerializeField] WeatherConditionID weather = WeatherConditionID.none;
 
     [SerializeField]
     [HideInInspector]
@@ -14,6 +15,8 @@ public class MapArea : MonoBehaviour
     [SerializeField]
     [HideInInspector]
     int totalChanceWater;
+
+    public WeatherConditionID Weather => weather;
 
     void OnValidate()
     {

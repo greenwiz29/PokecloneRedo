@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,6 +73,11 @@ public class RunTurnState : State<BattleSystem>
             {
                 yield break;
             }
+        }
+
+        if (bs.Field?.Weather != null)
+        {
+            yield return RunWeatherEffects(bs.Field.Weather);
         }
         bs.ClearBattleActions();
 
@@ -171,11 +177,11 @@ public class RunTurnState : State<BattleSystem>
             }
         }
         // Conditions
-        if (effects.Status != ConditionID.none)
+        if (effects.Status != StatusConditionID.none)
         {
             target.Pokemon.SetStatus(effects.Status);
         }
-        if (effects.VolatileStatus != ConditionID.none)
+        if (effects.VolatileStatus != StatusConditionID.none)
         {
             target.Pokemon.SetVolatileStatus(effects.VolatileStatus);
         }
@@ -196,6 +202,21 @@ public class RunTurnState : State<BattleSystem>
         if (source.Pokemon.HP <= 0)
         {
             yield return HandlePokemonFainted(source, null);
+        }
+    }
+
+    private IEnumerator RunWeatherEffects(WeatherCondition weather)
+    {
+        var units = bs.PlayerUnits.Concat(bs.EnemyUnits);
+        foreach (var unit in units)
+        {
+            weather.OnWeatherEffect(unit.Pokemon);
+            yield return ShowStatusChanges(unit);
+
+            if(unit.Pokemon.HP <= 0)
+            {
+                yield return HandlePokemonFainted(unit);
+            }
         }
     }
 

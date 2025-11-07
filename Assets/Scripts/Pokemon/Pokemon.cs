@@ -51,8 +51,8 @@ public class Pokemon
     public Move CurrentMove { get; set; }
     public Dictionary<Stat, int> Stats { get; private set; }
     public Dictionary<Stat, int> StatBoosts { get; private set; }
-    public Condition Status { get; private set; }
-    public Condition VolatileStatus { get; private set; }
+    public StatusCondition Status { get; private set; }
+    public StatusCondition VolatileStatus { get; private set; }
     public int StatusTime { get; set; }
     public int VolatileStatusTime { get; set; }
     public Queue<StatusEvent> StatusChanges { get; private set; }
@@ -68,7 +68,7 @@ public class Pokemon
         _base.GrowthRate = saveData.growthRate;
 
         if (saveData.status != null)
-            Status = ConditionsDB.Conditions[saveData.status.Value];
+            Status = StatusConditionsDB.Conditions[saveData.status.Value];
         else
             Status = null;
 
@@ -316,23 +316,23 @@ public class Pokemon
         }
     }
 
-    public void SetStatus(ConditionID conditionID)
+    public void SetStatus(StatusConditionID conditionID)
     {
         if (Status != null)
             return;
 
-        Status = ConditionsDB.Conditions[conditionID];
+        Status = StatusConditionsDB.Conditions[conditionID];
         Status?.OnStart?.Invoke(this);
         AddStatusEvent($"{Base.Name} {Status.StartMessage}");
         OnStatusChanged?.Invoke();
     }
 
-    public void SetVolatileStatus(ConditionID conditionID)
+    public void SetVolatileStatus(StatusConditionID conditionID)
     {
         if (Status != null)
             return;
 
-        VolatileStatus = ConditionsDB.Conditions[conditionID];
+        VolatileStatus = StatusConditionsDB.Conditions[conditionID];
         VolatileStatus?.OnStart?.Invoke(this);
         AddStatusEvent($"{Base.Name} {VolatileStatus.StartMessage}");
     }
@@ -437,6 +437,11 @@ public class Pokemon
         int r = UnityEngine.Random.Range(0, movesWithPP.Count);
         return movesWithPP[r];
     }
+
+    public bool IsOfType(PokemonType type)
+    {
+        return type == Base.Type1 || type == Base.Type2;
+    }
 }
 
 public class DamageDetails
@@ -474,7 +479,7 @@ public class PokemonSaveData
     public int level;
     public int hp;
     public int exp;
-    public ConditionID? status;
+    public StatusConditionID? status;
     public List<MoveSaveData> moves;
     public GrowthRate growthRate;
 }

@@ -65,6 +65,7 @@ public class MoveSelectionState : State<BattleSystem>
     
     IEnumerator OnMoveSelectedAsync(int selection)
     {
+        // TODO: adjust to use the MoveTarget enum to determine what set of units to choose from
         int moveTarget = 0;
         if (bs.ActiveEnemyUnitsCount > 1)
         {

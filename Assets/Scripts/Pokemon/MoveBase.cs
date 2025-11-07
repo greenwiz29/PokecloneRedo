@@ -1,12 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum MoveType
-{
-    Physical,
-    Special,
-    Status,
-}
+public enum MoveType { Physical, Special, Status, }
 
 [CreateAssetMenu(fileName = "Move", menuName = "Pokemon/Create new move")]
 public class MoveBase : ScriptableObject
@@ -63,13 +58,13 @@ public class MoveEffects
 {
     [SerializeField] List<StatBoost> boosts;
 
-    [SerializeField] ConditionID status;
+    [SerializeField] StatusConditionID status;
 
-    [SerializeField] ConditionID volatileStatus;
+    [SerializeField] StatusConditionID volatileStatus;
 
     public List<StatBoost> Boosts => boosts;
-    public ConditionID Status => status;
-    public ConditionID VolatileStatus => volatileStatus;
+    public StatusConditionID Status => status;
+    public StatusConditionID VolatileStatus => volatileStatus;
 }
 
 [System.Serializable]
@@ -79,10 +74,4 @@ public class StatBoost
     public int boost;
 }
 
-public enum MoveTarget
-{
-    Foe,
-    Self,
-    Area,
-    Ally,
-}
+public enum MoveTarget { Foe, Self, Area, Ally, }

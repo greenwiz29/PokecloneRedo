@@ -9,7 +9,7 @@ public class GlobalSettings : MonoSingleton<GlobalSettings>
     [SerializeField] Color psnColor, brnColor, slpColor, parColor, frzColor;
     [SerializeField] float sellFactor = 0.85f;
 
-    Dictionary<ConditionID, Color> statusColors;
+    Dictionary<StatusConditionID, Color> statusColors;
 
     public Color DefaultFontColor => defaultFontColor;
     public Color HighlightedTextColor => highlightedTextColor;
@@ -29,18 +29,18 @@ public class GlobalSettings : MonoSingleton<GlobalSettings>
 	public float SellFactor { get => sellFactor; set => sellFactor = value; }
     public Color Transparent = new Color(1, 1, 1, 0);
 
-	public Color GetStatusColor(ConditionID condition) => statusColors[condition];
+	public Color GetStatusColor(StatusConditionID condition) => statusColors[condition];
 
     void Awake()
     {
         base.Awake();
         
-        statusColors = new Dictionary<ConditionID, Color>(){
-            {ConditionID.psn, psnColor},
-            {ConditionID.brn, brnColor},
-            {ConditionID.par, parColor},
-            {ConditionID.slp, slpColor},
-            {ConditionID.frz, frzColor}
+        statusColors = new Dictionary<StatusConditionID, Color>(){
+            {StatusConditionID.psn, psnColor},
+            {StatusConditionID.brn, brnColor},
+            {StatusConditionID.par, parColor},
+            {StatusConditionID.slp, slpColor},
+            {StatusConditionID.frz, frzColor}
         };
     }
 

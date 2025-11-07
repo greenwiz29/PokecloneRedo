@@ -58,8 +58,9 @@ public class BattleSystem : MonoBehaviour
     public int UnitCount => unitCount;
     public int ActivePlayerUnitsCount => playerUnits.Count(u => u.Pokemon != null && u.Pokemon.HP > 0);
     public int ActiveEnemyUnitsCount => enemyUnits.Count(u => u.Pokemon != null && u.Pokemon.HP > 0);
+    public BattleField Field { get; private set; }
 
-    public void StartBattle(PokemonParty playerParty, Pokemon wildPokemon, BattleTrigger trigger = BattleTrigger.LongGrass)
+    public void StartBattle(PokemonParty playerParty, Pokemon wildPokemon, BattleTrigger trigger = BattleTrigger.LongGrass, WeatherConditionID weatherId = WeatherConditionID.none)
     {
         this.trigger = trigger;
         this.unitCount = 1;
@@ -69,10 +70,10 @@ public class BattleSystem : MonoBehaviour
         isTrainerBattle = false;
         player = playerParty.GetComponent<PlayerController>();
 
-        StartCoroutine(SetupBattle());
+        StartCoroutine(SetupBattle(weatherId));
     }
 
-    public void StartTrainerBattle(PokemonParty playerParty, PokemonParty trainerParty, BattleTrigger trigger = BattleTrigger.LongGrass, int unitCount = 1)
+    public void StartTrainerBattle(PokemonParty playerParty, PokemonParty trainerParty, BattleTrigger trigger = BattleTrigger.LongGrass, int unitCount = 1, WeatherConditionID weatherId = WeatherConditionID.none)
     {
         this.trigger = trigger;
         this.unitCount = unitCount;
@@ -83,10 +84,10 @@ public class BattleSystem : MonoBehaviour
         player = playerParty.GetComponent<PlayerController>();
         trainer = trainerParty.GetComponent<TrainerController>();
 
-        StartCoroutine(SetupBattle());
+        StartCoroutine(SetupBattle(weatherId));
     }
 
-    public IEnumerator SetupBattle()
+    public IEnumerator SetupBattle(WeatherConditionID weatherId)
     {
         singleBattleElements.SetActive(unitCount == 1);
         multiBattleElements.SetActive(unitCount > 1);
@@ -104,9 +105,6 @@ public class BattleSystem : MonoBehaviour
 
         StateMachine = new StateMachine<BattleSystem>(this);
         battleActions = new List<BattleAction>();
-        EscapeAttempts = 0;
-        selectedUnit = 0;
-        IsBattleOver = false;
 
         for (int i = 0; i < unitCount; i++)
         {
@@ -163,6 +161,16 @@ public class BattleSystem : MonoBehaviour
 
         yield return dialogBox.TypeDialog($"Go, {pokemonNames}!");
 
+        Field = new BattleField();
+        if (weatherId != WeatherConditionID.none)
+        {
+            Field.SetWeather(weatherId);
+            yield return dialogBox.TypeDialog(Field.Weather.StartMessage);
+        }
+        
+        EscapeAttempts = 0;
+        selectedUnit = 0;
+        IsBattleOver = false;
         partyScreen.Init();
 
         StateMachine.ChangeState(ActionSelectionState.I);
@@ -533,7 +541,7 @@ public class BattleSystem : MonoBehaviour
             (3 * pokemon.MaxHP - 2 * pokemon.HP)
             * pokemon.Base.CatchRate
             * pokeball.CatchRateModifier
-            * ConditionsDB.GetStatusBonus(pokemon.Status)
+            * StatusConditionsDB.GetStatusBonus(pokemon.Status)
             / (3 * pokemon.MaxHP);
 
         if (a >= 255)

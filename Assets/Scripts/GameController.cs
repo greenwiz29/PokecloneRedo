@@ -26,7 +26,8 @@ public class GameController : MonoBehaviour
         // Cursor.lockState = CursorLockMode.Locked;
         // Cursor.visible = false;
 
-        ConditionsDB.Init();
+        StatusConditionsDB.Init();
+        WeatherConditionsDB.Init();
         PokemonDB.Init();
         MoveDB.Init();
         ItemsDB.Init();

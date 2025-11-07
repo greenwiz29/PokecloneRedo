@@ -99,7 +99,7 @@ public class SceneDetails : MonoBehaviour
     List<SavableEntity> GetSavableEntitiesInScene()
     {
         var currScene = SceneManager.GetSceneByName(gameObject.name);
-        var savableEntities = FindObjectsOfType<SavableEntity>().Where(x => x.gameObject.scene == currScene).ToList();
+        var savableEntities = FindObjectsByType<SavableEntity>(FindObjectsSortMode.None).Where(x => x.gameObject.scene == currScene).ToList();
         return savableEntities;
     }
 
