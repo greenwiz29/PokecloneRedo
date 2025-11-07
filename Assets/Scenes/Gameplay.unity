@@ -383,7 +383,7 @@ MonoBehaviour:
   - pokemon: {fileID: 11400000, guid: 8e69715726ca125c790fac7f23341fdb, type: 2}
     levelRange: {x: 4, y: 7}
     encounterRate: 100
-  weather: 1
+  weather: 0
   totalChance: 100
   totalChanceWater: 100
 --- !u!1001 &1447425507

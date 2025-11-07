@@ -383,10 +383,7 @@ public class Pokemon
         // TODO: make critRate constant
         if (UnityEngine.Random.value * 100f <= move.Base.CritChance)
             crit = 2f;
-
-        float type =
-            TypeChart.GetEffectiveness(move.Base.Type, Base.Type1)
-            * TypeChart.GetEffectiveness(move.Base.Type, Base.Type2);
+        float type = GetTypeEffectiveness(move.Base.Type);
 
         var damageDetails = new DamageDetails() { TypeEffectiveness = type, Crit = crit };
 
@@ -402,6 +399,12 @@ public class Pokemon
         ReduceHP(damage);
 
         return damageDetails;
+    }
+
+    public float GetTypeEffectiveness(PokemonType type)
+    {
+        return TypeChart.GetEffectiveness(type, Base.Type1)
+            * TypeChart.GetEffectiveness(type, Base.Type2);
     }
 
     public void ReduceHP(int damage, bool callUpdateEvent = false)

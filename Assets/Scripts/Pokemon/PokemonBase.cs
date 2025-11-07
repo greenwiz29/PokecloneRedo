@@ -18,12 +18,12 @@ public class PokemonBase : ScriptableObject
 
     [Header("Shiny")]
     [SerializeField] Sprite frontSpriteShiny;
-    [SerializeField] Sprite  backSpriteShiny;
+    [SerializeField] Sprite backSpriteShiny;
     [SerializeField] List<Sprite> walkDownSpritesShiny, walkUpSpritesShiny, walkLeftSpritesShiny, walkRightSpritesShiny;
 
     [Header("Stats")]
     [SerializeField] PokemonType type1;
-    [SerializeField] PokemonType  type2;
+    [SerializeField] PokemonType type2;
 
     // Base Stats
     [SerializeField] int maxHP, attack, defense, spAttack, spDefense, speed;
@@ -127,49 +127,11 @@ public class LearnableMove
     public int LevelLearned => levelLearned;
 }
 
-public enum PokemonType
-{
-    None,
-    Normal,
-    Fire,
-    Water,
-    Grass,
-    Flying,
-    Fighting,
-    Poison,
-    Electric,
-    Ground,
-    Rock,
-    Psychic,
-    Ice,
-    Bug,
-    Ghost,
-    Steel,
-    Dragon,
-    Dark,
-    Fairy,
-}
+public enum PokemonType { None, Normal, Fire, Water, Grass, Flying, Fighting, Poison, Electric, Ground, Rock, Psychic, Ice, Bug, Ghost, Steel, Dragon, Dark, Fairy, }
 
-public enum Stat
-{
-    Attack,
-    Defense,
-    SpAttack,
-    SpDefense,
-    Speed,
-    Accuracy,
-    Evasion,
-}
+public enum Stat { Attack, Defense, SpAttack, SpDefense, Speed, Accuracy, Evasion, }
 
-public enum GrowthRate
-{
-    Erratic,
-    Fast,
-    MediumFast,
-    MediumSlow,
-    Slow,
-    Fluctuating,
-}
+public enum GrowthRate { Erratic, Fast, MediumFast, MediumSlow, Slow, Fluctuating, }
 
 public class TypeChart
 {
