@@ -61,11 +61,6 @@ public class BattleHUD : MonoBehaviour
         yield return hpBar.SetStatSmooth((float)_pokemon.HP / _pokemon.MaxHP);
     }
 
-    public IEnumerator WaitForHPUpdate()
-    {
-        yield return new WaitUntil(() => hpBar.IsUpdating == false);
-    }
-
     public IEnumerator UpdateEXP(bool reset)
     {
         if (expBar == null) yield break;

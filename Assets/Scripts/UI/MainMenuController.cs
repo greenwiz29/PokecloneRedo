@@ -2,15 +2,18 @@ using System;
 using System.Linq;
 using GDEUtils.UI;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuController : SelectionUI<TextSlot>
 {
+    [SerializeField] Image pokemonImage;
     void Start()
     {
         GameController.I.PauseGame(true);
+        pokemonImage.sprite = GetRandomPokemonSprite();
         var textSlots = GetComponentsInChildren<TextSlot>().ToList();
         if (SavingSystem.i.CheckIfSaveExists("saveSlot1"))
         {
@@ -26,9 +29,14 @@ public class MainMenuController : SelectionUI<TextSlot>
         OnBack += OnMenuBack;
     }
 
+    private Sprite GetRandomPokemonSprite()
+    {
+        return PokemonDB.GetRandomObject().FrontSprite;
+    }
+
     private void OnItemSelected(int obj)
     {
-        if (obj == 0 && !SavingSystem.i.CheckIfSaveExists("saveSlot1"))
+        if (!SavingSystem.i.CheckIfSaveExists("saveSlot1"))
         {
             obj++;
         }
@@ -56,7 +64,13 @@ public class MainMenuController : SelectionUI<TextSlot>
                 break;
             case 3:
                 // Exit
+#if UNITY_EDITOR
+                // This code will only run in the Unity Editor
+                EditorApplication.ExitPlaymode();
+#else
+                // This code will run in a built game
                 Application.Quit();
+#endif
                 break;
         }
     }
@@ -64,7 +78,13 @@ public class MainMenuController : SelectionUI<TextSlot>
     private void OnMenuBack()
     {
         // Exit
+#if UNITY_EDITOR
+        // This code will only run in the Unity Editor
+        EditorApplication.ExitPlaymode();
+#else
+        // This code will run in a built game
         Application.Quit();
+#endif
     }
 
     void Update()

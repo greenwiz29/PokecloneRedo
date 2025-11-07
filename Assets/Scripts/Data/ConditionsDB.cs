@@ -26,7 +26,7 @@ public class ConditionsDB
                 OnAfterTurn = p =>
                 {
                     p.ReduceHP(p.MaxHP / 8);
-                    p.StatusChanges.Enqueue($"{p.Base.Name} is hurt by poison!");
+                    p.AddStatusEvent(StatusEventType.Damage, $"{p.Base.Name} is hurt by poison!");
                 }
             }
         },
@@ -40,7 +40,7 @@ public class ConditionsDB
                 OnAfterTurn = p =>
                 {
                     p.ReduceHP(p.MaxHP / 16);
-                    p.StatusChanges.Enqueue($"{p.Base.Name} is hurt by its burn!");
+                    p.AddStatusEvent(StatusEventType.Damage, $"{p.Base.Name} is hurt by its burn!");
                 }
             }
         },
@@ -55,7 +55,7 @@ public class ConditionsDB
                 {
                     if (Random.Range(1, 5) == 1)
                     {
-                        p.StatusChanges.Enqueue($"{p.Base.Name} is paralyzed and can't move.");
+                        p.AddStatusEvent($"{p.Base.Name} is paralyzed and can't move.");
                         return false;
                     }
                     return true;
@@ -73,7 +73,7 @@ public class ConditionsDB
                 {
                     if (Random.Range(1, 5) == 1)
                     {
-                        p.StatusChanges.Enqueue($"{p.Base.Name} is no longer frozen.");
+                        p.AddStatusEvent($"{p.Base.Name} is no longer frozen.");
                         p.CureStatus();
                         return true;
                     }
@@ -99,11 +99,11 @@ public class ConditionsDB
                     if (p.StatusTime <= 0)
                     {
                         p.CureStatus();
-                        p.StatusChanges.Enqueue($"{p.Base.Name} woke up!");
+                        p.AddStatusEvent($"{p.Base.Name} woke up!");
                         return true;
                     }
                     p.StatusTime--;
-                    p.StatusChanges.Enqueue($"{p.Base.Name} is sleeping.");
+                    p.AddStatusEvent($"{p.Base.Name} is sleeping.");
                     return false;
                 }
             }
@@ -128,7 +128,7 @@ public class ConditionsDB
                     if (p.VolatileStatusTime <= 0)
                     {
                         p.CureVolatileStatus();
-                        p.StatusChanges.Enqueue($"{p.Base.Name} came to its senses!");
+                        p.AddStatusEvent($"{p.Base.Name} came to its senses!");
                         return true;
                     }
                     p.VolatileStatusTime--;
@@ -140,9 +140,9 @@ public class ConditionsDB
                     }
 
                     // Hurt by confusion
-                    p.StatusChanges.Enqueue($"{p.Base.Name} is confused.");
+                    p.AddStatusEvent($"{p.Base.Name} is confused.");
                     p.ReduceHP(p.MaxHP / 8);
-                    p.StatusChanges.Enqueue($"It hurt itself in its confusion.");
+                    p.AddStatusEvent(StatusEventType.Damage, $"It hurt itself in its confusion.");
                     return false;
                 }
             }

@@ -31,4 +31,23 @@ public class ScriptableObjectsDB<T> where T : ScriptableObject
 		}
 		return objects[name];
 	}
+
+	// Source - https://stackoverflow.com/a
+	// Posted by StriplingWarrior, modified by community. See post 'Timeline' for change history
+	// Retrieved 2025-11-07, License - CC BY-SA 2.5
+
+	public static IEnumerable<TValue> RandomValues<TKey, TValue>(IDictionary<TKey, TValue> dict)
+	{
+		List<TValue> values = Enumerable.ToList(dict.Values);
+		int size = dict.Count;
+		while (true)
+		{
+			yield return values[Random.Range(0, size)];
+		}
+	}
+
+	public static T GetRandomObject()
+	{
+		return RandomValues(objects).Take(1).FirstOrDefault();
+	}
 }

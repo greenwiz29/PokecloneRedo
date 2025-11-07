@@ -85,11 +85,10 @@ public class RunTurnState : State<BattleSystem>
     {
         if (!source.Pokemon.OnBeforeMove())
         {
-            yield return ShowStatusChanges(source.Pokemon);
-            yield return source.HUD.WaitForHPUpdate();
+            yield return ShowStatusChanges(source);
             yield break;
         }
-        yield return ShowStatusChanges(source.Pokemon);
+        yield return ShowStatusChanges(source);
 
         var enemy = source.IsPlayerUnit ? "" : "Enemy ";
 
@@ -125,7 +124,7 @@ public class RunTurnState : State<BattleSystem>
             {
                 damageDetails = target.Pokemon.ApplyDamage(move, source.Pokemon);
 
-                yield return target.HUD.WaitForHPUpdate();
+                yield return target.HUD.UpdateHP();
 
                 yield return ShowDamageDetails(damageDetails);
             }
@@ -181,8 +180,8 @@ public class RunTurnState : State<BattleSystem>
             target.Pokemon.SetVolatileStatus(effects.VolatileStatus);
         }
 
-        yield return ShowStatusChanges(source.Pokemon);
-        yield return ShowStatusChanges(target.Pokemon);
+        yield return ShowStatusChanges(source);
+        yield return ShowStatusChanges(target);
     }
 
     IEnumerator RunAfterTurn(BattleUnit source)
@@ -191,8 +190,7 @@ public class RunTurnState : State<BattleSystem>
             yield break;
 
         source.Pokemon.OnAfterTurn();
-        yield return ShowStatusChanges(source.Pokemon);
-        yield return source.HUD.WaitForHPUpdate();
+        yield return ShowStatusChanges(source);
 
         // Check if source pokemon fainted after status effect
         if (source.Pokemon.HP <= 0)
@@ -239,7 +237,7 @@ public class RunTurnState : State<BattleSystem>
         {
             actionToRemove.IsInvalid = true;
         }
-        
+
         if (faintedUnit.IsPlayerUnit)
         {
             var activePokemon = bs.PlayerUnits.Select(u => u.Pokemon).Where(p => p.HP > 0).ToList();
@@ -356,13 +354,20 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
-    IEnumerator ShowStatusChanges(Pokemon pokemon)
+    IEnumerator ShowStatusChanges(BattleUnit unit)
     {
+        var pokemon = unit.Pokemon;
         while (pokemon.StatusChanges.Count > 0)
         {
-            var message = pokemon.StatusChanges.Dequeue();
+            var statusEvent = pokemon.StatusChanges.Dequeue();
 
-            yield return dialogBox.TypeDialog(message);
+            yield return dialogBox.TypeDialog(statusEvent.Message);
+            if (statusEvent.Type == StatusEventType.Damage)
+            {
+                unit.PlayHitAnimation();
+                // AudioManager.i.PlaySfx(AudioId.Hit);   
+                yield return unit.HUD.UpdateHP();
+            }
         }
     }
 

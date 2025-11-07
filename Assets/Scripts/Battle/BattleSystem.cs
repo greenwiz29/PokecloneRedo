@@ -381,7 +381,7 @@ public class BattleSystem : MonoBehaviour
                     newMove = null;
                 }
             }
-            yield return playerHud.WaitForHPUpdate();
+            yield return playerHud.UpdateHP();
             yield return playerHud.UpdateEXP(true);
 
             leveledUp = pokemon.CheckForLevelUp(out newMove);
