@@ -431,7 +431,7 @@ public class Pokemon
     {
         var movesWithPP = Moves.Where(x => x.PP > 0).ToList();
 
-        if (movesWithPP == null)
+        if (movesWithPP == null || movesWithPP.Count == 0)
         {
             // no more usable moves left, time to Struggle
             return null;

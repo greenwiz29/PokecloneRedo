@@ -12906,7 +12906,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1717836754039699661, guid: 9b8089e465f9001fe8267c1d1971eeb6, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1898861581556339008, guid: 9b8089e465f9001fe8267c1d1971eeb6, type: 3}
       propertyPath: battleUnitCount
@@ -12954,7 +12954,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9154046531521133101, guid: 9b8089e465f9001fe8267c1d1971eeb6, type: 3}
       propertyPath: party.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9154046531521133101, guid: 9b8089e465f9001fe8267c1d1971eeb6, type: 3}
       propertyPath: party.Array.data[0]._base
@@ -12975,10 +12975,10 @@ PrefabInstance:
     - target: {fileID: 9154046531521133101, guid: 9b8089e465f9001fe8267c1d1971eeb6, type: 3}
       propertyPath: party.Array.data[2]._base
       value: 
-      objectReference: {fileID: 11400000, guid: 91b504117fe63ee7d843920729763021, type: 2}
+      objectReference: {fileID: 11400000, guid: 88a70188004cee5f08a9b2073969e174, type: 2}
     - target: {fileID: 9154046531521133101, guid: 9b8089e465f9001fe8267c1d1971eeb6, type: 3}
       propertyPath: party.Array.data[2].level
-      value: 50
+      value: 55
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13321,7 +13321,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9211165183681556307, guid: e06a2e12919d5f15b96169c0616d05ec, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

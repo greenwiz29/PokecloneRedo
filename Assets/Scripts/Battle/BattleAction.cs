@@ -9,7 +9,7 @@ public class BattleAction
     public Move SelectedMove { get; set; }
     public Pokemon SelectedPokemon { get; set; }
     public ItemBase SelectedItem { get; set; }
-    public int Priority => Type == BattleActionType.Move ? SelectedMove.Base.Priority : 99;
+    public int Priority => Type == BattleActionType.Move ? SelectedMove?.Base.Priority ?? 0 : 99;
 
     public bool IsInvalid { get; set; }
 }

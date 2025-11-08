@@ -52,7 +52,7 @@ public class PartyState : State<GameController>
         if (prevState == BattleState.I)
         {
             var battleState = BattleState.I;
-            if (battleState.BattleSystem.PlayerUnits.Any(u => u.Pokemon.HP <= 0))
+            if (battleState.BattleSystem.PlayerUnits.Any(u => u.Pokemon != null && u.Pokemon.HP <= 0))
             {
                 partyScreen.SetMessageText("You must choose a pokemon to continue");
                 return;

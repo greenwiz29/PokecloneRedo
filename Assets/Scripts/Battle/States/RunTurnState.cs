@@ -239,6 +239,9 @@ public class RunTurnState : State<BattleSystem>
         var units = bs.PlayerUnits.Concat(bs.EnemyUnits);
         foreach (var unit in units)
         {
+            if (unit.Pokemon == null || unit.Pokemon.HP <= 0)
+                continue;
+
             weather.OnWeatherEffect?.Invoke(unit.Pokemon);
             yield return ShowStatusChanges(unit);
 
