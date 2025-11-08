@@ -61,10 +61,15 @@ public class MoveEffects
     [SerializeField] StatusConditionID status;
 
     [SerializeField] StatusConditionID volatileStatus;
+    [Header("Weather")]
+    [SerializeField] WeatherConditionID weather;
+    [SerializeField] SN<int> weatherDuration = null;
 
     public List<StatBoost> Boosts => boosts;
     public StatusConditionID Status => status;
     public StatusConditionID VolatileStatus => volatileStatus;
+    public WeatherConditionID Weather => weather;
+    public int? WeatherDuration => weatherDuration;
 }
 
 [System.Serializable]

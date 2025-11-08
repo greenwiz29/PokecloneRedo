@@ -128,7 +128,8 @@ public class RunTurnState : State<BattleSystem>
             }
             else
             {
-                damageDetails = target.Pokemon.ApplyDamage(move, source.Pokemon);
+                float weatherModifier = bs.Field.Weather?.OnDamageModify?.Invoke(move) ?? 1f;
+                damageDetails = target.Pokemon.ApplyDamage(move, source.Pokemon, weatherModifier);
 
                 yield return target.HUD.UpdateHP();
 
@@ -186,6 +187,13 @@ public class RunTurnState : State<BattleSystem>
             target.Pokemon.SetVolatileStatus(effects.VolatileStatus);
         }
 
+        // Weather
+        if (effects.Weather != WeatherConditionID.none)
+        {
+            bs.Field.SetWeather(effects.Weather, effects.WeatherDuration);
+            yield return dialogBox.TypeDialog(bs.Field.Weather.StartByMoveMessage ?? bs.Field.Weather.StartMessage);
+        }
+
         yield return ShowStatusChanges(source);
         yield return ShowStatusChanges(target);
     }
@@ -207,13 +215,34 @@ public class RunTurnState : State<BattleSystem>
 
     private IEnumerator RunWeatherEffects(WeatherCondition weather)
     {
+        if (bs.Field.WeatherDuration != null)
+        {
+            if (bs.Field.WeatherDuration > 0)
+            {
+                bs.Field.WeatherDuration--;
+            }
+            else
+            {
+                if (weather.EffectMessage != null)
+                {
+                    yield return dialogBox.TypeDialog(weather.EndMessage);
+                }
+                bs.Field.SetWeather(WeatherConditionID.none, null);
+                yield break;
+            }
+        }
+        if (weather.EffectMessage != null)
+        {
+            yield return dialogBox.TypeDialog(weather.EffectMessage);
+        }
+
         var units = bs.PlayerUnits.Concat(bs.EnemyUnits);
         foreach (var unit in units)
         {
-            weather.OnWeatherEffect(unit.Pokemon);
+            weather.OnWeatherEffect?.Invoke(unit.Pokemon);
             yield return ShowStatusChanges(unit);
 
-            if(unit.Pokemon.HP <= 0)
+            if (unit.Pokemon.HP <= 0)
             {
                 yield return HandlePokemonFainted(unit);
             }
@@ -355,6 +384,15 @@ public class RunTurnState : State<BattleSystem>
         if (details.Crit > 1f)
         {
             yield return dialogBox.TypeDialog($"A critical hit!");
+        }
+
+        if (details.WeatherModifier > 1f)
+        {
+            yield return dialogBox.TypeDialog($"The weather boosted the attack!");
+        }
+        else if (details.WeatherModifier < 1f)
+        {
+            yield return dialogBox.TypeDialog($"The weather suppressed the attack...");
         }
 
         if (details.TypeEffectiveness > 2f)

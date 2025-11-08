@@ -377,7 +377,7 @@ public class Pokemon
         return canPerformMove;
     }
 
-    public DamageDetails ApplyDamage(Move move, Pokemon attacker)
+    public DamageDetails ApplyDamage(Move move, Pokemon attacker, float weatherModifier = 1f)
     {
         float crit = 1f;
         // TODO: make critRate constant
@@ -385,9 +385,9 @@ public class Pokemon
             crit = 2f;
         float type = GetTypeEffectiveness(move.Base.Type);
 
-        var damageDetails = new DamageDetails() { TypeEffectiveness = type, Crit = crit };
+        var damageDetails = new DamageDetails() { TypeEffectiveness = type, Crit = crit, WeatherModifier = weatherModifier };
 
-        float modifiers = UnityEngine.Random.Range(0.85f, 1.1f) * type * crit;
+        float modifiers = UnityEngine.Random.Range(0.85f, 1.1f) * type * crit * weatherModifier;
         float a = (2 * attacker.Level + 10) / 250f;
 
         float attack = move.Base.MoveType == MoveType.Physical ? attacker.Attack : attacker.SpAttack;
@@ -451,7 +451,9 @@ public class DamageDetails
 {
     public float Crit { get; set; }
     public float TypeEffectiveness { get; set; }
+    public float WeatherModifier { get; set; }
 }
+
 public enum StatusEventType { Text, Damage, StatBoost }
 
 public class StatusEvent

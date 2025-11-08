@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15ddb0b24272b6109ad97542dc7ba963, type: 3}
+  m_Name: Blastoise
+  m_EditorClassIdentifier: Assembly-CSharp::PokemonBase
+  name: Blastoise
+  description: A blastoise
+  frontSprite: {fileID: 21300000, guid: 7474c65692f95f5ed964af2aa8de967a, type: 3}
+  backSprite: {fileID: 21300000, guid: 612b6aa88e95291469e1d96088ebc649, type: 3}
+  walkDownSprites:
+  - {fileID: 4113829005332862926, guid: b9faa2f70e88e6beb8ed79104b7a020a, type: 3}
+  - {fileID: 4113829005332862926, guid: 891f8e07276bc9645b9972f9d94b0f15, type: 3}
+  walkUpSprites:
+  - {fileID: 4113829005332862926, guid: ce9018f52bb6278948b35dd60bc08402, type: 3}
+  - {fileID: 4113829005332862926, guid: 6c4cd34d03b936a63a0f2e4b6016ae58, type: 3}
+  walkLeftSprites:
+  - {fileID: 4113829005332862926, guid: ed6b9d8fb4a8a91b3bec8f13b31a3ff2, type: 3}
+  - {fileID: 4113829005332862926, guid: 3b905d9dc9d34947d9ad2d1c2cce6c9c, type: 3}
+  walkRightSprites:
+  - {fileID: 4113829005332862926, guid: 98ae815302000e5df80814be36d6cdef, type: 3}
+  - {fileID: 4113829005332862926, guid: 910606faf147bba0189e4aa0df52b1d5, type: 3}
+  frontSpriteShiny: {fileID: 4113829005332862926, guid: e0cb0d6974bd7b37fb75ffa04a7f25be, type: 3}
+  backSpriteShiny: {fileID: 4113829005332862926, guid: 7eb3f51ed3b584f16a207f01f4c5ebfc, type: 3}
+  walkDownSpritesShiny:
+  - {fileID: 4113829005332862926, guid: 8c0d54cdff06a4267aff016f01a89b5b, type: 3}
+  - {fileID: 4113829005332862926, guid: 09b1516c0460c6b1298028af0422a0a3, type: 3}
+  walkUpSpritesShiny:
+  - {fileID: 4113829005332862926, guid: 3630be1b239399e8db57fef8aff4e9d3, type: 3}
+  - {fileID: 4113829005332862926, guid: 69a92a040b962fdbea564aa80fd8c57f, type: 3}
+  walkLeftSpritesShiny:
+  - {fileID: 4113829005332862926, guid: 1111940dbf51a6df4b7ac4aeee691340, type: 3}
+  - {fileID: 4113829005332862926, guid: 1ed7b31ad36a0c1dba1d25bcbea1bfe4, type: 3}
+  walkRightSpritesShiny:
+  - {fileID: 4113829005332862926, guid: c843724b7bc75d1cc89f743cf7129714, type: 3}
+  - {fileID: 4113829005332862926, guid: 8b147ff18fc796115ac74e7088a85d97, type: 3}
+  type1: 3
+  type2: 0
+  maxHP: 79
+  attack: 83
+  defense: 100
+  spAttack: 85
+  spDefense: 105
+  speed: 78
+  expYield: 239
+  catchRate: 45
+  learnableMoves:
+  - moveBase: {fileID: 0}
+    levelLearned: 0
+  learnableByItems: []
+  evolutions:
+  - evolvesInto: {fileID: 11400000}
+    requiredLevel: 36
+    requiredItem: {fileID: 0}
