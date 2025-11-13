@@ -290,7 +290,7 @@ public class BattleSystem : MonoBehaviour
         // apply modifiers
         if (damageDetails != null)
         {
-            expGain = (int)(expGain * damageDetails.Crit * damageDetails.TypeEffectiveness);
+            expGain = (int)(expGain * damageDetails.Crit * damageDetails.TypeEffectiveness / damageDetails.MoveHitsCount);
         }
 
         var pokemon = sourceUnit.Pokemon;

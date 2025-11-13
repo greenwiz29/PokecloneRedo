@@ -115,50 +115,64 @@ public class RunTurnState : State<BattleSystem>
         }
         else
         {
-            DamageDetails damageDetails = null;
-
-            source.PlayAttackAnimation();
-            yield return new WaitForSeconds(0.75f);
-
-            target.PlayHitAnimation();
-
-            if (move.Base.MoveType == MoveType.Status)
+            int hitCount = move.Base.GetHitTimes();
+            int i;
+            for (i = 0; i < hitCount; i++)
             {
-                yield return RunMoveEffects(source, target, move.Base.Effects, move.Base.Target);
-            }
-            else
-            {
-                float weatherModifier = bs.Field.Weather?.OnDamageModify?.Invoke(move) ?? 1f;
-                damageDetails = target.Pokemon.ApplyDamage(move, source.Pokemon, weatherModifier);
+                DamageDetails damageDetails = null;
 
-                yield return target.HUD.UpdateHP();
+                source.PlayAttackAnimation();
+                yield return new WaitForSeconds(0.75f);
 
-                yield return ShowDamageDetails(damageDetails);
-            }
+                target.PlayHitAnimation();
 
-            var secondaries = move.Base.SecondaryEffects;
-            if (secondaries != null && secondaries.Count > 0 && target.Pokemon.HP <= 0)
-            {
-                foreach (var secEffect in secondaries)
+                if (move.Base.MoveType == MoveType.Status)
                 {
-                    var rand = UnityEngine.Random.Range(1, 101);
-                    if (rand <= secEffect.Chance)
+                    yield return RunMoveEffects(source, target, move.Base.Effects, move.Base.Target);
+                }
+                else
+                {
+                    float weatherModifier = bs.Field.Weather?.OnDamageModify?.Invoke(move) ?? 1f;
+                    damageDetails = target.Pokemon.ApplyDamage(move, source.Pokemon, weatherModifier, hitCount);
+
+                    yield return target.HUD.UpdateHP();
+
+                    if (i == 0)
                     {
-                        yield return RunMoveEffects(source, target, secEffect, secEffect.Target);
+                        yield return ShowTypeEffectiveness(damageDetails.TypeEffectiveness);
+                    }
+                    yield return ShowDamageDetails(damageDetails);
+                }
+
+                var secondaries = move.Base.SecondaryEffects;
+                if (secondaries != null && secondaries.Count > 0 && target.Pokemon.HP <= 0)
+                {
+                    foreach (var secEffect in secondaries)
+                    {
+                        var rand = UnityEngine.Random.Range(1, 101);
+                        if (rand <= secEffect.Chance)
+                        {
+                            yield return RunMoveEffects(source, target, secEffect, secEffect.Target);
+                        }
                     }
                 }
-            }
 
-            if (target.Pokemon.HP <= 0)
-            {
-                yield return HandlePokemonFainted(target, source, damageDetails);
+                if (target.Pokemon.HP <= 0)
+                {
+                    yield return HandlePokemonFainted(target, source, damageDetails);
+                    break;
+                }
+                else
+                {
+                    // Apply exp gain for attacker
+                    yield return bs.ApplyExpGain(source, target, false, damageDetails, false);
+                    // Apply exp gain for defender
+                    yield return bs.ApplyExpGain(target, source, false, damageDetails, false);
+                }
             }
-            else
+            if (move.Base.IsMultiHitMove)
             {
-                // Apply exp gain for attacker
-                yield return bs.ApplyExpGain(source, target, false, damageDetails, false);
-                // Apply exp gain for defender
-                yield return bs.ApplyExpGain(target, source, false, damageDetails, false);
+                yield return dialogBox.TypeDialog($"It hit {i} times!");
             }
         }
     }
@@ -397,20 +411,23 @@ public class RunTurnState : State<BattleSystem>
         {
             yield return dialogBox.TypeDialog($"The weather suppressed the attack...");
         }
+    }
 
-        if (details.TypeEffectiveness > 2f)
+    private IEnumerator ShowTypeEffectiveness(float effectiveness)
+    {
+        if (effectiveness > 2f)
         {
             yield return dialogBox.TypeDialog($"It's amazingly effective!");
         }
-        else if (details.TypeEffectiveness > 1f)
+        else if (effectiveness > 1f)
         {
             yield return dialogBox.TypeDialog($"It's really effective!");
         }
-        else if (details.TypeEffectiveness == 0.0f)
+        else if (effectiveness == 0.0f)
         {
             yield return dialogBox.TypeDialog("It has no effect.");
         }
-        else if (details.TypeEffectiveness < 1f)
+        else if (effectiveness < 1f)
         {
             yield return dialogBox.TypeDialog("It's not very effective...");
         }

@@ -27,6 +27,9 @@ public class MoveBase : ScriptableObject
 
     [SerializeField] MoveTarget target;
 
+    [SerializeField] bool isMultiHitMove = false;
+    [SerializeField] Vector2Int hitRange = new Vector2Int(2, 0);
+
     public string Name => name;
     public string Desc => description;
     public PokemonType Type => type;
@@ -40,6 +43,22 @@ public class MoveBase : ScriptableObject
     public MoveTarget Target => target;
     public MoveEffects Effects => effects;
     public List<SecondaryEffects> SecondaryEffects => secondaryEffects;
+    public bool IsMultiHitMove => isMultiHitMove;
+
+    public int GetHitTimes()
+    {
+        if (isMultiHitMove)
+        {
+            if (hitRange.y == 0)
+                return hitRange.x;
+            else
+            {
+                return Random.Range(hitRange.x, hitRange.y + 1);
+            }
+        }
+        else
+            return 1;
+    }
 }
 
 [System.Serializable]

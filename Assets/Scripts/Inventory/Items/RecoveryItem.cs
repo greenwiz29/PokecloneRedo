@@ -31,7 +31,7 @@ public class RecoveryItem : ItemBase
             }
 
             hpRestoreAmt = maxRevive ? target.MaxHP : target.MaxHP / 2;
-            target.IncreaseHP(hpRestoreAmt);
+            target.IncreaseHP(hpRestoreAmt, true);
             target.CureStatus();
             target.CureVolatileStatus();
             return true;
@@ -49,7 +49,7 @@ public class RecoveryItem : ItemBase
                 return false;
             }
             hpRestoreAmt = restoreMaxHp ? target.MaxHP : hpRestoredAmount;
-            target.IncreaseHP(hpRestoreAmt);
+            target.IncreaseHP(hpRestoreAmt, true);
             return true;
         }
 
