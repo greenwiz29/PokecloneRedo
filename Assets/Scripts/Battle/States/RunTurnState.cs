@@ -293,6 +293,8 @@ public class RunTurnState : State<BattleSystem>
             moveAccuracy *= boostValues[-evasion];
         }
 
+        moveAccuracy = source.ModifyAcc(moveAccuracy, target, move);
+
         return UnityEngine.Random.Range(1, 101) <= moveAccuracy;
     }
 

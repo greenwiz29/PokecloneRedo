@@ -44,6 +44,7 @@ MonoBehaviour:
   - {fileID: -6470460504253458178, guid: a940703621e60de1f959bf7a5d0243e9, type: 3}
   type1: 7
   type2: 0
+  ability: 2
   maxHP: 80
   attack: 82
   defense: 83

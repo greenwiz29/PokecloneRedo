@@ -56,6 +56,7 @@ public class Pokemon
     public int StatusTime { get; set; }
     public int VolatileStatusTime { get; set; }
     public Queue<StatusEvent> StatusChanges { get; private set; }
+    public Ability Ability { get; set; }
     public event Action OnStatusChanged;
     public event Action OnHPChanged;
 
@@ -110,6 +111,12 @@ public class Pokemon
         CalculateStats();
 
         HP = MaxHP;
+
+        if(Base.AbilityID != AbilityID.none)
+        {
+            Ability = AbilityDB.Abilities[Base.AbilityID];
+        }
+
         StatusChanges = new Queue<StatusEvent>();
         ResetStatBoosts();
         CureStatus();
@@ -390,8 +397,18 @@ public class Pokemon
         float modifiers = UnityEngine.Random.Range(0.85f, 1.1f) * type * crit * weatherModifier;
         float a = (2 * attacker.Level + 10) / 250f;
 
-        float attack = move.Base.MoveType == MoveType.Physical ? attacker.Attack : attacker.SpAttack;
-        float defense = move.Base.MoveType == MoveType.Physical ? Defense : SpDefense;
+        float attack, defense;
+        if(move.Base.MoveType == MoveType.Special)
+        {
+            attack = attacker.ModifySpAtk(attacker.SpAttack, this, move);
+            defense = ModifySpDef(SpDefense, attacker, move);
+        }
+        else
+        {
+            attack = attacker.ModifyAtk(attacker.Attack, this, move);
+            defense = ModifyDef(Defense, attacker, move);
+        }
+        
         float d = a * move.Base.Power * ((float)attack / defense);
 
         int damage = Mathf.FloorToInt(d * modifiers);
@@ -427,6 +444,60 @@ public class Pokemon
         CureVolatileStatus();
     }
 
+    public float ModifyAtk(float atk, Pokemon defender, Move move)
+    {
+        if(Ability?.OnModifyAtk != null)
+        {
+            return Ability.OnModifyAtk(atk, this, defender, move);
+        }
+        return atk;
+    }
+
+    public float ModifySpAtk(float spAtk, Pokemon defender, Move move)
+    {
+        if(Ability?.OnModifySpAtk != null)
+        {
+            return Ability.OnModifySpAtk(spAtk, this, defender, move);
+        }
+        return spAtk;
+    }
+    
+    public float ModifyDef(float def, Pokemon attacker, Move move)
+    {
+        if(Ability?.OnModifySpDef != null)
+        {
+            return Ability.OnModifyDef(def, attacker, this, move);
+        }
+        return def;
+    }
+    
+    public float ModifySpDef(float spDef, Pokemon attacker, Move move)
+    {
+        if(Ability?.OnModifySpDef != null)
+        {
+            return Ability.OnModifySpDef(spDef, attacker, this, move);
+        }
+        return spDef;
+    }
+    
+    public float ModifySpd(float spd, Pokemon defender, Move move)
+    {
+        if(Ability?.OnModifySpd != null)
+        {
+            return Ability.OnModifySpd(spd, this, defender, move);
+        }
+        return spd;
+    }
+    
+    public float ModifyAcc(float acc, Pokemon defender, Move move)
+    {
+        if(Ability?.OnModifyAcc != null)
+        {
+            return Ability.OnModifyAcc(acc, this, defender, move);
+        }
+        return acc;
+    }
+    
     public Move GetRandomMove()
     {
         var movesWithPP = Moves.Where(x => x.PP > 0).ToList();
