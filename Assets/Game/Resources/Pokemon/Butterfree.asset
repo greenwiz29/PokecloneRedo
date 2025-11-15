@@ -42,6 +42,9 @@ MonoBehaviour:
   walkRightSpritesShiny:
   - {fileID: -1540426309290004842, guid: 8a123eb935b053cc0a95b131564b6938, type: 3}
   - {fileID: -1540426309290004842, guid: ac67f94f493849fe3b09c603fbb97852, type: 3}
+  ability: 8
+  hiddenAbility: 4
+  normalAbilityPercent: 70
   type1: 13
   type2: 5
   maxHP: 60

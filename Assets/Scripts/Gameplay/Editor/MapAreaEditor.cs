@@ -6,6 +6,8 @@ public class MapAreaEditor : Editor
 {
     public override void OnInspectorGUI()
     {
+        GUILayout.Label($"Level range values are inclusive. \nSetting Y to 0 will force the X value to always be used.");
+
         base.OnInspectorGUI();
 
         var totalChance = serializedObject.FindProperty("totalChance").intValue;

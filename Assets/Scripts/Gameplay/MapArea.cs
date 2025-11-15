@@ -33,9 +33,9 @@ public class MapArea : MonoBehaviour
         totalChance = 0;
         foreach (var record in wildPoolGrass)
         {
-            record.ChanceLower = totalChance;
+            record.ChanceLowerInclusive = totalChance;
             totalChance += record.encounterRate;
-            record.ChanceUpper = totalChance;
+            record.ChanceUpperExclusive = totalChance;
         }
 
         totalChanceWater = 0;
@@ -44,9 +44,9 @@ public class MapArea : MonoBehaviour
         else
             foreach (var record in wildPoolInWater)
             {
-                record.ChanceLower = totalChanceWater;
+                record.ChanceLowerInclusive = totalChanceWater;
                 totalChanceWater += record.encounterRate;
-                record.ChanceUpper = totalChanceWater;
+                record.ChanceUpperExclusive = totalChanceWater;
             }
     }
 
@@ -54,7 +54,7 @@ public class MapArea : MonoBehaviour
     {
         var wildPool = trigger == BattleTrigger.Water ? wildPoolInWater : wildPoolGrass;
         int roll = UnityEngine.Random.Range(0, totalChance + 1);
-        var record = wildPool.First(p => roll >= p.ChanceLower && roll < p.ChanceUpper);
+        var record = wildPool.First(p => roll >= p.ChanceLowerInclusive && roll < p.ChanceUpperExclusive);
         var levelRange = record.levelRange;
         var level = levelRange.y == 0 ? levelRange.x : UnityEngine.Random.Range(levelRange.x, levelRange.y + 1);
 
@@ -66,9 +66,13 @@ public class MapArea : MonoBehaviour
 public class PokemonEncounterRecord
 {
     public PokemonBase pokemon;
+    /// <summary>
+    /// Represents a range of valid levels for the encountered Pokemon, both ends inclusive.
+    /// <para>If the second value is 0, the level will always be the first value.</para>
+    /// </summary>
     public Vector2Int levelRange;
     public int encounterRate;
 
-    public int ChanceLower { get; set; }
-    public int ChanceUpper { get; set; }
+    public int ChanceLowerInclusive { get; set; }
+    public int ChanceUpperExclusive { get; set; }
 }

@@ -10,13 +10,7 @@ public class Pokemon
 
     [SerializeField] int level;
 
-    public Pokemon(PokemonBase pBase, int pLevel)
-    {
-        _base = pBase;
-        level = pLevel;
-
-        Init();
-    }
+    private AbilityID abilityID;
 
     public PokemonBase Base => _base;
     public int Level => level;
@@ -60,12 +54,21 @@ public class Pokemon
     public event Action OnStatusChanged;
     public event Action OnHPChanged;
 
+    public Pokemon(PokemonBase pBase, int pLevel)
+    {
+        _base = pBase;
+        level = pLevel;
+
+        Init();
+    }
+
     public Pokemon(PokemonSaveData saveData)
     {
         _base = PokemonDB.GetObjectByName(saveData.name);
         HP = saveData.hp;
         level = saveData.level;
         exp = saveData.exp;
+        abilityID = saveData.ability;
         _base.GrowthRate = saveData.growthRate;
 
         if (saveData.status != null)
@@ -103,6 +106,17 @@ public class Pokemon
             }
         }
 
+        // Set ability at random from Base's normal or hidden
+        int random = UnityEngine.Random.Range(0, 101);
+        if(random < Base.NormalAbilityPercent)
+        {
+            abilityID = Base.AbilityID;
+        }
+        else
+        {
+            abilityID = Base.HiddenAbilityID;
+        }
+
         InitCondition();
     }
 
@@ -112,9 +126,9 @@ public class Pokemon
 
         HP = MaxHP;
 
-        if(Base.AbilityID != AbilityID.none)
+        if(abilityID != AbilityID.none)
         {
-            Ability = AbilityDB.Abilities[Base.AbilityID];
+            Ability = AbilityDB.Abilities[abilityID];
         }
 
         StatusChanges = new Queue<StatusEvent>();
@@ -142,6 +156,7 @@ public class Pokemon
             hp = HP,
             level = Level,
             exp = Exp,
+            ability = abilityID,
             status = Status?.Id,
             moves = Moves.Select(m => m.GetSaveData()).ToList(),
             growthRate = Base.GrowthRate
@@ -556,6 +571,7 @@ public class PokemonSaveData
     public int level;
     public int hp;
     public int exp;
+    public AbilityID ability;
     public StatusConditionID? status;
     public List<MoveSaveData> moves;
     public GrowthRate growthRate;

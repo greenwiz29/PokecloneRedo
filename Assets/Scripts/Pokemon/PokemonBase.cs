@@ -21,10 +21,14 @@ public class PokemonBase : ScriptableObject
     [SerializeField] Sprite backSpriteShiny;
     [SerializeField] List<Sprite> walkDownSpritesShiny, walkUpSpritesShiny, walkLeftSpritesShiny, walkRightSpritesShiny;
 
+    [Header("Abilities")]
+    [SerializeField] AbilityID ability;
+    [SerializeField] AbilityID hiddenAbility;
+    [SerializeField] int normalAbilityPercent = 70;
+    
     [Header("Stats")]
     [SerializeField] PokemonType type1;
     [SerializeField] PokemonType type2;
-    [SerializeField] AbilityID ability;
 
     // Base Stats
     [SerializeField] int maxHP, attack, defense, spAttack, spDefense, speed;
@@ -47,6 +51,8 @@ public class PokemonBase : ScriptableObject
     public PokemonType Type1 => type1;
     public PokemonType Type2 => type2;
     public AbilityID AbilityID => ability;
+    public AbilityID HiddenAbilityID => hiddenAbility;
+    public int NormalAbilityPercent => normalAbilityPercent;
     public int CatchRate => catchRate;
     public int MaxHP => maxHP;
     public int Attack => attack;
