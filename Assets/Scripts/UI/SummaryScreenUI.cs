@@ -18,7 +18,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
 
     [Header("Pokemon Skills")]
     [SerializeField] TMP_Text hpText;
-    [SerializeField] TMP_Text attackText, defenseText, spAttackText, spDefenseText, speedText, expPointsText, nextLevelExpText;
+    [SerializeField] TMP_Text attackText, defenseText, spAttackText, spDefenseText, speedText, abilityNameText, abilityDescText, expPointsText, nextLevelExpText;
     [SerializeField] StatBar expBar;
 
     [Header("Pokemon Moves")]
@@ -107,6 +107,9 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
         spAttackText.text = "" + pokemon.SpAttack;
         spDefenseText.text = "" + pokemon.SpDefense;
         speedText.text = "" + pokemon.Speed;
+
+        abilityNameText.text = pokemon.Ability.Name;
+        abilityDescText.text = pokemon.Ability.Description;
 
         expPointsText.text = "" + pokemon.Exp;
         nextLevelExpText.text = "" + (pokemon.Base.CalculateBaseExpForLevel(pokemon.Level + 1) - pokemon.Exp);
