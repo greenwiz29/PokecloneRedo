@@ -310,12 +310,15 @@ public class Pokemon
         return value;
     }
 
-    public void ApplyBoosts(List<StatBoost> boosts)
+    public void ApplyBoosts(List<StatBoost> boosts, Pokemon source)
     {
-        foreach (var statBoost in boosts)
+        var statsDict = boosts.ToDictionary(x => x.stat, x => x.boost);
+        Ability?.OnBoost?.Invoke(statsDict, source, this);
+
+        foreach (var statBoost in statsDict)
         {
-            var stat = statBoost.stat;
-            var boost = statBoost.boost;
+            var stat = statBoost.Key;
+            var boost = statBoost.Value;
 
             StatBoosts[stat] = Mathf.Clamp(StatBoosts[stat] + boost, -6, 6);
 

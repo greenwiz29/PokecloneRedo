@@ -184,11 +184,11 @@ public class RunTurnState : State<BattleSystem>
         {
             if (moveTarget == MoveTarget.Self)
             {
-                source.Pokemon.ApplyBoosts(effects.Boosts);
+                source.Pokemon.ApplyBoosts(effects.Boosts, source.Pokemon);
             }
             else
             {
-                target.Pokemon.ApplyBoosts(effects.Boosts);
+                target.Pokemon.ApplyBoosts(effects.Boosts, source.Pokemon);
             }
         }
         // Conditions
