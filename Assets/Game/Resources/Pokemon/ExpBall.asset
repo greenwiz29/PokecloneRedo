@@ -20,8 +20,8 @@ MonoBehaviour:
   walkUpSprites: []
   walkLeftSprites: []
   walkRightSprites: []
-  frontSpriteShiny: {fileID: 0}
-  backSpriteShiny: {fileID: 0}
+  frontSpriteShiny: {fileID: 2023522969545607760, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
+  backSpriteShiny: {fileID: 2023522969545607760, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
   walkDownSpritesShiny: []
   walkUpSpritesShiny: []
   walkLeftSpritesShiny: []

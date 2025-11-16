@@ -28,8 +28,8 @@ MonoBehaviour:
   walkRightSprites:
   - {fileID: 4130640169021434097, guid: 1c70c749b03bac4c1b95c6a81e252d93, type: 3}
   - {fileID: 4130640169021434097, guid: c0f6816446ad6b864a74f7687ecaea59, type: 3}
-  frontSpriteShiny: {fileID: 4130640169021434097, guid: 00b2050169a4fd8f089b4fca46700a69, type: 3}
-  backSpriteShiny: {fileID: 4130640169021434097, guid: af65afef7a10b88179373e8c7e4aa519, type: 3}
+  frontSpriteShiny: {fileID: 21300000, guid: 00b2050169a4fd8f089b4fca46700a69, type: 3}
+  backSpriteShiny: {fileID: 21300000, guid: af65afef7a10b88179373e8c7e4aa519, type: 3}
   walkDownSpritesShiny:
   - {fileID: 4130640169021434097, guid: 85d537c826b212c0aa7efbd739fa17a4, type: 3}
   - {fileID: 4130640169021434097, guid: 7fe9474264d438e9a94e8f40c0e5ec2d, type: 3}
