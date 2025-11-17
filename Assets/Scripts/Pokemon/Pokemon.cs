@@ -129,6 +129,7 @@ public class Pokemon
     private void InitCondition()
     {
         CalculateStats();
+        // TODO: The first Pokemon to load seems to have its sprites set to non-shiny even if it is shiny.
         Base.SetSprites(IsShiny);
 
         HP = MaxHP;

@@ -11,6 +11,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
     [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text levelText;
     [SerializeField] Image image;
+    [SerializeField] Image shinyIcon;
 
     [Header("Pages")]
     [SerializeField] GameObject skillsPage, movesPage, effectsPane;
@@ -74,6 +75,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
         nameText.text = pokemon.Name;
         levelText.text = "Lvl " + pokemon.Level;
         image.sprite = pokemon.Base.FrontSprite;
+        shinyIcon.gameObject.SetActive(pokemon.IsShiny);
     }
 
     public void ShowPage(int page)
