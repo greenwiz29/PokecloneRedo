@@ -25,7 +25,7 @@ public class PokemonBase : ScriptableObject
     [SerializeField] AbilityID ability;
     [SerializeField] AbilityID hiddenAbility;
     [SerializeField] int normalAbilityPercent = 70;
-    
+
     [Header("Stats")]
     [SerializeField] PokemonType type1;
     [SerializeField] PokemonType type2;
@@ -46,8 +46,8 @@ public class PokemonBase : ScriptableObject
 
     public string Name => name;
     public string Desc => description;
-    public Sprite FrontSprite => frontSprite;
-    public Sprite BackSprite => backSprite;
+    public Sprite FrontSprite { get; private set; }
+    public Sprite BackSprite { get; private set; }
     public PokemonType Type1 => type1;
     public PokemonType Type2 => type2;
     public AbilityID AbilityID => ability;
@@ -65,6 +65,20 @@ public class PokemonBase : ScriptableObject
     public List<LearnableMove> LearnableMoves => learnableMoves;
     public List<MoveBase> LearnableByItems => learnableByItems;
     public List<Evolution> Evolutions => evolutions;
+
+    public void SetSprites(bool isShiny)
+    {
+        if (isShiny)
+        {
+            FrontSprite = frontSpriteShiny;
+            BackSprite = backSpriteShiny;
+        }
+        else
+        {
+            FrontSprite = frontSprite;
+            BackSprite = backSprite;            
+        }
+    }
 
     public int CalculateBaseExpForLevel(int level)
     {

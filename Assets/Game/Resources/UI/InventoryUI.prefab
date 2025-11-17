@@ -94,6 +94,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbd052be8f4e378d0ad9d61133a09459, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionSpeed: 5
   itemList: {fileID: 1318435668936704648}
   itemSlotUI: {fileID: 5110115740449069434, guid: 44307acc8b8b25991a1b33cc66f55996, type: 3}
   itemIcon: {fileID: 5778900880211521825}
@@ -101,8 +102,6 @@ MonoBehaviour:
   categoryText: {fileID: 6928966746529616968}
   upArrow: {fileID: 3634639931480768004}
   downArrow: {fileID: 6829810646227578199}
-  partyScreen: {fileID: 0}
-  moveToForgetUI: {fileID: 0}
 --- !u!1 &1145855844579567527
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,7 +383,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -765150924802650856, guid: 3cd9b7cc1b32d0a15888a3fb65430728, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3cd9b7cc1b32d0a15888a3fb65430728, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -459,7 +458,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -765150924802650856, guid: 3cd9b7cc1b32d0a15888a3fb65430728, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3cd9b7cc1b32d0a15888a3fb65430728, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -928,7 +927,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -765150924802650856, guid: 3cd9b7cc1b32d0a15888a3fb65430728, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3cd9b7cc1b32d0a15888a3fb65430728, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1093,7 +1092,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -765150924802650856, guid: 3cd9b7cc1b32d0a15888a3fb65430728, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3cd9b7cc1b32d0a15888a3fb65430728, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

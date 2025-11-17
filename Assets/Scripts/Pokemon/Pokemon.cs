@@ -40,6 +40,7 @@ public class Pokemon
             exp = value;
         }
     }
+    public bool IsShiny { get; private set; }
 
     public List<Move> Moves { get; set; }
     public Move CurrentMove { get; set; }
@@ -70,6 +71,7 @@ public class Pokemon
         exp = saveData.exp;
         abilityID = saveData.ability;
         _base.GrowthRate = saveData.growthRate;
+        IsShiny = saveData.shiny;
 
         if (saveData.status != null)
             Status = StatusConditionsDB.Conditions[saveData.status.Value];
@@ -108,7 +110,7 @@ public class Pokemon
 
         // Set ability at random from Base's normal or hidden
         int random = UnityEngine.Random.Range(0, 101);
-        if(random < Base.NormalAbilityPercent)
+        if (random < Base.NormalAbilityPercent)
         {
             abilityID = Base.AbilityID;
         }
@@ -117,16 +119,21 @@ public class Pokemon
             abilityID = Base.HiddenAbilityID;
         }
 
+        // Shiny?
+        random = UnityEngine.Random.Range(0, 5);
+        IsShiny = random == 1;
+
         InitCondition();
     }
 
     private void InitCondition()
     {
         CalculateStats();
+        Base.SetSprites(IsShiny);
 
         HP = MaxHP;
 
-        if(abilityID != AbilityID.none)
+        if (abilityID != AbilityID.none)
         {
             Ability = AbilityDB.Abilities[abilityID];
         }
@@ -159,7 +166,8 @@ public class Pokemon
             ability = abilityID,
             status = Status?.Id,
             moves = Moves.Select(m => m.GetSaveData()).ToList(),
-            growthRate = Base.GrowthRate
+            growthRate = Base.GrowthRate,
+            shiny = IsShiny
         };
         return saveData;
     }
@@ -294,7 +302,6 @@ public class Pokemon
     {
         int value = Stats[stat];
 
-        // TODO: apply stat boost
         int boost = StatBoosts[stat];
         var boostValue = new float[] { 1f, 1.5f, 2f, 2.5f, 3f, 3.5f, 4f };
 
@@ -416,7 +423,7 @@ public class Pokemon
         float a = (2 * attacker.Level + 10) / 250f;
 
         float attack, defense;
-        if(move.Base.MoveType == MoveType.Special)
+        if (move.Base.MoveType == MoveType.Special)
         {
             attack = attacker.ModifySpAtk(attacker.SpAttack, this, move);
             defense = ModifySpDef(SpDefense, attacker, move);
@@ -426,7 +433,7 @@ public class Pokemon
             attack = attacker.ModifyAtk(attacker.Attack, this, move);
             defense = ModifyDef(Defense, attacker, move);
         }
-        
+
         float d = a * move.Base.Power * ((float)attack / defense);
 
         int damage = Mathf.FloorToInt(d * modifiers);
@@ -464,7 +471,7 @@ public class Pokemon
 
     public float ModifyAtk(float atk, Pokemon defender, Move move)
     {
-        if(Ability?.OnModifyAtk != null)
+        if (Ability?.OnModifyAtk != null)
         {
             return Ability.OnModifyAtk(atk, this, defender, move);
         }
@@ -473,49 +480,49 @@ public class Pokemon
 
     public float ModifySpAtk(float spAtk, Pokemon defender, Move move)
     {
-        if(Ability?.OnModifySpAtk != null)
+        if (Ability?.OnModifySpAtk != null)
         {
             return Ability.OnModifySpAtk(spAtk, this, defender, move);
         }
         return spAtk;
     }
-    
+
     public float ModifyDef(float def, Pokemon attacker, Move move)
     {
-        if(Ability?.OnModifySpDef != null)
+        if (Ability?.OnModifySpDef != null)
         {
             return Ability.OnModifyDef(def, attacker, this, move);
         }
         return def;
     }
-    
+
     public float ModifySpDef(float spDef, Pokemon attacker, Move move)
     {
-        if(Ability?.OnModifySpDef != null)
+        if (Ability?.OnModifySpDef != null)
         {
             return Ability.OnModifySpDef(spDef, attacker, this, move);
         }
         return spDef;
     }
-    
+
     public float ModifySpd(float spd, Pokemon defender, Move move)
     {
-        if(Ability?.OnModifySpd != null)
+        if (Ability?.OnModifySpd != null)
         {
             return Ability.OnModifySpd(spd, this, defender, move);
         }
         return spd;
     }
-    
+
     public float ModifyAcc(float acc, Pokemon defender, Move move)
     {
-        if(Ability?.OnModifyAcc != null)
+        if (Ability?.OnModifyAcc != null)
         {
             return Ability.OnModifyAcc(acc, this, defender, move);
         }
         return acc;
     }
-    
+
     public Move GetRandomMove()
     {
         var movesWithPP = Moves.Where(x => x.PP > 0).ToList();
@@ -578,4 +585,5 @@ public class PokemonSaveData
     public StatusConditionID? status;
     public List<MoveSaveData> moves;
     public GrowthRate growthRate;
+    public bool shiny;
 }
