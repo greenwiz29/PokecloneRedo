@@ -157,6 +157,9 @@ public class RunTurnState : State<BattleSystem>
                     }
                 }
 
+                //Erina's tutorial
+                yield return RunAfterMove(damageDetails, move.Base, source, target);
+
                 if (target.Pokemon.HP <= 0)
                 {
                     yield return HandlePokemonFainted(target, source, damageDetails);
@@ -208,6 +211,42 @@ public class RunTurnState : State<BattleSystem>
             yield return dialogBox.TypeDialog(bs.Field.Weather.StartByMoveMessage ?? bs.Field.Weather.StartMessage);
         }
 
+        yield return ShowStatusChanges(source);
+        yield return ShowStatusChanges(target);
+    }
+
+    //Erina's tutorial
+    IEnumerator RunAfterMove(DamageDetails details, MoveBase move, BattleUnit source, BattleUnit target)
+    {
+        if (details == null)
+            yield break;
+
+        if (move.Recoil.recoilType != RecoilType.none)
+        {
+            int damage = 0;
+            switch (move.Recoil.recoilType)
+            {
+                case RecoilType.RecoilByMaxHP:
+                    int maxHp = source.Pokemon.MaxHP;
+                    damage = Mathf.FloorToInt(maxHp * (move.Recoil.recoilDamagePercent / 100f));
+                    source.Pokemon.TakeRecoilDamage(damage);
+                    break;
+                case RecoilType.RecoilByCurrentHP:
+                    int currentHp = source.Pokemon.HP;
+                    damage = Mathf.FloorToInt(currentHp * (move.Recoil.recoilDamagePercent / 100f));
+                    source.Pokemon.TakeRecoilDamage(damage);
+                    break;
+                case RecoilType.RecoilByDamage:
+                    damage = Mathf.FloorToInt(details.DamageDealt * (move.Recoil.recoilDamagePercent / 100f));
+                    source.Pokemon.TakeRecoilDamage(damage);
+                    break;
+                default:
+                    Debug.Log("Error: Unknown Recoil Effect");
+                    break;
+            }
+        }
+
+        //ReUsed from status changes
         yield return ShowStatusChanges(source);
         yield return ShowStatusChanges(target);
     }

@@ -384,24 +384,20 @@ public class Pokemon
         {
             var stat = statBoost.Key;
             var boost = statBoost.Value;
+            bool changeIsPositive = boost > 0;
 
-            StatBoosts[stat] = Mathf.Clamp(StatBoosts[stat] + boost, -6, 6);
+            if ((changeIsPositive && boost == 6) || (!changeIsPositive && boost == -6))
+            {
+                string riseOrFall = changeIsPositive ? "higher" : "lower";
+                AddStatusEvent(StatusEventType.Text, $"{Base.Name}'s {stat} won't go any {riseOrFall}!");
+            }
+            else
+            {
+                StatBoosts[stat] = Mathf.Clamp(StatBoosts[stat] + boost, -6, 6);
 
-            if (boost > 0 && boost < 6)
-            {
-                AddStatusEvent(StatusEventType.StatBoost, $"{Base.Name}'s {stat} rose!");
-            }
-            else if (boost == 6)
-            {
-                AddStatusEvent(StatusEventType.StatBoost, $"{Base.Name}'s {stat} can't go any higher.");
-            }
-            else if (boost < 0 && boost > -6)
-            {
-                AddStatusEvent(StatusEventType.StatBoost, $"{Base.Name}'s {stat} fell!");
-            }
-            else if (boost == -6)
-            {
-                AddStatusEvent(StatusEventType.StatBoost, $"{Base.Name}'s {stat} can't go any lower.");
+                string riseOrFall = changeIsPositive ? "rose" : "fell";
+                string bigChange = (Mathf.Abs(boost) >= 3) ? " severly " : (Mathf.Abs(boost) == 2) ? " harsly " : " ";
+                AddStatusEvent(StatusEventType.Text, $"{Base.Name}'s {stat}{bigChange}{riseOrFall}!");
             }
         }
     }
@@ -475,7 +471,15 @@ public class Pokemon
             crit = 2f;
         float type = GetTypeEffectiveness(move.Base.Type);
 
-        var damageDetails = new DamageDetails() { TypeEffectiveness = type, Crit = crit, WeatherModifier = weatherModifier, MoveHitsCount = hitCount };
+        var damageDetails = new DamageDetails()
+        {
+            TypeEffectiveness = type,
+            Crit = crit,
+            WeatherModifier = weatherModifier,
+            MoveHitsCount = hitCount,
+            //Erina's tutorial 
+            DamageDealt = 0
+        };
 
         float modifiers = UnityEngine.Random.Range(0.85f, 1.1f) * type * crit * weatherModifier;
         float a = (2 * attacker.Level + 10) / 250f;
@@ -497,8 +501,19 @@ public class Pokemon
         int damage = Mathf.FloorToInt(d * modifiers);
 
         ReduceHP(damage);
+        //Erina's tutorial
+        damageDetails.DamageDealt = damage;
 
         return damageDetails;
+    }
+
+    //Erina's tutorial
+    public void TakeRecoilDamage(int damage)
+    {
+        if (damage < 1)
+            damage = 1;
+        ReduceHP(damage);
+        AddStatusEvent(StatusEventType.Text, $"{Base.Name} was damaged by the recoil!");
     }
 
     public float GetTypeEffectiveness(PokemonType type)
@@ -607,6 +622,8 @@ public class DamageDetails
     public float TypeEffectiveness { get; set; }
     public float WeatherModifier { get; set; }
     public int MoveHitsCount { get; set; }
+    //Erina's tutorial
+    public int DamageDealt { get; set; }
 }
 
 public enum StatusEventType { Text, Damage, StatBoost }

@@ -29,6 +29,9 @@ public class MoveBase : ScriptableObject
 
     [SerializeField] bool isMultiHitMove = false;
     [SerializeField] Vector2Int hitRange = new Vector2Int(2, 0);
+    //Erina's tutorial
+    [SerializeField] RecoilMoveEffect recoil = new RecoilMoveEffect();
+
 
     public string Name => name;
     public string Desc => description;
@@ -44,6 +47,9 @@ public class MoveBase : ScriptableObject
     public MoveEffects Effects => effects;
     public List<SecondaryEffects> SecondaryEffects => secondaryEffects;
     public bool IsMultiHitMove => isMultiHitMove;
+
+    //Erina's tutorial
+    public RecoilMoveEffect Recoil => recoil;
 
     public int GetHitTimes()
     {
@@ -99,3 +105,17 @@ public class StatBoost
 }
 
 public enum MoveTarget { Foe, Self, Area, Ally, }
+
+//Erina's tutorial
+[System.Serializable]
+public class RecoilMoveEffect
+{
+    public RecoilType recoilType;
+    public int recoilDamagePercent = 0;
+}
+
+//Erina's tutorial
+public enum RecoilType
+{
+    none, RecoilByMaxHP, RecoilByCurrentHP, RecoilByDamage
+}
