@@ -9,6 +9,7 @@ public class Pokemon
     [SerializeField] PokemonBase _base;
 
     [SerializeField] int level;
+    [SerializeField] PokemonGender gender;
 
     private AbilityID abilityID;
 
@@ -18,6 +19,7 @@ public class Pokemon
     public static int maxMoves = 4;
 
     public string Name => _base.name;
+    public PokemonGender Gender { get { return gender; } }
 
     public int Attack => GetStat(Stat.Attack);
 
@@ -72,6 +74,7 @@ public class Pokemon
         abilityID = saveData.ability;
         _base.GrowthRate = saveData.growthRate;
         IsShiny = saveData.shiny;
+        gender = saveData.gender;
 
         if (saveData.status != null)
             Status = StatusConditionsDB.Conditions[saveData.status.Value];
@@ -123,6 +126,8 @@ public class Pokemon
         random = UnityEngine.Random.Range(0, 5);
         IsShiny = random == 1;
 
+        DecideGender();
+
         InitCondition();
     }
 
@@ -130,7 +135,7 @@ public class Pokemon
     {
         CalculateStats();
         // TODO: The first Pokemon to load seems to have its sprites set to non-shiny even if it is shiny.
-        Base.SetSprites(IsShiny);
+        Base.SetSprites(IsShiny, gender);
 
         HP = MaxHP;
 
@@ -147,6 +152,57 @@ public class Pokemon
         foreach (var move in Moves)
         {
             move.PP = move.Base.PP;
+        }
+    }
+    public void DecideGender()
+    {
+        if (gender != PokemonGender.NotSet) return;
+
+        int ran = UnityEngine.Random.Range(1, 8);
+        switch (Base.GenderRatio)
+        {
+            case PokemonGenderRatio.OneInTwoFemale:
+                if (ran <= 4)
+                    gender = PokemonGender.Female;
+                else
+                    gender = PokemonGender.Male;
+                break;
+            case PokemonGenderRatio.OneInFourFemale:
+                if (ran <= 2)
+                    gender = PokemonGender.Female;
+                else
+                    gender = PokemonGender.Male;
+                break;
+            case PokemonGenderRatio.OneInEightFemale:
+                if (ran <= 1)
+                    gender = PokemonGender.Female;
+                else
+                    gender = PokemonGender.Male;
+                break;
+            case PokemonGenderRatio.ThreeInFourFemale:
+                if (ran <= 6)
+                    gender = PokemonGender.Female;
+                else
+                    gender = PokemonGender.Male;
+                break;
+            case PokemonGenderRatio.SevenInEightFemale:
+                if (ran <= 7)
+                    gender = PokemonGender.Female;
+                else
+                    gender = PokemonGender.Male;
+                break;
+            case PokemonGenderRatio.FemaleOnly:
+                gender = PokemonGender.Female;
+                break;
+            case PokemonGenderRatio.MaleOnly:
+                gender = PokemonGender.Male;
+                break;
+            case PokemonGenderRatio.Ditto:
+                gender = PokemonGender.Ditto;
+                break;
+            default:
+                gender = PokemonGender.Genderless;
+                break;
         }
     }
 
@@ -168,7 +224,8 @@ public class Pokemon
             status = Status?.Id,
             moves = Moves.Select(m => m.GetSaveData()).ToList(),
             growthRate = Base.GrowthRate,
-            shiny = IsShiny
+            shiny = IsShiny,
+            gender = this.gender
         };
         return saveData;
     }
@@ -587,4 +644,5 @@ public class PokemonSaveData
     public List<MoveSaveData> moves;
     public GrowthRate growthRate;
     public bool shiny;
+    public PokemonGender gender;
 }

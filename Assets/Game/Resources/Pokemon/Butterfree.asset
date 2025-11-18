@@ -16,6 +16,8 @@ MonoBehaviour:
   description: butterfree
   frontSprite: {fileID: 21300000, guid: 91d78714fbef3147398e4d544fd16fae, type: 3}
   backSprite: {fileID: 21300000, guid: 3c596c72f9ab23f928040c24e70d9d40, type: 3}
+  frontSpriteFemale: {fileID: 21300000, guid: 73a5a820c99bc0506a67122fb7705373, type: 3}
+  backSpriteFemale: {fileID: 21300000, guid: 2c160290c7148a8c28985bc56833bcb6, type: 3}
   walkDownSprites:
   - {fileID: -1540426309290004842, guid: 39448e950d08895339421b2ce2bd3124, type: 3}
   - {fileID: -1540426309290004842, guid: c1dac904da5e23a818488c342d24ebf8, type: 3}
@@ -30,6 +32,8 @@ MonoBehaviour:
   - {fileID: -1540426309290004842, guid: 6a222de602c8a68918025e4de1abfe1d, type: 3}
   frontSpriteShiny: {fileID: 21300000, guid: 4043d22fa971a6a2f9183fbc2e15ae0e, type: 3}
   backSpriteShiny: {fileID: 21300000, guid: ff896f3925991f405ae0869656db207a, type: 3}
+  frontSpriteFemaleShiny: {fileID: 21300000, guid: 333a460f47ed78be3ac19f66e463c571, type: 3}
+  backSpriteFemaleShiny: {fileID: 21300000, guid: 22c4d8be450a5a6f4a67efb903eb6fc7, type: 3}
   walkDownSpritesShiny:
   - {fileID: -1540426309290004842, guid: 01f8a89193d29b5588771c15e4b82d3a, type: 3}
   - {fileID: -1540426309290004842, guid: 225c371c1f0cd40b58900a6d53ad3cac, type: 3}
@@ -62,3 +66,4 @@ MonoBehaviour:
     levelLearned: 10
   learnableByItems: []
   evolutions: []
+  genderRatio: 0

@@ -16,6 +16,8 @@ MonoBehaviour:
   description: A blastoise
   frontSprite: {fileID: 21300000, guid: 7474c65692f95f5ed964af2aa8de967a, type: 3}
   backSprite: {fileID: 21300000, guid: 612b6aa88e95291469e1d96088ebc649, type: 3}
+  frontSpriteFemale: {fileID: 21300000, guid: 7474c65692f95f5ed964af2aa8de967a, type: 3}
+  backSpriteFemale: {fileID: 21300000, guid: 612b6aa88e95291469e1d96088ebc649, type: 3}
   walkDownSprites:
   - {fileID: 21300000, guid: b9faa2f70e88e6beb8ed79104b7a020a, type: 3}
   - {fileID: 21300000, guid: 891f8e07276bc9645b9972f9d94b0f15, type: 3}
@@ -30,6 +32,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 910606faf147bba0189e4aa0df52b1d5, type: 3}
   frontSpriteShiny: {fileID: 21300000, guid: e0cb0d6974bd7b37fb75ffa04a7f25be, type: 3}
   backSpriteShiny: {fileID: 21300000, guid: 7eb3f51ed3b584f16a207f01f4c5ebfc, type: 3}
+  frontSpriteFemaleShiny: {fileID: 21300000, guid: e0cb0d6974bd7b37fb75ffa04a7f25be, type: 3}
+  backSpriteFemaleShiny: {fileID: 21300000, guid: 7eb3f51ed3b584f16a207f01f4c5ebfc, type: 3}
   walkDownSpritesShiny:
   - {fileID: 21300000, guid: 8c0d54cdff06a4267aff016f01a89b5b, type: 3}
   - {fileID: 21300000, guid: 09b1516c0460c6b1298028af0422a0a3, type: 3}
@@ -63,3 +67,4 @@ MonoBehaviour:
   - evolvesInto: {fileID: 11400000}
     requiredLevel: 36
     requiredItem: {fileID: 0}
+  genderRatio: 0

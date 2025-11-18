@@ -16,12 +16,16 @@ MonoBehaviour:
   description: A weak ball full of wisdom for whoever breaks it
   frontSprite: {fileID: -6134421028427622431, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
   backSprite: {fileID: -6134421028427622431, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
+  frontSpriteFemale: {fileID: -6134421028427622431, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
+  backSpriteFemale: {fileID: -6134421028427622431, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
   walkDownSprites: []
   walkUpSprites: []
   walkLeftSprites: []
   walkRightSprites: []
   frontSpriteShiny: {fileID: 2023522969545607760, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
   backSpriteShiny: {fileID: 2023522969545607760, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
+  frontSpriteFemaleShiny: {fileID: 2023522969545607760, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
+  backSpriteFemaleShiny: {fileID: 2023522969545607760, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
   walkDownSpritesShiny: []
   walkUpSpritesShiny: []
   walkLeftSpritesShiny: []
@@ -46,3 +50,4 @@ MonoBehaviour:
     levelLearned: 1
   learnableByItems: []
   evolutions: []
+  genderRatio: 0

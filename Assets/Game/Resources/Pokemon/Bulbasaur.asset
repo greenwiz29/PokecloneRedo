@@ -16,6 +16,8 @@ MonoBehaviour:
   description: A bulbasaur
   frontSprite: {fileID: 21300000, guid: ebfdba9b053aca1a282b016896c43bba, type: 3}
   backSprite: {fileID: 21300000, guid: aacaae602a38f884ab9e02e43de3736d, type: 3}
+  frontSpriteFemale: {fileID: 21300000, guid: ebfdba9b053aca1a282b016896c43bba, type: 3}
+  backSpriteFemale: {fileID: 21300000, guid: aacaae602a38f884ab9e02e43de3736d, type: 3}
   walkDownSprites:
   - {fileID: -855298285791758126, guid: 09ff0d33025b7ce6d93e94eb996d51cb, type: 3}
   - {fileID: -855298285791758126, guid: 224580d6573ee163290e04d2cc7b6fa8, type: 3}
@@ -30,6 +32,8 @@ MonoBehaviour:
   - {fileID: -855298285791758126, guid: cb301e2bc189d0cb0a37be9524226428, type: 3}
   frontSpriteShiny: {fileID: 21300000, guid: a9de61b31425cc3648e58887b45e71e3, type: 3}
   backSpriteShiny: {fileID: 21300000, guid: 0e370be5abcedf8f9b25c1f3ee4ebc12, type: 3}
+  frontSpriteFemaleShiny: {fileID: 21300000, guid: a9de61b31425cc3648e58887b45e71e3, type: 3}
+  backSpriteFemaleShiny: {fileID: 21300000, guid: 0e370be5abcedf8f9b25c1f3ee4ebc12, type: 3}
   walkDownSpritesShiny:
   - {fileID: -855298285791758126, guid: 9defce36e469c645f922d63156475a04, type: 3}
   - {fileID: -855298285791758126, guid: 837a76f68bfc9bb638ce9774682afb6b, type: 3}
@@ -69,3 +73,4 @@ MonoBehaviour:
   - evolvesInto: {fileID: 11400000, guid: c8beb122e19a711a18e5a4f7038dab8f, type: 2}
     requiredLevel: 16
     requiredItem: {fileID: 0}
+  genderRatio: 0

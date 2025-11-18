@@ -16,6 +16,8 @@ MonoBehaviour:
   description: ivysaur
   frontSprite: {fileID: 21300000, guid: d358b84d1db021b85a93dfc056125dc8, type: 3}
   backSprite: {fileID: 21300000, guid: 653a6fe1d97188644a3747cd5e674bc4, type: 3}
+  frontSpriteFemale: {fileID: 21300000, guid: d358b84d1db021b85a93dfc056125dc8, type: 3}
+  backSpriteFemale: {fileID: 21300000, guid: 653a6fe1d97188644a3747cd5e674bc4, type: 3}
   walkDownSprites:
   - {fileID: 6937817954938267909, guid: f52cd8d842e8f8fd5aef85089e015d64, type: 3}
   - {fileID: 6937817954938267909, guid: e8e03ae4c6ddfb2bd99725e302b0ac40, type: 3}
@@ -30,6 +32,8 @@ MonoBehaviour:
   - {fileID: 6937817954938267909, guid: f8fa3f40996cfbb88ad1b6b14fb2497f, type: 3}
   frontSpriteShiny: {fileID: 21300000, guid: a24b96dc87950be1fabd39028b489d6a, type: 3}
   backSpriteShiny: {fileID: 21300000, guid: e97050d46a804d7619a2fc14c224bd49, type: 3}
+  frontSpriteFemaleShiny: {fileID: 21300000, guid: a24b96dc87950be1fabd39028b489d6a, type: 3}
+  backSpriteFemaleShiny: {fileID: 21300000, guid: e97050d46a804d7619a2fc14c224bd49, type: 3}
   walkDownSpritesShiny:
   - {fileID: 6937817954938267909, guid: f1fd1bf4b0db214888c03aa87aa79730, type: 3}
   - {fileID: 6937817954938267909, guid: df5a3af90597f4c7ab2393560b863420, type: 3}
@@ -61,3 +65,4 @@ MonoBehaviour:
   - evolvesInto: {fileID: 11400000, guid: 021d9c21635ecee7eaefbe15cd1e9c92, type: 2}
     requiredLevel: 36
     requiredItem: {fileID: 0}
+  genderRatio: 0

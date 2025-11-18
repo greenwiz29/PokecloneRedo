@@ -16,6 +16,8 @@ MonoBehaviour:
   description: charmeleon
   frontSprite: {fileID: 21300000, guid: 3df90e343435f1338a929535ded7dca2, type: 3}
   backSprite: {fileID: 21300000, guid: ade6afd9cbd5c1740bf6046d9a18b97d, type: 3}
+  frontSpriteFemale: {fileID: 21300000, guid: 3df90e343435f1338a929535ded7dca2, type: 3}
+  backSpriteFemale: {fileID: 21300000, guid: ade6afd9cbd5c1740bf6046d9a18b97d, type: 3}
   walkDownSprites:
   - {fileID: 4130640169021434097, guid: 6dd96bff75081cce694e3a239036ebfe, type: 3}
   - {fileID: 4130640169021434097, guid: 322b0003b945f11be8d3cad1254a951d, type: 3}
@@ -30,6 +32,8 @@ MonoBehaviour:
   - {fileID: 4130640169021434097, guid: c0f6816446ad6b864a74f7687ecaea59, type: 3}
   frontSpriteShiny: {fileID: 21300000, guid: 00b2050169a4fd8f089b4fca46700a69, type: 3}
   backSpriteShiny: {fileID: 21300000, guid: af65afef7a10b88179373e8c7e4aa519, type: 3}
+  frontSpriteFemaleShiny: {fileID: 21300000, guid: 00b2050169a4fd8f089b4fca46700a69, type: 3}
+  backSpriteFemaleShiny: {fileID: 21300000, guid: af65afef7a10b88179373e8c7e4aa519, type: 3}
   walkDownSpritesShiny:
   - {fileID: 4130640169021434097, guid: 85d537c826b212c0aa7efbd739fa17a4, type: 3}
   - {fileID: 4130640169021434097, guid: 7fe9474264d438e9a94e8f40c0e5ec2d, type: 3}
@@ -61,3 +65,4 @@ MonoBehaviour:
   - evolvesInto: {fileID: 11400000, guid: c168d7f267dd2412a9d22ac8b6a62010, type: 2}
     requiredLevel: 36
     requiredItem: {fileID: 11400000, guid: 11ef074bcdbabd3dca4175c02e05e630, type: 2}
+  genderRatio: 0

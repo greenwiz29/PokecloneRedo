@@ -16,6 +16,8 @@ MonoBehaviour:
   description: A charmander
   frontSprite: {fileID: 21300000, guid: 9e29a63ca8d70d0bcb88438f7602604c, type: 3}
   backSprite: {fileID: 21300000, guid: ed8e1d9976a1fd94d961840d8f6e7764, type: 3}
+  frontSpriteFemale: {fileID: 21300000, guid: 9e29a63ca8d70d0bcb88438f7602604c, type: 3}
+  backSpriteFemale: {fileID: 21300000, guid: ed8e1d9976a1fd94d961840d8f6e7764, type: 3}
   walkDownSprites:
   - {fileID: -4178046375966092550, guid: 695256ac98e10515fa4fb4e0c1baca49, type: 3}
   - {fileID: -4178046375966092550, guid: 3ac6eb87b33e28466bc2003c3d897e57, type: 3}
@@ -30,6 +32,8 @@ MonoBehaviour:
   - {fileID: -4178046375966092550, guid: 16b8392213d450c07a13f38643daee1d, type: 3}
   frontSpriteShiny: {fileID: 21300000, guid: 13e51043b5107124786fd8c0c4eb4dbe, type: 3}
   backSpriteShiny: {fileID: 21300000, guid: f7b4ef5b749c44a51a9921d91a7e041b, type: 3}
+  frontSpriteFemaleShiny: {fileID: 21300000, guid: 13e51043b5107124786fd8c0c4eb4dbe, type: 3}
+  backSpriteFemaleShiny: {fileID: 21300000, guid: f7b4ef5b749c44a51a9921d91a7e041b, type: 3}
   walkDownSpritesShiny:
   - {fileID: -4178046375966092550, guid: 2b76b7d628568dc939c476893b6b1227, type: 3}
   - {fileID: -4178046375966092550, guid: 09d42dfacb957de8ebb8ef14adf005f9, type: 3}
@@ -75,3 +79,4 @@ MonoBehaviour:
   - evolvesInto: {fileID: 11400000, guid: f688b165844afb8ee9657ee98b69078f, type: 2}
     requiredLevel: 16
     requiredItem: {fileID: 0}
+  genderRatio: 0

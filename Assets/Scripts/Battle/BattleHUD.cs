@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class BattleHUD : MonoBehaviour
 {
-    [SerializeField] TMP_Text nameText, levelText;
+    [SerializeField] TMP_Text nameText, levelText, genderText;
     [SerializeField] Text statusLabel;
     [SerializeField] StatBar hpBar, expBar;
 
@@ -18,6 +18,7 @@ public class BattleHUD : MonoBehaviour
         _pokemon = pokemon;
         nameText.text = pokemon.Base.Name;
         SetLevel();
+        SetGenderText();
         hpBar.SetStat((float)pokemon.HP / pokemon.MaxHP);
 
         SetStatusText();
@@ -39,6 +40,27 @@ public class BattleHUD : MonoBehaviour
                 StartCoroutine(UpdateHP());
             };
         }
+    }
+    
+    public void SetGenderText()
+    {
+        switch (_pokemon.Gender)
+        {
+            case PokemonGender.Female:
+                char f = '\u2640';
+                genderText.text = f.ToString();
+                genderText.color = new Color(255, 0, 210);
+                break;
+            case PokemonGender.Male:
+                char m = '\u2642';
+                genderText.text = m.ToString();
+                genderText.color = new Color(0, 100, 255);
+                break;
+            default:
+                genderText.text = "";
+                break;
+        }
+
     }
 
     public void SetStatusText()

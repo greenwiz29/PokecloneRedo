@@ -14,11 +14,15 @@ public class PokemonBase : ScriptableObject
     [Header("Normal")]
     [SerializeField] Sprite frontSprite;
     [SerializeField] Sprite backSprite;
+    [SerializeField] Sprite frontSpriteFemale;
+    [SerializeField] Sprite backSpriteFemale;
     [SerializeField] List<Sprite> walkDownSprites, walkUpSprites, walkLeftSprites, walkRightSprites;
 
     [Header("Shiny")]
     [SerializeField] Sprite frontSpriteShiny;
     [SerializeField] Sprite backSpriteShiny;
+    [SerializeField] Sprite frontSpriteFemaleShiny;
+    [SerializeField] Sprite backSpriteFemaleShiny;
     [SerializeField] List<Sprite> walkDownSpritesShiny, walkUpSpritesShiny, walkLeftSpritesShiny, walkRightSpritesShiny;
 
     [Header("Abilities")]
@@ -42,10 +46,12 @@ public class PokemonBase : ScriptableObject
     [SerializeField] List<MoveBase> learnableByItems;
 
     [SerializeField] List<Evolution> evolutions;
+    [SerializeField] PokemonGenderRatio genderRatio;
     GrowthRate growthRate;
 
     public string Name => name;
     public string Desc => description;
+    public PokemonGenderRatio GenderRatio { get { return genderRatio; } }
     public Sprite FrontSprite { get; private set; }
     public Sprite BackSprite { get; private set; }
     public PokemonType Type1 => type1;
@@ -66,17 +72,34 @@ public class PokemonBase : ScriptableObject
     public List<MoveBase> LearnableByItems => learnableByItems;
     public List<Evolution> Evolutions => evolutions;
 
-    public void SetSprites(bool isShiny)
+    public void SetSprites(bool isShiny, PokemonGender gender)
     {
-        if (isShiny)
+        switch (gender)
         {
-            FrontSprite = frontSpriteShiny;
-            BackSprite = backSpriteShiny;
-        }
-        else
-        {
-            FrontSprite = frontSprite;
-            BackSprite = backSprite;            
+            case PokemonGender.Female:
+                if (isShiny)
+                {
+                    FrontSprite = frontSpriteFemaleShiny;
+                    BackSprite = backSpriteFemaleShiny;
+                }
+                else
+                {
+                    FrontSprite = frontSpriteFemale;
+                    BackSprite = backSpriteFemale;
+                }
+                break;
+            default:
+                if (isShiny)
+                {
+                    FrontSprite = frontSpriteShiny;
+                    BackSprite = backSpriteShiny;
+                }
+                else
+                {
+                    FrontSprite = frontSprite;
+                    BackSprite = backSprite;
+                }
+                break;
         }
     }
 
@@ -204,4 +227,14 @@ public class Evolution
     public PokemonBase EvolvesInto => evolvesInto;
     public int RequiredLevel => requiredLevel;
     public EvolutionItem RequiredItem => requiredItem;
+}
+
+public enum PokemonGenderRatio
+{
+    OneInTwoFemale, OneInFourFemale, OneInEightFemale, ThreeInFourFemale, SevenInEightFemale, FemaleOnly, MaleOnly, Genderless, Ditto
+}
+
+public enum PokemonGender
+{
+    NotSet, Female, Male, Genderless, Ditto
 }

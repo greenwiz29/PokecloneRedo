@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class PartyMemberUI : MonoBehaviour
 {
-    [SerializeField] TMP_Text nameText, levelText;
+    [SerializeField] TMP_Text nameText, levelText, genderText;
     [SerializeField] Text statusLabel;
     [SerializeField] StatBar hpBar, expBar;
     [SerializeField] TMP_Text messageText;
@@ -18,6 +18,27 @@ public class PartyMemberUI : MonoBehaviour
         SetMessage("");
 
         _pokemon.OnHPChanged += UpdateData;
+    }
+
+    public void SetGenderText()
+    {
+        switch (_pokemon.Gender)
+        {
+            case PokemonGender.Female:
+                char f = '\u2640';
+                genderText.text = f.ToString();
+                genderText.color = new Color(255, 0, 210);
+                break;
+            case PokemonGender.Male:
+                char m = '\u2642';
+                genderText.text = m.ToString();
+                genderText.color = new Color(0, 100, 255);
+                break;
+            default:
+                genderText.text = "";
+                break;
+        }
+
     }
 
     public void SetStatusText()
@@ -38,6 +59,7 @@ public class PartyMemberUI : MonoBehaviour
     {
         nameText.text = _pokemon.Base.Name;
         levelText.text = "Lvl " + _pokemon.Level;
+        SetGenderText();
         SetStatusText();
         hpBar.SetStat((float)_pokemon.HP / _pokemon.MaxHP);
         expBar.SetStat(_pokemon.GetNormalizedExp());
