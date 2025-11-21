@@ -12,6 +12,7 @@ public class Pokemon
     [SerializeField] PokemonGender gender;
 
     private AbilityID abilityID;
+    bool useHiddenAbility = false;
 
     public PokemonBase Base => _base;
     public int Level => level;
@@ -71,6 +72,7 @@ public class Pokemon
         HP = saveData.hp;
         level = saveData.level;
         exp = saveData.exp;
+        useHiddenAbility = saveData.useHiddenAbility;
         abilityID = saveData.ability;
         _base.GrowthRate = saveData.growthRate;
         IsShiny = saveData.shiny;
@@ -120,6 +122,7 @@ public class Pokemon
         else
         {
             abilityID = Base.HiddenAbilityID;
+            useHiddenAbility = true;
         }
 
         // Shiny?
@@ -221,6 +224,7 @@ public class Pokemon
             level = Level,
             exp = Exp,
             ability = abilityID,
+            useHiddenAbility = this.useHiddenAbility,
             status = Status?.Id,
             moves = Moves.Select(m => m.GetSaveData()).ToList(),
             growthRate = Base.GrowthRate,
@@ -285,6 +289,11 @@ public class Pokemon
     {
         _base = evolution.EvolvesInto;
         var statChanges = CalculateStats();
+        Base.SetSprites(IsShiny, gender);
+        abilityID = useHiddenAbility ? Base.HiddenAbilityID : Base.AbilityID;
+        Ability = AbilityDB.Abilities[abilityID];
+
+        // TODO: Handle any other updates 
 
         HP += statChanges.hpDiff;
 
@@ -512,7 +521,7 @@ public class Pokemon
     {
         if (damage < 1)
             damage = 1;
-        ReduceHP(damage);
+        ReduceHP(damage, true);
         AddStatusEvent(StatusEventType.Text, $"{Base.Name} was damaged by the recoil!");
     }
 
@@ -657,6 +666,7 @@ public class PokemonSaveData
     public int hp;
     public int exp;
     public AbilityID ability;
+    public bool useHiddenAbility;
     public StatusConditionID? status;
     public List<MoveSaveData> moves;
     public GrowthRate growthRate;

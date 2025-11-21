@@ -221,6 +221,7 @@ public class RunTurnState : State<BattleSystem>
         if (details == null)
             yield break;
 
+        var enemy = source.IsPlayerUnit ? "" : "Enemy ";
         if (move.Recoil.recoilType != RecoilType.none)
         {
             int damage = 0;
@@ -244,6 +245,14 @@ public class RunTurnState : State<BattleSystem>
                     Debug.Log("Error: Unknown Recoil Effect");
                     break;
             }
+            source.Pokemon.ReduceHP(damage);
+            yield return dialogBox.TypeDialog($"{enemy}{source.Pokemon.Name} is hurt by recoil.");
+        }
+        if (move.DrainingPercentage != 0)
+        {
+            int healedHP = Mathf.Clamp(Mathf.CeilToInt(details.DamageDealt / 100f * move.DrainingPercentage), 1, source.Pokemon.MaxHP);
+            source.Pokemon.IncreaseHP(healedHP, true);
+            yield return dialogBox.TypeDialog($"{enemy}{source.Pokemon.Name}'s energy is restored.");
         }
 
         //ReUsed from status changes

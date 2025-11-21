@@ -61,5 +61,8 @@ MonoBehaviour:
   catchRate: 45
   learnableMoves: []
   learnableByItems: []
-  evolutions: []
+  evolutions:
+  - evolvesInto: {fileID: 11400000, guid: f4f5746ae102d6126b5c654b3dd735a3, type: 2}
+    requiredLevel: 36
+    requiredItem: {fileID: 0}
   genderRatio: 0

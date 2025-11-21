@@ -29,9 +29,10 @@ public class MoveBase : ScriptableObject
 
     [SerializeField] bool isMultiHitMove = false;
     [SerializeField] Vector2Int hitRange = new Vector2Int(2, 0);
-    //Erina's tutorial
+    //Erina's tutorials
     [SerializeField] RecoilMoveEffect recoil = new RecoilMoveEffect();
-
+    [SerializeField] int drainingPercentage = 0;
+    public int DrainingPercentage => drainingPercentage;
 
     public string Name => name;
     public string Desc => description;

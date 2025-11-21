@@ -62,11 +62,11 @@ MonoBehaviour:
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: d6d7f5d17e381c7de85d5e218f6edf93, type: 2}
     levelLearned: 1
-  - moveBase: {fileID: 11400000, guid: d017063ff934bbe3ca502cc5d1bec0a9, type: 2}
+  - moveBase: {fileID: 11400000, guid: 941963597322a67b19930346d562d7ac, type: 2}
     levelLearned: 4
   - moveBase: {fileID: 11400000, guid: dea694b551dc00c45b931cb61d4bb095, type: 2}
     levelLearned: 7
-  - moveBase: {fileID: 11400000, guid: b779b8ecaca856e1dbea21652c961ebc, type: 2}
+  - moveBase: {fileID: 11400000, guid: f143bfef66bd7581e88ada721b35778a, type: 2}
     levelLearned: 5
   learnableByItems: []
   evolutions:
