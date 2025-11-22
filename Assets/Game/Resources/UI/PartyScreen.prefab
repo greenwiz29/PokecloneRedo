@@ -62,7 +62,7 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 600, y: 150}
+  m_CellSize: {x: 700, y: 170}
   m_Spacing: {x: 75, y: 75}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -156,6 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 323ad90285867ee71a3bfd8f79871b0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectionSpeed: 5
   messageText: {fileID: 765601262900480975}
 --- !u!1 &6418418218637569999
 GameObject:

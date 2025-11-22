@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class PartyMemberUI : MonoBehaviour
 {
+    [SerializeField] Image pokemonIcon;
     [SerializeField] TMP_Text nameText, levelText, genderText;
     [SerializeField] Text statusLabel;
     [SerializeField] StatBar hpBar, expBar;
@@ -18,6 +19,17 @@ public class PartyMemberUI : MonoBehaviour
         SetMessage("");
 
         _pokemon.OnHPChanged += UpdateData;
+    }
+
+    public void UpdateData()
+    {
+        pokemonIcon.sprite = _pokemon.Base.WalkDownAnim[0];
+        nameText.text = _pokemon.Base.Name;
+        levelText.text = "Lvl " + _pokemon.Level;
+        SetGenderText();
+        SetStatusText();
+        hpBar.SetStat((float)_pokemon.HP / _pokemon.MaxHP);
+        expBar.SetStat(_pokemon.GetNormalizedExp());
     }
 
     public void SetGenderText()
@@ -53,16 +65,6 @@ public class PartyMemberUI : MonoBehaviour
             statusLabel.text = conditionID.ToString().ToUpper();
             statusLabel.color = GlobalSettings.I.GetStatusColor(conditionID);
         }
-    }
-
-    public void UpdateData()
-    {
-        nameText.text = _pokemon.Base.Name;
-        levelText.text = "Lvl " + _pokemon.Level;
-        SetGenderText();
-        SetStatusText();
-        hpBar.SetStat((float)_pokemon.HP / _pokemon.MaxHP);
-        expBar.SetStat(_pokemon.GetNormalizedExp());
     }
 
     public void SetSelected(bool selected)

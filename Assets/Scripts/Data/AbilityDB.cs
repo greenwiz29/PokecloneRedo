@@ -150,10 +150,10 @@ public class AbilityDB
             {
                 Name = "Quick Feet",
                 Description = "Boosts Speed if there is a status condition",
-                OnModifyDef = (float spd, Pokemon attacker, Pokemon defender, Move move) =>
+                OnModifySpd = (float spd, Pokemon attacker, Pokemon defender, Move move) =>
                 {
                     var result = spd;
-                    if(defender.Status != null)
+                    if(attacker.Status != null)
                     {
                         result *= 1.5f;
                     }

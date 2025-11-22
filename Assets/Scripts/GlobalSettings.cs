@@ -8,6 +8,7 @@ public class GlobalSettings : MonoSingleton<GlobalSettings>
     [SerializeField] LayerMask solidObjectsLayer, interactablesLayer, grassLayer, playerLayer, fovLayer, portalLayer, triggersLayer, ledgesLayer, waterLayer;
     [SerializeField] Color psnColor, brnColor, slpColor, parColor, frzColor;
     [SerializeField] float sellFactor = 0.85f;
+    [SerializeField] float[] critChances = new float[] { (6.25f), (12.5f), (50f), 100f };
 
     Dictionary<StatusConditionID, Color> statusColors;
 
@@ -25,7 +26,7 @@ public class GlobalSettings : MonoSingleton<GlobalSettings>
     public LayerMask WaterLayer => waterLayer;
     public LayerMask TriggerableLayers => grassLayer | fovLayer | portalLayer | triggersLayer | waterLayer;
     public LayerMask CollisionLayers => solidObjectsLayer | interactablesLayer | playerLayer | waterLayer;
-
+    public float[] CritChances => critChances;
 	public float SellFactor { get => sellFactor; set => sellFactor = value; }
     public Color Transparent = new Color(1, 1, 1, 0);
 

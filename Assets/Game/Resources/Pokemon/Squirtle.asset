@@ -19,33 +19,33 @@ MonoBehaviour:
   frontSpriteFemale: {fileID: 21300000, guid: 39e761212a05f5db4bea74bb8f343384, type: 3}
   backSpriteFemale: {fileID: 21300000, guid: 18fc6e8e3f72b154fba88f358748be28, type: 3}
   walkDownSprites:
-  - {fileID: 7028616704906629411, guid: 31300c652d9ef5fcda3e7ccc550ea57c, type: 3}
-  - {fileID: 7028616704906629411, guid: 41b185806c0dcf29095e479d3bac807c, type: 3}
+  - {fileID: 21300000, guid: 31300c652d9ef5fcda3e7ccc550ea57c, type: 3}
+  - {fileID: 21300000, guid: 41b185806c0dcf29095e479d3bac807c, type: 3}
   walkUpSprites:
-  - {fileID: 7028616704906629411, guid: 417de40a9483ceaebbf051267c6b9421, type: 3}
-  - {fileID: 7028616704906629411, guid: 435a75dee2481dc1e99e5bad36e5dd02, type: 3}
+  - {fileID: 21300000, guid: 417de40a9483ceaebbf051267c6b9421, type: 3}
+  - {fileID: 21300000, guid: 435a75dee2481dc1e99e5bad36e5dd02, type: 3}
   walkLeftSprites:
-  - {fileID: 7028616704906629411, guid: fef5801b77d3ac29cbdfc64f7478be66, type: 3}
-  - {fileID: 7028616704906629411, guid: a393720141998d792adf78e0444d2844, type: 3}
+  - {fileID: 21300000, guid: fef5801b77d3ac29cbdfc64f7478be66, type: 3}
+  - {fileID: 21300000, guid: a393720141998d792adf78e0444d2844, type: 3}
   walkRightSprites:
-  - {fileID: 7028616704906629411, guid: 2df5f0d3871442007af2907d5d1fab44, type: 3}
-  - {fileID: 7028616704906629411, guid: 4280b530519850f84a1bd710c1fa999b, type: 3}
+  - {fileID: 21300000, guid: 2df5f0d3871442007af2907d5d1fab44, type: 3}
+  - {fileID: 21300000, guid: 4280b530519850f84a1bd710c1fa999b, type: 3}
   frontSpriteShiny: {fileID: 21300000, guid: ede4f05a3f65dbba5ad75b9ba50c3074, type: 3}
   backSpriteShiny: {fileID: 21300000, guid: 050b04d4062668730bf546d191997242, type: 3}
   frontSpriteFemaleShiny: {fileID: 21300000, guid: ede4f05a3f65dbba5ad75b9ba50c3074, type: 3}
   backSpriteFemaleShiny: {fileID: 21300000, guid: 050b04d4062668730bf546d191997242, type: 3}
   walkDownSpritesShiny:
-  - {fileID: 7028616704906629411, guid: 67f6ee2a5192f1ce594c0067d5021745, type: 3}
-  - {fileID: 7028616704906629411, guid: f1276edf48b1fa431ba47fe761f6441a, type: 3}
+  - {fileID: 21300000, guid: 67f6ee2a5192f1ce594c0067d5021745, type: 3}
+  - {fileID: 21300000, guid: f1276edf48b1fa431ba47fe761f6441a, type: 3}
   walkUpSpritesShiny:
-  - {fileID: 7028616704906629411, guid: 4537b457812f580f590286d243f496bc, type: 3}
-  - {fileID: 7028616704906629411, guid: 34f940c66ae5ba0edb98df260da10437, type: 3}
+  - {fileID: 21300000, guid: 4537b457812f580f590286d243f496bc, type: 3}
+  - {fileID: 21300000, guid: 34f940c66ae5ba0edb98df260da10437, type: 3}
   walkLeftSpritesShiny:
-  - {fileID: 7028616704906629411, guid: 84a39b1c098ddb657869636d0b961d65, type: 3}
-  - {fileID: 7028616704906629411, guid: 4b1c032a5187ca654b85afdabfa2b4fc, type: 3}
+  - {fileID: 21300000, guid: 84a39b1c098ddb657869636d0b961d65, type: 3}
+  - {fileID: 21300000, guid: 4b1c032a5187ca654b85afdabfa2b4fc, type: 3}
   walkRightSpritesShiny:
-  - {fileID: 7028616704906629411, guid: b71eb0c3ea5664f7a81dcb68262eb861, type: 3}
-  - {fileID: 7028616704906629411, guid: 4f0e8b2cc626774b0a9ffdfa7b2551fd, type: 3}
+  - {fileID: 21300000, guid: b71eb0c3ea5664f7a81dcb68262eb861, type: 3}
+  - {fileID: 21300000, guid: 4f0e8b2cc626774b0a9ffdfa7b2551fd, type: 3}
   ability: 3
   hiddenAbility: 6
   normalAbilityPercent: 70

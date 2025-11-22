@@ -475,9 +475,21 @@ public class Pokemon
     public DamageDetails ApplyDamage(Move move, Pokemon attacker, float weatherModifier = 1f, int hitCount = 1)
     {
         float crit = 1f;
-        // TODO: make critRate constant
-        if (UnityEngine.Random.value * 100f <= move.Base.CritChance)
-            crit = 2f;
+        // Erina's tutorial
+        if (!(move.Base.CriticalBehavior == CritBehavior.NeverCrits))
+        {
+            if (move.Base.CriticalBehavior == CritBehavior.AlwaysCrits)
+            {
+                crit = 2f;
+            }
+            else
+            {
+                int critChance = 0 + ((move.Base.CriticalBehavior == CritBehavior.HighCritRatio) ? 1 : 0); //Todo: Ability, HeldItem
+                if (UnityEngine.Random.value * 100f <= GlobalSettings.I.CritChances[Mathf.Clamp(critChance, 0, GlobalSettings.I.CritChances.Length - 1)])
+                    crit = 2f;
+            }
+        }
+
         float type = GetTypeEffectiveness(move.Base.Type);
 
         var damageDetails = new DamageDetails()

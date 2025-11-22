@@ -212,7 +212,9 @@ public class BattleSystem : MonoBehaviour
             }
 
             // Sort actions by priority and speed
-            battleActions = battleActions.OrderByDescending(a => a.Priority).ThenByDescending(a => a.User.Pokemon.ModifySpd(a.User.Pokemon.Speed, a.Target.Pokemon, a.SelectedMove)).ToList();
+            battleActions = battleActions.OrderByDescending(a => a.Priority)
+                .ThenByDescending(a => a.User.Pokemon.ModifySpd(a.User.Pokemon.Speed, a.Target?.Pokemon, a.SelectedMove))
+                .ToList();
 
             // Run turns
             RunTurnState.I.BattleActions = battleActions;

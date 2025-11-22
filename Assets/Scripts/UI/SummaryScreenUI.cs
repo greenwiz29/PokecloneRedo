@@ -10,6 +10,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
     [Header("Basic Details")]
     [SerializeField] TMP_Text nameText;
     [SerializeField] TMP_Text levelText;
+    [SerializeField] TMP_Text genderText;
     [SerializeField] Image image;
     [SerializeField] Image shinyIcon;
 
@@ -73,9 +74,30 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
     {
         _pokemon = pokemon;
         nameText.text = pokemon.Name;
+        SetGenderText();
         levelText.text = "Lvl " + pokemon.Level;
         image.sprite = pokemon.Base.FrontSprite;
         shinyIcon.gameObject.SetActive(pokemon.IsShiny);
+    }
+
+    public void SetGenderText()
+    {
+        switch (_pokemon.Gender)
+        {
+            case PokemonGender.Female:
+                char f = '\u2640';
+                genderText.text = f.ToString();
+                genderText.color = new Color(255, 0, 210);
+                break;
+            case PokemonGender.Male:
+                char m = '\u2642';
+                genderText.text = m.ToString();
+                genderText.color = new Color(0, 100, 255);
+                break;
+            default:
+                genderText.text = "";
+                break;
+        }
     }
 
     public void ShowPage(int page)

@@ -63,8 +63,5 @@ MonoBehaviour:
   - moveBase: {fileID: 0}
     levelLearned: 0
   learnableByItems: []
-  evolutions:
-  - evolvesInto: {fileID: 11400000}
-    requiredLevel: 36
-    requiredItem: {fileID: 0}
+  evolutions: []
   genderRatio: 0

@@ -54,6 +54,10 @@ public class PokemonBase : ScriptableObject
     public PokemonGenderRatio GenderRatio { get { return genderRatio; } }
     public Sprite FrontSprite { get; private set; }
     public Sprite BackSprite { get; private set; }
+    public List<Sprite> WalkDownAnim { get; private set; }
+    public List<Sprite> WalkUpAnim { get; private set; }
+    public List<Sprite> WalkLeftAnim { get; private set; }
+    public List<Sprite> WalkRightAnim { get; private set; }
     public PokemonType Type1 => type1;
     public PokemonType Type2 => type2;
     public AbilityID AbilityID => ability;
@@ -81,11 +85,19 @@ public class PokemonBase : ScriptableObject
                 {
                     FrontSprite = frontSpriteFemaleShiny;
                     BackSprite = backSpriteFemaleShiny;
+                    WalkDownAnim = walkDownSpritesShiny;
+                    WalkUpAnim = walkUpSpritesShiny;
+                    WalkLeftAnim = walkLeftSpritesShiny;
+                    WalkRightAnim = walkRightSpritesShiny;
                 }
                 else
                 {
                     FrontSprite = frontSpriteFemale;
                     BackSprite = backSpriteFemale;
+                    WalkDownAnim = walkDownSprites;
+                    WalkUpAnim = walkUpSprites;
+                    WalkLeftAnim = walkLeftSprites;
+                    WalkRightAnim = walkRightSprites;
                 }
                 break;
             default:
@@ -93,11 +105,19 @@ public class PokemonBase : ScriptableObject
                 {
                     FrontSprite = frontSpriteShiny;
                     BackSprite = backSpriteShiny;
+                    WalkDownAnim = walkDownSpritesShiny;
+                    WalkUpAnim = walkUpSpritesShiny;
+                    WalkLeftAnim = walkLeftSpritesShiny;
+                    WalkRightAnim = walkRightSpritesShiny;
                 }
                 else
                 {
                     FrontSprite = frontSprite;
                     BackSprite = backSprite;
+                    WalkDownAnim = walkDownSprites;
+                    WalkUpAnim = walkUpSprites;
+                    WalkLeftAnim = walkLeftSprites;
+                    WalkRightAnim = walkRightSprites;
                 }
                 break;
         }

@@ -15,8 +15,6 @@ public class MoveBase : ScriptableObject
 
     [SerializeField] int power, accuracy, pp, priority;
 
-    [SerializeField] float critChance = 6.25f;
-
     [SerializeField] bool alwaysHits;
 
     [SerializeField] MoveType moveType;
@@ -32,7 +30,7 @@ public class MoveBase : ScriptableObject
     //Erina's tutorials
     [SerializeField] RecoilMoveEffect recoil = new RecoilMoveEffect();
     [SerializeField] int drainingPercentage = 0;
-    public int DrainingPercentage => drainingPercentage;
+    [SerializeField] CritBehavior critBehavior;
 
     public string Name => name;
     public string Desc => description;
@@ -42,15 +40,16 @@ public class MoveBase : ScriptableObject
     public bool AlwaysHits => alwaysHits;
     public int PP => pp;
     public int Priority => priority;
-    public float CritChance => critChance;
     public MoveType MoveType => moveType;
     public MoveTarget Target => target;
     public MoveEffects Effects => effects;
     public List<SecondaryEffects> SecondaryEffects => secondaryEffects;
     public bool IsMultiHitMove => isMultiHitMove;
 
-    //Erina's tutorial
+    //Erina's tutorials
     public RecoilMoveEffect Recoil => recoil;
+    public int DrainingPercentage => drainingPercentage;
+    public CritBehavior CriticalBehavior=> critBehavior;
 
     public int GetHitTimes()
     {
@@ -107,7 +106,7 @@ public class StatBoost
 
 public enum MoveTarget { Foe, Self, Area, Ally, }
 
-//Erina's tutorial
+//Erina's tutorials
 [System.Serializable]
 public class RecoilMoveEffect
 {
@@ -115,8 +114,11 @@ public class RecoilMoveEffect
     public int recoilDamagePercent = 0;
 }
 
-//Erina's tutorial
 public enum RecoilType
 {
     none, RecoilByMaxHP, RecoilByCurrentHP, RecoilByDamage
+}
+public enum CritBehavior
+{
+    none, HighCritRatio, AlwaysCrits, NeverCrits
 }
