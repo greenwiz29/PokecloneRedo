@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 public class AbilityDB
 {
@@ -247,11 +248,11 @@ public class AbilityDB
                     if(source != null && source == target)
                         return;
 
-                    foreach (var stat in boosts.Keys)
+                    foreach (var stat in boosts.Keys.ToList())
                     {
                         if(boosts[stat] < 0)
                         {
-                            boosts.Remove(stat);
+                            boosts[stat] = 0;
                             boostRemoved = true;
                         }
                     }
@@ -275,11 +276,11 @@ public class AbilityDB
                     if(source != null && source == target)
                         return;
 
-                    foreach (var stat in boosts.Keys)
+                    foreach (var stat in boosts.Keys.ToList())
                     {
                         if(boosts[stat] < 0)
                         {
-                            boosts.Remove(stat);
+                            boosts[stat] = 0;
                             boostRemoved = true;
                         }
                     }

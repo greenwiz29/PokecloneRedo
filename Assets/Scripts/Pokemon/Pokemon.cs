@@ -404,7 +404,7 @@ public class Pokemon
             {
                 StatBoosts[stat] = Mathf.Clamp(StatBoosts[stat] + boost, -6, 6);
 
-                string riseOrFall = changeIsPositive ? "rose" : "fell";
+                string riseOrFall = changeIsPositive ? "rose" : boost < 0 ? "fell" : "did not change";
                 string bigChange = (Mathf.Abs(boost) >= 3) ? " severly " : (Mathf.Abs(boost) == 2) ? " harsly " : " ";
                 AddStatusEvent(StatusEventType.Text, $"{Base.Name}'s {stat}{bigChange}{riseOrFall}!");
             }
@@ -443,10 +443,10 @@ public class Pokemon
         VolatileStatus = null;
     }
 
-    public void OnAfterTurn()
+    public void OnAfterTurn(Pokemon target)
     {
-        Status?.OnAfterTurn?.Invoke(this);
-        VolatileStatus?.OnAfterTurn?.Invoke(this);
+        Status?.OnAfterTurn?.Invoke(this, target);
+        VolatileStatus?.OnAfterTurn?.Invoke(this, target);
     }
 
     public void AddStatusEvent(StatusEventType type, string message)
@@ -489,7 +489,7 @@ public class Pokemon
                     crit = 2f;
             }
         }
-        
+
         if (move.Base.OneHitKo.isOneHitKnockOut)
         {
             int oneHitDamage = HP;

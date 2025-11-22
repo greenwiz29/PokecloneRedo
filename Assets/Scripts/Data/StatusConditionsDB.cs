@@ -23,10 +23,10 @@ public class StatusConditionsDB
                 Name = "Poison",
                 StartMessage = "has been poisoned",
                 CatchBonus = 1.5f,
-                OnAfterTurn = p =>
+                OnAfterTurn = (target, user) =>
                 {
-                    p.ReduceHP(p.MaxHP / 8);
-                    p.AddStatusEvent(StatusEventType.Damage, $"{p.Base.Name} is hurt by poison!");
+                    target.ReduceHP(target.MaxHP / 8);
+                    target.AddStatusEvent(StatusEventType.Damage, $"{target.Base.Name} is hurt by poison!");
                 }
             }
         },
@@ -37,10 +37,10 @@ public class StatusConditionsDB
                 Name = "Burn",
                 StartMessage = "has been burned",
                 CatchBonus = 1.5f,
-                OnAfterTurn = p =>
+                OnAfterTurn = (target, user) =>
                 {
-                    p.ReduceHP(p.MaxHP / 16);
-                    p.AddStatusEvent(StatusEventType.Damage, $"{p.Base.Name} is hurt by its burn!");
+                    target.ReduceHP(target.MaxHP / 16);
+                    target.AddStatusEvent(StatusEventType.Damage, $"{target.Base.Name} is hurt by its burn!");
                 }
             }
         },
@@ -146,6 +146,31 @@ public class StatusConditionsDB
                     return false;
                 }
             }
+        },
+        {
+            StatusConditionID.seeded,
+            new StatusCondition()
+            {
+                Name = "Seeded",
+                StartMessage = "was seeded!",
+                CatchBonus = 1f,
+                OnStart = p =>
+                {
+                    if (p.IsOfType(PokemonType.Grass))
+                    {
+                        // Grass-types are immune to being seeded
+                        return;
+                    }
+
+                },
+                OnAfterTurn = (Pokemon target, Pokemon user) =>
+                {
+                    int damage = target.MaxHP/16;
+                    target.ReduceHP(damage, true);
+                    user.IncreaseHP(damage, true);
+                    target.AddStatusEvent(StatusEventType.Text, $"{target.Name}'s health is sapped by Leech Seed.");
+                }
+            }
         }
     };
 
@@ -156,4 +181,4 @@ public class StatusConditionsDB
     }
 }
 
-public enum StatusConditionID { none, psn, brn, par, slp, frz, confusion }
+public enum StatusConditionID { none, psn, brn, par, slp, frz, confusion, seeded }

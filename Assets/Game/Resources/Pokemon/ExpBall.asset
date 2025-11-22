@@ -30,8 +30,8 @@ MonoBehaviour:
   walkUpSpritesShiny: []
   walkLeftSpritesShiny: []
   walkRightSpritesShiny: []
-  ability: 5
-  hiddenAbility: 12
+  ability: 12
+  hiddenAbility: 5
   normalAbilityPercent: 70
   type1: 10
   type2: 9

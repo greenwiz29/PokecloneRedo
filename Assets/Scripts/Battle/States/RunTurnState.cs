@@ -51,7 +51,7 @@ public class RunTurnState : State<BattleSystem>
                 case BattleActionType.Move:
                     action.User.Pokemon.CurrentMove = action.SelectedMove;
                     yield return RunMove(action.User, action.Target, action.SelectedMove);
-                    yield return RunAfterTurn(action.User);
+                    yield return RunAfterTurn(action.User, action.Target);
                     break;
 
                 case BattleActionType.Switch:
@@ -260,12 +260,12 @@ public class RunTurnState : State<BattleSystem>
         yield return ShowStatusChanges(target);
     }
 
-    IEnumerator RunAfterTurn(BattleUnit source)
+    IEnumerator RunAfterTurn(BattleUnit source, BattleUnit target)
     {
         if (bs.IsBattleOver)
             yield break;
 
-        source.Pokemon.OnAfterTurn();
+        source.Pokemon.OnAfterTurn(target.Pokemon);
         yield return ShowStatusChanges(source);
 
         // Check if source pokemon fainted after status effect
