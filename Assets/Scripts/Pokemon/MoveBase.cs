@@ -31,6 +31,7 @@ public class MoveBase : ScriptableObject
     [SerializeField] RecoilMoveEffect recoil = new RecoilMoveEffect();
     [SerializeField] int drainingPercentage = 0;
     [SerializeField] CritBehavior critBehavior;
+    [SerializeField] OneHitKoMoveEffect oneHitKoMoveEffect = new OneHitKoMoveEffect();
 
     public string Name => name;
     public string Desc => description;
@@ -49,7 +50,8 @@ public class MoveBase : ScriptableObject
     //Erina's tutorials
     public RecoilMoveEffect Recoil => recoil;
     public int DrainingPercentage => drainingPercentage;
-    public CritBehavior CriticalBehavior=> critBehavior;
+    public CritBehavior CriticalBehavior => critBehavior;
+    public OneHitKoMoveEffect OneHitKo => oneHitKoMoveEffect;
 
     public int GetHitTimes()
     {
@@ -121,4 +123,15 @@ public enum RecoilType
 public enum CritBehavior
 {
     none, HighCritRatio, AlwaysCrits, NeverCrits
+}
+
+[System.Serializable]
+public class OneHitKoMoveEffect
+{
+    // Bool to turn move into 1-hit KO move
+    public bool isOneHitKnockOut;
+    // This is an exception that makes the base Accuracy 20 instead of 30 if the pokémons type isn't the same as the moves type.
+    public bool lowerOddsException;
+    // This can be used to make a target immume if it has a certain type
+    public PokemonType immunityType;
 }

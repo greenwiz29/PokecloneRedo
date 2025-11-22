@@ -162,7 +162,7 @@ public class RunTurnState : State<BattleSystem>
 
                 if (target.Pokemon.HP <= 0)
                 {
-                    yield return HandlePokemonFainted(target, source, damageDetails);
+                    yield return HandlePokemonFainted(target, source, damageDetails, move.Base.OneHitKo.isOneHitKnockOut);
                     break;
                 }
                 else
@@ -319,6 +319,23 @@ public class RunTurnState : State<BattleSystem>
         if (move.Base.AlwaysHits)
             return true;
 
+        // Erina's tutorial
+        if (move.Base.OneHitKo.isOneHitKnockOut)
+        {
+            if (source.Level < target.Level)
+                return false;
+            if (source.IsOfType(move.Base.OneHitKo.immunityType))
+                return false;
+
+            int baseAccuracy = 30;
+            if (move.Base.OneHitKo.lowerOddsException)
+                baseAccuracy = source.IsOfType(move.Base.Type) ? 30 : 20;
+
+            int chance = source.Level - target.Level + baseAccuracy;
+
+            return UnityEngine.Random.Range(1, 101) <= chance;
+        }
+
         float moveAccuracy = move.Base.Accuracy;
         int accuracy = source.StatBoosts[Stat.Accuracy];
         int evasion = target.StatBoosts[Stat.Evasion];
@@ -420,13 +437,16 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
-    private IEnumerator HandlePokemonFainted(BattleUnit faintedUnit, BattleUnit attackerUnit = null, DamageDetails damageDetails = null)
+    private IEnumerator HandlePokemonFainted(BattleUnit faintedUnit, BattleUnit attackerUnit = null, DamageDetails damageDetails = null, bool wasOneHitKO = false)
     {
         string enemy;
         // target unit fainted
         faintedUnit.PlayFaintAnimation();
         enemy = !faintedUnit.IsPlayerUnit ? "Enemy " : "";
-        yield return dialogBox.TypeDialog($"{enemy}{faintedUnit.Pokemon.Name} fainted.");
+        if (wasOneHitKO)
+            yield return dialogBox.TypeDialog($"It's a One-hit KO!");
+        else
+            yield return dialogBox.TypeDialog($"{enemy}{faintedUnit.Pokemon.Name} fainted.");
         yield return new WaitForSeconds(1f);
 
         if (!faintedUnit.IsPlayerUnit)

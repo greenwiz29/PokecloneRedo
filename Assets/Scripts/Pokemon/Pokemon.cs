@@ -489,6 +489,18 @@ public class Pokemon
                     crit = 2f;
             }
         }
+        
+        if (move.Base.OneHitKo.isOneHitKnockOut)
+        {
+            int oneHitDamage = HP;
+            ReduceHP(oneHitDamage);
+            return new DamageDetails()
+            {
+                TypeEffectiveness = 1f,
+                Crit = 1f,
+                // Fainted = false
+            };
+        }
 
         float type = GetTypeEffectiveness(move.Base.Type);
 
