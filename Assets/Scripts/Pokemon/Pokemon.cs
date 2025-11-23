@@ -48,6 +48,7 @@ public class Pokemon
     public List<Move> Moves { get; set; }
     public Move CurrentMove { get; set; }
     public Dictionary<Stat, int> Stats { get; private set; }
+    public Dictionary<Stat, int> StatIVs { get; private set; }
     public Dictionary<Stat, int> StatBoosts { get; private set; }
     public StatusCondition Status { get; private set; }
     public StatusCondition VolatileStatus { get; private set; }
@@ -77,6 +78,7 @@ public class Pokemon
         _base.GrowthRate = saveData.growthRate;
         IsShiny = saveData.shiny;
         gender = saveData.gender;
+        StatIVs = saveData.statIVs;
 
         if (saveData.status != null)
             Status = StatusConditionsDB.Conditions[saveData.status.Value];
@@ -130,6 +132,19 @@ public class Pokemon
         IsShiny = random == 1;
 
         DecideGender();
+        // TODO: The first Pokemon to load seems to have its sprites set to non-shiny even if it is shiny.
+        Base.SetSprites(IsShiny, gender);
+
+        // Generate IVs
+        StatIVs = new Dictionary<Stat, int>()
+        {
+            {Stat.HP, UnityEngine.Random.Range(1,32)},
+            {Stat.Attack, UnityEngine.Random.Range(1,32)},
+            {Stat.Defense, UnityEngine.Random.Range(1,32)},
+            {Stat.SpAttack, UnityEngine.Random.Range(1,32)},
+            {Stat.SpDefense, UnityEngine.Random.Range(1,32)},
+            {Stat.Speed, UnityEngine.Random.Range(1,32)},
+        };
 
         InitCondition();
     }
@@ -137,8 +152,6 @@ public class Pokemon
     private void InitCondition()
     {
         CalculateStats();
-        // TODO: The first Pokemon to load seems to have its sprites set to non-shiny even if it is shiny.
-        Base.SetSprites(IsShiny, gender);
 
         HP = MaxHP;
 
@@ -229,7 +242,8 @@ public class Pokemon
             moves = Moves.Select(m => m.GetSaveData()).ToList(),
             growthRate = Base.GrowthRate,
             shiny = IsShiny,
-            gender = this.gender
+            gender = this.gender,
+            statIVs = StatIVs
         };
         return saveData;
     }
@@ -239,7 +253,7 @@ public class Pokemon
         int currLevelExp = Base.CalculateBaseExpForLevel(Level);
         int nextLevelExp = Base.CalculateBaseExpForLevel(Level + 1);
 
-        float normalizedExp = ((float)Exp - currLevelExp) / (nextLevelExp - currLevelExp);
+        float normalizedExp = (float)(Exp - currLevelExp) / (nextLevelExp - currLevelExp);
         return Mathf.Clamp01(normalizedExp);
     }
 
@@ -290,6 +304,8 @@ public class Pokemon
         _base = evolution.EvolvesInto;
         var statChanges = CalculateStats();
         Base.SetSprites(IsShiny, gender);
+        // An evolution might not have the same ability options, 
+        // but normal/hidden should be preserved.
         abilityID = useHiddenAbility ? Base.HiddenAbilityID : Base.AbilityID;
         Ability = AbilityDB.Abilities[abilityID];
 
@@ -326,14 +342,14 @@ public class Pokemon
         }
         Stats = new Dictionary<Stat, int>
         {
-            { Stat.Attack, Mathf.FloorToInt(Base.Attack * Level / 100f) + 5 },
-            { Stat.Defense, Mathf.FloorToInt(Base.Defense * Level / 100f) + 5 },
-            { Stat.SpAttack, Mathf.FloorToInt(Base.SpAttack * Level / 100f) + 5 },
-            { Stat.SpDefense, Mathf.FloorToInt(Base.SpDef * Level / 100f) + 5 },
-            { Stat.Speed, Mathf.FloorToInt(Base.Speed * Level / 100f) + 5 }
+            { Stat.Attack, Mathf.FloorToInt((2 * Base.Attack + StatIVs[Stat.Attack]) * Level / 150f) + 5 },
+            { Stat.Defense, Mathf.FloorToInt((2 * Base.Defense + StatIVs[Stat.Defense]) * Level / 150f) + 5 },
+            { Stat.SpAttack, Mathf.FloorToInt((2 * Base.SpAttack + StatIVs[Stat.SpAttack]) * Level / 150f) + 5 },
+            { Stat.SpDefense, Mathf.FloorToInt((2 * Base.SpDef + StatIVs[Stat.SpDefense]) * Level / 150f) + 5 },
+            { Stat.Speed, Mathf.FloorToInt((2 * Base.Speed + StatIVs[Stat.Speed]) * Level / 150f) + 5 }
         };
 
-        MaxHP = Mathf.FloorToInt(Base.MaxHP * Level / 100f) + 10 + Level;
+        MaxHP = Mathf.FloorToInt((2 * Base.MaxHP + StatIVs[Stat.HP]) * Level / 150f) + 10 + Level;
 
         if (oldStatsExist)
         {
@@ -696,4 +712,5 @@ public class PokemonSaveData
     public GrowthRate growthRate;
     public bool shiny;
     public PokemonGender gender;
+    public Dictionary<Stat, int> statIVs;
 }

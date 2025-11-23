@@ -127,7 +127,7 @@ public class PokemonBase : ScriptableObject
     {
         int exp;
         int n = level; // for ease of typing
-        switch (growthRate)
+        switch (GrowthRate)
         {
             case GrowthRate.Erratic:
                 if (n < 50)
@@ -194,7 +194,7 @@ public class LearnableMove
 
 public enum PokemonType { None, Normal, Fire, Water, Grass, Flying, Fighting, Poison, Electric, Ground, Rock, Psychic, Ice, Bug, Ghost, Steel, Dragon, Dark, Fairy, }
 
-public enum Stat { Attack, Defense, SpAttack, SpDefense, Speed, Accuracy, Evasion, }
+public enum Stat { Attack, Defense, SpAttack, SpDefense, Speed, Accuracy, Evasion, HP}
 
 public enum GrowthRate { Erratic, Fast, MediumFast, MediumSlow, Slow, Fluctuating, }
 
