@@ -1103,6 +1103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SummaryState
   summaryScreen: {fileID: 6344249746303744524}
+  pageCount: 3
 --- !u!114 &907947815710818290
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11395,7 +11396,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1414819269150405602, guid: 03502b17c0bab0b9182bb1845c2782c8, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 311485643208601902, guid: 03502b17c0bab0b9182bb1845c2782c8, type: 3}
       insertIndex: 1

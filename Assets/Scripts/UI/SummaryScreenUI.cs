@@ -15,7 +15,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
     [SerializeField] Image shinyIcon;
 
     [Header("Pages")]
-    [SerializeField] GameObject skillsPage, movesPage, effectsPane;
+    [SerializeField] GameObject skillsPage, movesPage, effectsPane, detailedStatsPage;
     [SerializeField] TMP_Text pageName;
 
     [Header("Pokemon Skills")]
@@ -26,6 +26,10 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
     [Header("Pokemon Moves")]
     [SerializeField] List<TMP_Text> moveTypes, moveNames, movePPs;
     [SerializeField] TMP_Text descriptionText, powerText, accuracyText;
+
+    [Header("Detailed Skills")]
+    [SerializeField] TMP_Text hpIVText;
+    [SerializeField] TMP_Text attackIVText, defenseIVText, spAttackIVText, spDefenseIVText, speedIVText;
 
     List<TextSlot> moveSlots;
     void Start()
@@ -109,6 +113,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
                 pageName.text = "Pokemon Stats";
                 skillsPage.SetActive(true);
                 movesPage.SetActive(false);
+                detailedStatsPage.SetActive(false);
                 SetSkills(_pokemon);
                 break;
             case 1:
@@ -116,7 +121,16 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
                 pageName.text = "Pokemon Moves";
                 skillsPage.SetActive(false);
                 movesPage.SetActive(true);
+                detailedStatsPage.SetActive(false);
                 SetMoves(_pokemon);
+                break;
+            case 2:
+                // Detailed Stats page
+                pageName.text = "Detailed Stats";
+                skillsPage.SetActive(false);
+                movesPage.SetActive(false);
+                detailedStatsPage.SetActive(true);
+                SetStatDetails(_pokemon);
                 break;
             default:
                 break;
@@ -140,6 +154,16 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
 
         float normalizedExp = pokemon.GetNormalizedExp();
         expBar.SetStat(normalizedExp);
+    }
+
+    private void SetStatDetails(Pokemon pokemon)
+    {
+        hpIVText.text = "" + pokemon.StatIVs[Stat.HP];
+        attackIVText.text = "" + pokemon.StatIVs[Stat.Attack];
+        defenseIVText.text = "" + pokemon.StatIVs[Stat.Defense];
+        spAttackIVText.text = "" + pokemon.StatIVs[Stat.SpAttack];
+        spDefenseIVText.text = "" + pokemon.StatIVs[Stat.SpDefense];
+        speedIVText.text = "" + pokemon.StatIVs[Stat.Speed];
     }
 
     private void SetMoves(Pokemon pokemon)

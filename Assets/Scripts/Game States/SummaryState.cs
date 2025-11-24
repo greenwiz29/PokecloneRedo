@@ -8,6 +8,7 @@ using UnityEngine;
 public class SummaryState : State<GameController>
 {
     [SerializeField] SummaryScreenUI summaryScreen;
+    [SerializeField] int pageCount = 3;
 
     //Input
     public int SelectedPokemonIndex { get; set; }
@@ -68,11 +69,11 @@ public class SummaryState : State<GameController>
             int prevPage = selectedPage;
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                selectedPage = Mathf.Abs(selectedPage - 1) % 2;
+                selectedPage = Mathf.Abs(selectedPage - 1) % pageCount;
             }
             else if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                selectedPage = (selectedPage + 1) % 2;
+                selectedPage = (selectedPage + 1) % pageCount;
             }
 
             if (selectedPage != prevPage)
