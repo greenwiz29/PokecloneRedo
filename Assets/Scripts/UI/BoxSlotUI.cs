@@ -9,7 +9,7 @@ public class BoxSlotUI : MonoBehaviour
     Color originalColor;
     public void SetData(Pokemon pokemon)
     {
-        image.sprite = pokemon.Base.FrontSprite;
+        image.sprite = pokemon.FrontSprite;
         image.color = Color.white;
     }
 

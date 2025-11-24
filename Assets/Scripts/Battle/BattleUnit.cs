@@ -32,11 +32,11 @@ public class BattleUnit : MonoBehaviour
 
         if (isPlayerUnit)
         {
-            image.sprite = Pokemon.Base.BackSprite;
+            image.sprite = Pokemon.BackSprite;
         }
         else
         {
-            image.sprite = Pokemon.Base.FrontSprite;
+            image.sprite = Pokemon.FrontSprite;
         }
 
         image.color = originalColor;

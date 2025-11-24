@@ -25,7 +25,7 @@ public class EvolutionState : State<GameController>
 
         evolutionUI.SetActive(true);
 
-        pokemonImage.sprite = pokemon.Base.FrontSprite;
+        pokemonImage.sprite = pokemon.FrontSprite;
         var oldName = pokemon.Name;
 
         yield return DialogManager.I.ShowDialogText($"{oldName} is evolving!");
@@ -35,7 +35,7 @@ public class EvolutionState : State<GameController>
         else
             pokemon.Evolve(evolution);
 
-        pokemonImage.sprite = pokemon.Base.FrontSprite;
+        pokemonImage.sprite = pokemon.FrontSprite;
 
         yield return DialogManager.I.ShowDialogText($"{oldName} evolved into {pokemon.Name}!");
 

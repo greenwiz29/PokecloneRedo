@@ -56,6 +56,13 @@ public class Pokemon
     public int VolatileStatusTime { get; set; }
     public Queue<StatusEvent> StatusChanges { get; private set; }
     public Ability Ability { get; set; }
+    public GrowthRate GrowthRate { get; set; }
+    public Sprite FrontSprite { get; private set; }
+    public Sprite BackSprite { get; private set; }
+    public List<Sprite> WalkDownAnim { get; private set; }
+    public List<Sprite> WalkUpAnim { get; private set; }
+    public List<Sprite> WalkLeftAnim { get; private set; }
+    public List<Sprite> WalkRightAnim { get; private set; }
     public event Action OnStatusChanged;
     public event Action OnHPChanged;
 
@@ -75,7 +82,7 @@ public class Pokemon
         exp = saveData.exp;
         useHiddenAbility = saveData.useHiddenAbility;
         abilityID = saveData.ability;
-        _base.GrowthRate = saveData.growthRate;
+        GrowthRate = saveData.growthRate;
         IsShiny = saveData.shiny;
         gender = saveData.gender;
         StatIVs = saveData.statIVs;
@@ -95,9 +102,9 @@ public class Pokemon
         // Set Base Growth Rate randomly
         var growthRates = Enum.GetValues(typeof(GrowthRate));
         int randomIndex = UnityEngine.Random.Range(0, growthRates.Length);
-        Base.GrowthRate = (GrowthRate)growthRates.GetValue(randomIndex);
+        GrowthRate = (GrowthRate)growthRates.GetValue(randomIndex);
 
-        Exp = Base.CalculateBaseExpForLevel(Level);
+        Exp = CalculateBaseExpForLevel(Level);
 
         // Generate Moves
         Moves = new List<Move>();
@@ -133,7 +140,7 @@ public class Pokemon
 
         DecideGender();
         // TODO: The first Pokemon to load seems to have its sprites set to non-shiny even if it is shiny.
-        Base.SetSprites(IsShiny, gender);
+        SetSprites(IsShiny, gender);
 
         // Generate IVs
         StatIVs = new Dictionary<Stat, int>()
@@ -240,7 +247,7 @@ public class Pokemon
             useHiddenAbility = this.useHiddenAbility,
             status = Status?.Id,
             moves = Moves.Select(m => m.GetSaveData()).ToList(),
-            growthRate = Base.GrowthRate,
+            growthRate = GrowthRate,
             shiny = IsShiny,
             gender = this.gender,
             statIVs = StatIVs
@@ -250,8 +257,8 @@ public class Pokemon
 
     public float GetNormalizedExp()
     {
-        int currLevelExp = Base.CalculateBaseExpForLevel(Level);
-        int nextLevelExp = Base.CalculateBaseExpForLevel(Level + 1);
+        int currLevelExp = CalculateBaseExpForLevel(Level);
+        int nextLevelExp = CalculateBaseExpForLevel(Level + 1);
 
         float normalizedExp = (float)(Exp - currLevelExp) / (nextLevelExp - currLevelExp);
         return Mathf.Clamp01(normalizedExp);
@@ -259,7 +266,7 @@ public class Pokemon
 
     public StatChanges CheckForLevelUp(out LearnableMove newMove)
     {
-        int nextLevelExp = Base.CalculateBaseExpForLevel(Level + 1);
+        int nextLevelExp = CalculateBaseExpForLevel(Level + 1);
         if (Exp >= nextLevelExp)
         {
             ++level;
@@ -303,7 +310,7 @@ public class Pokemon
     {
         _base = evolution.EvolvesInto;
         var statChanges = CalculateStats();
-        Base.SetSprites(IsShiny, gender);
+        SetSprites(IsShiny, gender);
         // An evolution might not have the same ability options, 
         // but normal/hidden should be preserved.
         abilityID = useHiddenAbility ? Base.HiddenAbilityID : Base.AbilityID;
@@ -662,6 +669,109 @@ public class Pokemon
     public bool IsOfType(PokemonType type)
     {
         return type == Base.Type1 || type == Base.Type2;
+    }
+
+    public void SetSprites(bool isShiny, PokemonGender gender)
+    {
+        switch (gender)
+        {
+            case PokemonGender.Female:
+                if (isShiny)
+                {
+                    FrontSprite = Base.FrontSpriteFemaleShiny;
+                    BackSprite = Base.BackSpriteFemaleShiny;
+                    WalkDownAnim = Base.WalkDownAnimShiny;
+                    WalkUpAnim = Base.WalkUpAnimShiny;
+                    WalkLeftAnim = Base.WalkLeftAnimShiny;
+                    WalkRightAnim = Base.WalkRightAnimShiny;
+                }
+                else
+                {
+                    FrontSprite = Base.FrontSpriteFemale;
+                    BackSprite = Base.BackSpriteFemale;
+                    WalkDownAnim = Base.WalkDownAnim;
+                    WalkUpAnim = Base.WalkUpAnim;
+                    WalkLeftAnim = Base.WalkLeftAnim;
+                    WalkRightAnim = Base.WalkRightAnim;
+                }
+                break;
+            default:
+                if (isShiny)
+                {
+                    FrontSprite = Base.FrontSpriteShiny;
+                    BackSprite = Base.BackSpriteShiny;
+                    WalkDownAnim = Base.WalkDownAnimShiny;
+                    WalkUpAnim = Base.WalkUpAnimShiny;
+                    WalkLeftAnim = Base.WalkLeftAnimShiny;
+                    WalkRightAnim = Base.WalkRightAnimShiny;
+                }
+                else
+                {
+                    FrontSprite = Base.FrontSprite;
+                    BackSprite = Base.BackSprite;
+                    WalkDownAnim = Base.WalkDownAnim;
+                    WalkUpAnim = Base.WalkUpAnim;
+                    WalkLeftAnim = Base.WalkLeftAnim;
+                    WalkRightAnim = Base.WalkRightAnim;
+                }
+                break;
+        }
+    }
+    public int CalculateBaseExpForLevel(int level)
+    {
+        int exp;
+        int n = level; // for ease of typing
+        switch (GrowthRate)
+        {
+            case GrowthRate.Erratic:
+                if (n < 50)
+                {
+                    exp = n * n * n * (100 - n) / 50;
+                }
+                else if (n < 68)
+                {
+                    exp = n * n * n * (150 - n) / 100;
+                }
+                else if (n < 98)
+                {
+                    exp = n * n * n * Mathf.FloorToInt((1911 - 10 * n) / 3) / 500;
+                }
+                else
+                {
+                    exp = n * n * n * (160 - n) / 100;
+                }
+                break;
+            case GrowthRate.Fast:
+                exp = 4 * n * n * n / 5;
+                break;
+            case GrowthRate.MediumFast:
+                exp = n * n * n;
+                break;
+            case GrowthRate.MediumSlow:
+                exp = (int)(1.2f * n * n * n - 15 * n * n + 100 * n - 140);
+                break;
+            case GrowthRate.Slow:
+                exp = 5 * n * n * n / 4;
+                break;
+            case GrowthRate.Fluctuating:
+                if (n < 15)
+                {
+                    exp = (n * n * n * Mathf.FloorToInt((n + 1) / 3) + 24) / 50;
+                }
+                else if (n < 36)
+                {
+                    exp = n * n * n * (n + 14) / 50;
+                }
+                else
+                {
+                    exp = n * n * n * (Mathf.FloorToInt(n / 2) + 32) / 50;
+                }
+                break;
+            default:
+                exp = 100 * n;
+                break;
+        }
+        return exp;
     }
 }
 

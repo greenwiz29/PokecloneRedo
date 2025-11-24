@@ -11,7 +11,7 @@ public class BoxPartySlotUI : MonoBehaviour
     {
         nameText.text = pokemon.Name;
         lvlText.text = "Lvl " + pokemon.Level;
-        image.sprite = pokemon.Base.FrontSprite;
+        image.sprite = pokemon.FrontSprite;
         image.color = Color.white;
     }
 

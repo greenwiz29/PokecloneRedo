@@ -23,7 +23,7 @@ public class PartyMemberUI : MonoBehaviour
 
     public void UpdateData()
     {
-        pokemonIcon.sprite = _pokemon.Base.WalkDownAnim[0];
+        pokemonIcon.sprite = _pokemon.WalkDownAnim[0];
         nameText.text = _pokemon.Base.Name;
         levelText.text = "Lvl " + _pokemon.Level;
         SetGenderText();

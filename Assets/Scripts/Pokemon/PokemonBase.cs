@@ -47,17 +47,26 @@ public class PokemonBase : ScriptableObject
 
     [SerializeField] List<Evolution> evolutions;
     [SerializeField] PokemonGenderRatio genderRatio;
-    GrowthRate growthRate;
 
     public string Name => name;
     public string Desc => description;
     public PokemonGenderRatio GenderRatio { get { return genderRatio; } }
-    public Sprite FrontSprite { get; private set; }
-    public Sprite BackSprite { get; private set; }
-    public List<Sprite> WalkDownAnim { get; private set; }
-    public List<Sprite> WalkUpAnim { get; private set; }
-    public List<Sprite> WalkLeftAnim { get; private set; }
-    public List<Sprite> WalkRightAnim { get; private set; }
+    public Sprite FrontSprite => frontSprite;
+    public Sprite BackSprite => backSprite;
+    public Sprite FrontSpriteFemale => frontSpriteFemale;
+    public Sprite BackSpriteFemale => backSpriteFemale;
+    public List<Sprite> WalkDownAnim => walkDownSprites;
+    public List<Sprite> WalkUpAnim => walkUpSprites;
+    public List<Sprite> WalkLeftAnim => walkLeftSprites;
+    public List<Sprite> WalkRightAnim => walkRightSprites;
+    public Sprite FrontSpriteShiny => frontSpriteShiny;
+    public Sprite BackSpriteShiny => backSpriteShiny;
+    public Sprite FrontSpriteFemaleShiny => frontSpriteFemaleShiny;
+    public Sprite BackSpriteFemaleShiny => backSpriteFemaleShiny;
+    public List<Sprite> WalkDownAnimShiny => walkDownSpritesShiny;
+    public List<Sprite> WalkUpAnimShiny => walkUpSpritesShiny;
+    public List<Sprite> WalkLeftAnimShiny => walkLeftSpritesShiny;
+    public List<Sprite> WalkRightAnimShiny => walkRightSpritesShiny;
     public PokemonType Type1 => type1;
     public PokemonType Type2 => type2;
     public AbilityID AbilityID => ability;
@@ -71,114 +80,10 @@ public class PokemonBase : ScriptableObject
     public int SpDef => spDefense;
     public int Speed => speed;
     public int ExpYield => expYield;
-    public GrowthRate GrowthRate { get => growthRate; set => growthRate = value; }
     public List<LearnableMove> LearnableMoves => learnableMoves;
     public List<MoveBase> LearnableByItems => learnableByItems;
     public List<Evolution> Evolutions => evolutions;
 
-    public void SetSprites(bool isShiny, PokemonGender gender)
-    {
-        switch (gender)
-        {
-            case PokemonGender.Female:
-                if (isShiny)
-                {
-                    FrontSprite = frontSpriteFemaleShiny;
-                    BackSprite = backSpriteFemaleShiny;
-                    WalkDownAnim = walkDownSpritesShiny;
-                    WalkUpAnim = walkUpSpritesShiny;
-                    WalkLeftAnim = walkLeftSpritesShiny;
-                    WalkRightAnim = walkRightSpritesShiny;
-                }
-                else
-                {
-                    FrontSprite = frontSpriteFemale;
-                    BackSprite = backSpriteFemale;
-                    WalkDownAnim = walkDownSprites;
-                    WalkUpAnim = walkUpSprites;
-                    WalkLeftAnim = walkLeftSprites;
-                    WalkRightAnim = walkRightSprites;
-                }
-                break;
-            default:
-                if (isShiny)
-                {
-                    FrontSprite = frontSpriteShiny;
-                    BackSprite = backSpriteShiny;
-                    WalkDownAnim = walkDownSpritesShiny;
-                    WalkUpAnim = walkUpSpritesShiny;
-                    WalkLeftAnim = walkLeftSpritesShiny;
-                    WalkRightAnim = walkRightSpritesShiny;
-                }
-                else
-                {
-                    FrontSprite = frontSprite;
-                    BackSprite = backSprite;
-                    WalkDownAnim = walkDownSprites;
-                    WalkUpAnim = walkUpSprites;
-                    WalkLeftAnim = walkLeftSprites;
-                    WalkRightAnim = walkRightSprites;
-                }
-                break;
-        }
-    }
-
-    public int CalculateBaseExpForLevel(int level)
-    {
-        int exp;
-        int n = level; // for ease of typing
-        switch (GrowthRate)
-        {
-            case GrowthRate.Erratic:
-                if (n < 50)
-                {
-                    exp = n * n * n * (100 - n) / 50;
-                }
-                else if (n < 68)
-                {
-                    exp = n * n * n * (150 - n) / 100;
-                }
-                else if (n < 98)
-                {
-                    exp = n * n * n * Mathf.FloorToInt((1911 - 10 * n) / 3) / 500;
-                }
-                else
-                {
-                    exp = n * n * n * (160 - n) / 100;
-                }
-                break;
-            case GrowthRate.Fast:
-                exp = 4 * n * n * n / 5;
-                break;
-            case GrowthRate.MediumFast:
-                exp = n * n * n;
-                break;
-            case GrowthRate.MediumSlow:
-                exp = (int)(1.2f * n * n * n - 15 * n * n + 100 * n - 140);
-                break;
-            case GrowthRate.Slow:
-                exp = 5 * n * n * n / 4;
-                break;
-            case GrowthRate.Fluctuating:
-                if (n < 15)
-                {
-                    exp = (n * n * n * Mathf.FloorToInt((n + 1) / 3) + 24) / 50;
-                }
-                else if (n < 36)
-                {
-                    exp = n * n * n * (n + 14) / 50;
-                }
-                else
-                {
-                    exp = n * n * n * (Mathf.FloorToInt(n / 2) + 32) / 50;
-                }
-                break;
-            default:
-                exp = 100 * n;
-                break;
-        }
-        return exp;
-    }
 }
 
 [Serializable]
@@ -194,7 +99,7 @@ public class LearnableMove
 
 public enum PokemonType { None, Normal, Fire, Water, Grass, Flying, Fighting, Poison, Electric, Ground, Rock, Psychic, Ice, Bug, Ghost, Steel, Dragon, Dark, Fairy, }
 
-public enum Stat { Attack, Defense, SpAttack, SpDefense, Speed, Accuracy, Evasion, HP}
+public enum Stat { Attack, Defense, SpAttack, SpDefense, Speed, Accuracy, Evasion, HP }
 
 public enum GrowthRate { Erratic, Fast, MediumFast, MediumSlow, Slow, Fluctuating, }
 

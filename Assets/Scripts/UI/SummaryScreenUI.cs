@@ -80,7 +80,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
         nameText.text = pokemon.Name;
         SetGenderText();
         levelText.text = "Lvl " + pokemon.Level;
-        image.sprite = pokemon.Base.FrontSprite;
+        image.sprite = pokemon.FrontSprite;
         shinyIcon.gameObject.SetActive(pokemon.IsShiny);
     }
 
@@ -150,7 +150,7 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
         abilityDescText.text = pokemon.Ability.Description;
 
         expPointsText.text = "" + pokemon.Exp;
-        nextLevelExpText.text = "" + (pokemon.Base.CalculateBaseExpForLevel(pokemon.Level + 1) - pokemon.Exp);
+        nextLevelExpText.text = "" + (pokemon.CalculateBaseExpForLevel(pokemon.Level + 1) - pokemon.Exp);
 
         float normalizedExp = pokemon.GetNormalizedExp();
         expBar.SetStat(normalizedExp);
