@@ -66,6 +66,11 @@ public class Pokemon
     public event Action OnStatusChanged;
     public event Action OnHPChanged;
 
+    /// <summary>
+    /// Generate a new Pokemon of the given species and level.
+    /// </summary>
+    /// <param name="pBase">The species of the Pokemon to generate.</param>
+    /// <param name="pLevel">The level of the Pokemon to generate.</param>
     public Pokemon(PokemonBase pBase, int pLevel)
     {
         _base = pBase;
@@ -74,6 +79,10 @@ public class Pokemon
         Init();
     }
 
+    /// <summary>
+    /// Generate a Pokemon from the given save data.
+    /// </summary>
+    /// <param name="saveData">The saved data of the Pokemon to generate.</param>
     public Pokemon(PokemonSaveData saveData)
     {
         _base = PokemonDB.GetObjectByName(saveData.name);
@@ -97,6 +106,11 @@ public class Pokemon
         InitCondition();
     }
 
+    /// <summary>
+    /// Initialize a new Pokemon.
+    /// <para>Randomly sets growth rate, ability, gender, shininess, and stat IVs.</para>
+    /// <para>Also sets basic starting moves based on level.</para>
+    /// </summary>
     public void Init()
     {
         // Set Base Growth Rate randomly
@@ -139,8 +153,6 @@ public class Pokemon
         IsShiny = random == 1;
 
         DecideGender();
-        // TODO: The first Pokemon to load seems to have its sprites set to non-shiny even if it is shiny.
-        SetSprites(IsShiny, gender);
 
         // Generate IVs
         StatIVs = new Dictionary<Stat, int>()
@@ -156,9 +168,15 @@ public class Pokemon
         InitCondition();
     }
 
+    /// <summary>
+    /// Initializes/resets the Pokemon's condition.
+    /// <para>Recalulates stats, resets sprites, clears all status conditions and stat boosts, 
+    /// and restores HP and PP of all moves.</para> 
+    /// </summary>
     private void InitCondition()
     {
         CalculateStats();
+        SetSprites(IsShiny, gender);
 
         HP = MaxHP;
 
@@ -177,6 +195,10 @@ public class Pokemon
             move.PP = move.Base.PP;
         }
     }
+
+    /// <summary>
+    /// Randomly set gender based on the species' defined GenderRatio.
+    /// </summary>
     public void DecideGender()
     {
         if (gender != PokemonGender.NotSet) return;
@@ -229,6 +251,53 @@ public class Pokemon
         }
     }
 
+    public void SetSprites(bool isShiny, PokemonGender gender)
+    {
+        switch (gender)
+        {
+            case PokemonGender.Female:
+                if (isShiny)
+                {
+                    FrontSprite = Base.FrontSpriteFemaleShiny;
+                    BackSprite = Base.BackSpriteFemaleShiny;
+                    WalkDownAnim = Base.WalkDownAnimShiny;
+                    WalkUpAnim = Base.WalkUpAnimShiny;
+                    WalkLeftAnim = Base.WalkLeftAnimShiny;
+                    WalkRightAnim = Base.WalkRightAnimShiny;
+                }
+                else
+                {
+                    FrontSprite = Base.FrontSpriteFemale;
+                    BackSprite = Base.BackSpriteFemale;
+                    WalkDownAnim = Base.WalkDownAnim;
+                    WalkUpAnim = Base.WalkUpAnim;
+                    WalkLeftAnim = Base.WalkLeftAnim;
+                    WalkRightAnim = Base.WalkRightAnim;
+                }
+                break;
+            default:
+                if (isShiny)
+                {
+                    FrontSprite = Base.FrontSpriteShiny;
+                    BackSprite = Base.BackSpriteShiny;
+                    WalkDownAnim = Base.WalkDownAnimShiny;
+                    WalkUpAnim = Base.WalkUpAnimShiny;
+                    WalkLeftAnim = Base.WalkLeftAnimShiny;
+                    WalkRightAnim = Base.WalkRightAnimShiny;
+                }
+                else
+                {
+                    FrontSprite = Base.FrontSprite;
+                    BackSprite = Base.BackSprite;
+                    WalkDownAnim = Base.WalkDownAnim;
+                    WalkUpAnim = Base.WalkUpAnim;
+                    WalkLeftAnim = Base.WalkLeftAnim;
+                    WalkRightAnim = Base.WalkRightAnim;
+                }
+                break;
+        }
+    }
+
     public void Heal()
     {
         InitCondition();
@@ -255,6 +324,71 @@ public class Pokemon
         return saveData;
     }
 
+    /// <summary>
+    /// Calculates the lower exp threshold for the given level, based on the growth rate.
+    /// </summary>
+    public int CalculateBaseExpForLevel(int level)
+    {
+        int exp;
+        int n = level; // for ease of typing
+        switch (GrowthRate)
+        {
+            case GrowthRate.Erratic:
+                if (n < 50)
+                {
+                    exp = n * n * n * (100 - n) / 50;
+                }
+                else if (n < 68)
+                {
+                    exp = n * n * n * (150 - n) / 100;
+                }
+                else if (n < 98)
+                {
+                    exp = n * n * n * Mathf.FloorToInt((1911 - 10 * n) / 3) / 500;
+                }
+                else
+                {
+                    exp = n * n * n * (160 - n) / 100;
+                }
+                break;
+            case GrowthRate.Fast:
+                exp = 4 * n * n * n / 5;
+                break;
+            case GrowthRate.MediumFast:
+                exp = n * n * n;
+                break;
+            case GrowthRate.MediumSlow:
+                exp = (int)(1.2f * n * n * n - 15 * n * n + 100 * n - 140);
+                break;
+            case GrowthRate.Slow:
+                exp = 5 * n * n * n / 4;
+                break;
+            case GrowthRate.Fluctuating:
+                if (n < 15)
+                {
+                    exp = (n * n * n * Mathf.FloorToInt((n + 1) / 3) + 24) / 50;
+                }
+                else if (n < 36)
+                {
+                    exp = n * n * n * (n + 14) / 50;
+                }
+                else
+                {
+                    exp = n * n * n * (Mathf.FloorToInt(n / 2) + 32) / 50;
+                }
+                break;
+            default:
+                exp = 100 * n;
+                break;
+        }
+        return exp;
+    }
+
+    /// <summary>
+    /// Converts current exp to a value between 0 and 1. 
+    /// <para>Represents the scale of current exp in relation to the threshold for the next level.
+    /// Used for scaling of exp bars.</para>
+    /// </summary>
     public float GetNormalizedExp()
     {
         int currLevelExp = CalculateBaseExpForLevel(Level);
@@ -264,6 +398,11 @@ public class Pokemon
         return Mathf.Clamp01(normalizedExp);
     }
 
+    /// <summary>
+    /// Also returns a <see cref="StatChanges"/> object for displaying stat changes,
+    /// and any new moves that can be learned.
+    /// </summary>
+    /// <param name="newMove">A reference object to contain any new moves that can be learned at the next level.</param>
     public StatChanges CheckForLevelUp(out LearnableMove newMove)
     {
         int nextLevelExp = CalculateBaseExpForLevel(Level + 1);
@@ -284,28 +423,23 @@ public class Pokemon
         return null;
     }
 
-    public bool TryLearnMove(MoveBase newMove)
-    {
-        bool learned = false;
-
-        if (Moves.Count < maxMoves)
-        {
-            Moves.Add(new Move(newMove));
-            learned = true;
-        }
-        return learned;
-    }
-
     public Evolution CheckForEvolution()
     {
         return Base.Evolutions.FirstOrDefault(e => e.RequiredLevel != -1 && e.RequiredLevel <= level);
     }
 
+    /// <summary>
+    /// Get any evolutions for the given item.
+    /// </summary>
     public Evolution CheckForEvolution(ItemBase item)
     {
         return Base.Evolutions.FirstOrDefault(e => e.RequiredItem == item);
     }
 
+    /// <summary>
+    /// Perform the given evolution.
+    /// <para>Restores some health and returns any <see cref="StatChanges"/>.
+    /// </summary>
     public StatChanges Evolve(Evolution evolution)
     {
         _base = evolution.EvolvesInto;
@@ -318,9 +452,21 @@ public class Pokemon
 
         // TODO: Handle any other updates 
 
-        HP += statChanges.hpDiff;
+        Mathf.Clamp(HP += statChanges.hpDiff, 0, MaxHP);
 
         return statChanges;
+    }
+
+    public bool TryLearnMove(MoveBase newMove)
+    {
+        bool learned = false;
+
+        if (Moves.Count < maxMoves)
+        {
+            Moves.Add(new Move(newMove));
+            learned = true;
+        }
+        return learned;
     }
 
     public bool HasMove(MoveBase move)
@@ -331,6 +477,20 @@ public class Pokemon
     private LearnableMove GetLearnableMoveForLevel()
     {
         return Base.LearnableMoves.Where(m => m.LevelLearned == level).FirstOrDefault();
+    }
+
+    public Move GetRandomMove()
+    {
+        var movesWithPP = Moves.Where(x => x.PP > 0).ToList();
+
+        if (movesWithPP == null || movesWithPP.Count == 0)
+        {
+            // no more usable moves left, time to Struggle
+            return null;
+        }
+
+        int r = UnityEngine.Random.Range(0, movesWithPP.Count);
+        return movesWithPP[r];
     }
 
     StatChanges CalculateStats()
@@ -388,6 +548,10 @@ public class Pokemon
         };
     }
 
+    /// <summary>
+    /// Retreives the requested <see cref="Stat"/>, with any boosts applied.
+    /// </summary>
+    /// <returns>The current value of the <see cref="Stat"/> with boosts.</returns>
     int GetStat(Stat stat)
     {
         int value = Stats[stat];
@@ -407,6 +571,12 @@ public class Pokemon
         return value;
     }
 
+    /// <summary>
+    /// Try to apply all boosts.
+    /// <para>Checks if a boost is at the limit, and generates a messages based on the change.</para>
+    /// </summary>
+    /// <param name="boosts">Boosts to apply</param>
+    /// <param name="source">The <see cref="Pokemon"/> that originated the boost (usually by <see cref="Move"/>).</param>
     public void ApplyBoosts(List<StatBoost> boosts, Pokemon source)
     {
         var statsDict = boosts.ToDictionary(x => x.stat, x => x.boost);
@@ -434,6 +604,9 @@ public class Pokemon
         }
     }
 
+    /// <summary>
+    /// Set the given status condition that will persit between battles.
+    /// </summary>
     public void SetStatus(StatusConditionID conditionID)
     {
         if (Status != null)
@@ -445,6 +618,9 @@ public class Pokemon
         OnStatusChanged?.Invoke();
     }
 
+    /// <summary>
+    /// Set the given status condition that will be removed on battle's end.
+    /// </summary>
     public void SetVolatileStatus(StatusConditionID conditionID)
     {
         if (Status != null)
@@ -466,22 +642,37 @@ public class Pokemon
         VolatileStatus = null;
     }
 
+    /// <summary>
+    /// Run any after-turn effects from status conditions.
+    /// </summary>
+    /// <param name="target"></param>
     public void OnAfterTurn(Pokemon target)
     {
         Status?.OnAfterTurn?.Invoke(this, target);
         VolatileStatus?.OnAfterTurn?.Invoke(this, target);
     }
 
+    /// <summary>
+    /// Add a status event of the given type with the given message to the queue.
+    /// </summary>
     public void AddStatusEvent(StatusEventType type, string message)
     {
         StatusChanges.Enqueue(new StatusEvent(type, message));
     }
 
+    /// <summary>
+    /// Add a status event with only a message to the queue.
+    /// </summary>
+    /// <param name="message"></param>
     public void AddStatusEvent(string message)
     {
         AddStatusEvent(StatusEventType.Text, message);
     }
 
+    /// <summary>
+    /// Run on before move effects from status conditions
+    /// </summary>
+    /// <returns>Whether the <see cref="Pokemon"/> can perform its <see cref="Move"/> this turn.</returns>
     public bool OnBeforeMove()
     {
         bool canPerformMove = true;
@@ -495,6 +686,12 @@ public class Pokemon
         return canPerformMove;
     }
 
+    /// <summary>
+    /// Apply damage from the given move.
+    /// <para>Takes various things into account, such as weather, crit chance, multi-hit and one-hit-KO moves, 
+    /// attack and defense stats (normal vs special base on the Move), and ability effects.
+    /// </summary>
+    /// <returns>An object containing details of the damage dealt (was it a crit, etc.)</returns>
     public DamageDetails ApplyDamage(Move move, Pokemon attacker, float weatherModifier = 1f, int hitCount = 1)
     {
         float crit = 1f;
@@ -578,6 +775,11 @@ public class Pokemon
             * TypeChart.GetEffectiveness(type, Base.Type2);
     }
 
+    public bool IsOfType(PokemonType type)
+    {
+        return type == Base.Type1 || type == Base.Type2;
+    }
+
     public void ReduceHP(int damage, bool callUpdateEvent = false)
     {
         HP = Mathf.Clamp(HP - damage, 0, MaxHP);
@@ -652,127 +854,6 @@ public class Pokemon
         return acc;
     }
 
-    public Move GetRandomMove()
-    {
-        var movesWithPP = Moves.Where(x => x.PP > 0).ToList();
-
-        if (movesWithPP == null || movesWithPP.Count == 0)
-        {
-            // no more usable moves left, time to Struggle
-            return null;
-        }
-
-        int r = UnityEngine.Random.Range(0, movesWithPP.Count);
-        return movesWithPP[r];
-    }
-
-    public bool IsOfType(PokemonType type)
-    {
-        return type == Base.Type1 || type == Base.Type2;
-    }
-
-    public void SetSprites(bool isShiny, PokemonGender gender)
-    {
-        switch (gender)
-        {
-            case PokemonGender.Female:
-                if (isShiny)
-                {
-                    FrontSprite = Base.FrontSpriteFemaleShiny;
-                    BackSprite = Base.BackSpriteFemaleShiny;
-                    WalkDownAnim = Base.WalkDownAnimShiny;
-                    WalkUpAnim = Base.WalkUpAnimShiny;
-                    WalkLeftAnim = Base.WalkLeftAnimShiny;
-                    WalkRightAnim = Base.WalkRightAnimShiny;
-                }
-                else
-                {
-                    FrontSprite = Base.FrontSpriteFemale;
-                    BackSprite = Base.BackSpriteFemale;
-                    WalkDownAnim = Base.WalkDownAnim;
-                    WalkUpAnim = Base.WalkUpAnim;
-                    WalkLeftAnim = Base.WalkLeftAnim;
-                    WalkRightAnim = Base.WalkRightAnim;
-                }
-                break;
-            default:
-                if (isShiny)
-                {
-                    FrontSprite = Base.FrontSpriteShiny;
-                    BackSprite = Base.BackSpriteShiny;
-                    WalkDownAnim = Base.WalkDownAnimShiny;
-                    WalkUpAnim = Base.WalkUpAnimShiny;
-                    WalkLeftAnim = Base.WalkLeftAnimShiny;
-                    WalkRightAnim = Base.WalkRightAnimShiny;
-                }
-                else
-                {
-                    FrontSprite = Base.FrontSprite;
-                    BackSprite = Base.BackSprite;
-                    WalkDownAnim = Base.WalkDownAnim;
-                    WalkUpAnim = Base.WalkUpAnim;
-                    WalkLeftAnim = Base.WalkLeftAnim;
-                    WalkRightAnim = Base.WalkRightAnim;
-                }
-                break;
-        }
-    }
-    public int CalculateBaseExpForLevel(int level)
-    {
-        int exp;
-        int n = level; // for ease of typing
-        switch (GrowthRate)
-        {
-            case GrowthRate.Erratic:
-                if (n < 50)
-                {
-                    exp = n * n * n * (100 - n) / 50;
-                }
-                else if (n < 68)
-                {
-                    exp = n * n * n * (150 - n) / 100;
-                }
-                else if (n < 98)
-                {
-                    exp = n * n * n * Mathf.FloorToInt((1911 - 10 * n) / 3) / 500;
-                }
-                else
-                {
-                    exp = n * n * n * (160 - n) / 100;
-                }
-                break;
-            case GrowthRate.Fast:
-                exp = 4 * n * n * n / 5;
-                break;
-            case GrowthRate.MediumFast:
-                exp = n * n * n;
-                break;
-            case GrowthRate.MediumSlow:
-                exp = (int)(1.2f * n * n * n - 15 * n * n + 100 * n - 140);
-                break;
-            case GrowthRate.Slow:
-                exp = 5 * n * n * n / 4;
-                break;
-            case GrowthRate.Fluctuating:
-                if (n < 15)
-                {
-                    exp = (n * n * n * Mathf.FloorToInt((n + 1) / 3) + 24) / 50;
-                }
-                else if (n < 36)
-                {
-                    exp = n * n * n * (n + 14) / 50;
-                }
-                else
-                {
-                    exp = n * n * n * (Mathf.FloorToInt(n / 2) + 32) / 50;
-                }
-                break;
-            default:
-                exp = 100 * n;
-                break;
-        }
-        return exp;
-    }
 }
 
 public class DamageDetails

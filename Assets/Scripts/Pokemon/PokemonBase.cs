@@ -83,7 +83,6 @@ public class PokemonBase : ScriptableObject
     public List<LearnableMove> LearnableMoves => learnableMoves;
     public List<MoveBase> LearnableByItems => learnableByItems;
     public List<Evolution> Evolutions => evolutions;
-
 }
 
 [Serializable]
