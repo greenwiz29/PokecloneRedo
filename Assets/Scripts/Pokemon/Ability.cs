@@ -13,6 +13,7 @@ public class Ability
     public Func<float, Pokemon, Pokemon, Move, float> OnModifyAcc { get; set; }
     public Func<float, Pokemon, Pokemon, Move, float> OnModifyEva { get; set; }
     public Action<Dictionary<Stat, int>, Pokemon, Pokemon> OnBoost { get; set; }
+    public Action<float, Pokemon, Pokemon, Move> OnDamagingHit {get; set;}
     public Func<StatusConditionID, Pokemon, EffectSource, bool> OnTrySetStatus {get; set;}
     public Func<StatusConditionID, Pokemon, EffectSource, bool> OnTrySetVolatileStatus {get; set;}
 }

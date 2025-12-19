@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -291,6 +292,7 @@ public class AbilityDB
                 }
             }
         },
+        // Prevent status conditions
         {
             AbilityID.insomnia,
             new Ability()
@@ -429,7 +431,57 @@ public class AbilityDB
                 }
             }
         },
+        // inflict status condition on contact
+        {
+            AbilityID.staticbody,
+            new Ability()
+            {
+                Name = "Static Body",
+                Description = "Contact with this Pokemon may cause paralysis",
+                OnDamagingHit = (float damage, Pokemon attacker, Pokemon defender, Move move) =>
+                {
+                    if(move.Base.HasFlag(MoveFlag.Contact) && UnityEngine.Random.Range(1, 101) <- 30)
+                    {
+                        attacker.SetStatus(StatusConditionID.par, EffectSource.Ability);
+                    }
+                }
+            }
+        },
+        {
+            AbilityID.poisonpoint,
+            new Ability()
+            {
+                Name = "Poison Point",
+                Description = "Contact with this Pokemon may inflict poison",
+                OnDamagingHit = (float damage, Pokemon attacker, Pokemon defender, Move move) =>
+                {
+                    if(move.Base.HasFlag(MoveFlag.Contact) && UnityEngine.Random.Range(1, 101) <- 30)
+                    {
+                        attacker.SetStatus(StatusConditionID.psn, EffectSource.Ability);
+                    }
+                }
+            }
+        },
+        {
+            AbilityID.flamebody,
+            new Ability()
+            {
+                Name = "Flame Body",
+                Description = "Contact with this Pokemon may inflict burns",
+                OnDamagingHit = (float damage, Pokemon attacker, Pokemon defender, Move move) =>
+                {
+                    if(move.Base.HasFlag(MoveFlag.Contact) && UnityEngine.Random.Range(1, 101) <- 30)
+                    {
+                        attacker.SetStatus(StatusConditionID.brn, EffectSource.Ability);
+                    }
+                }
+            }
+        },
     };
 }
 
-public enum AbilityID { none, blaze, overgrow, torrent, swarm, guts, marvelscale, quickfeet, compoundeyes, keeneyes, hypercutter, bigpecks, clearbody, whitesmoke, insomnia, immunity, limber, waterveil, vitalspirit, owntempo }
+public enum AbilityID { none, 
+blaze, overgrow, torrent, swarm, guts, marvelscale, quickfeet, compoundeyes, 
+keeneyes, hypercutter, bigpecks, clearbody, whitesmoke, 
+insomnia, immunity, limber, waterveil, vitalspirit, owntempo,
+staticbody, poisonpoint,flamebody, }

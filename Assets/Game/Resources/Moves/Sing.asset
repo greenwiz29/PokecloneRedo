@@ -18,10 +18,28 @@ MonoBehaviour:
   power: 0
   accuracy: 65
   pp: 25
+  priority: 0
   alwaysHits: 0
   moveType: 2
   effects:
     boosts: []
     status: 4
     volatileStatus: 0
+    weather: 0
+    weatherDuration:
+      v: 0
+      hasValue: 0
+  secondaryEffects: []
   target: 0
+  flags: 03000000
+  isMultiHitMove: 0
+  hitRange: {x: 2, y: 0}
+  recoil:
+    recoilType: 0
+    recoilDamagePercent: 0
+  drainingPercentage: 0
+  critBehavior: 0
+  oneHitKoMoveEffect:
+    isOneHitKnockOut: 0
+    lowerOddsException: 0
+    immunityType: 0

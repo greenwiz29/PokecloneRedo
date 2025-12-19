@@ -24,6 +24,7 @@ public class MoveBase : ScriptableObject
     [SerializeField] List<SecondaryEffects> secondaryEffects;
 
     [SerializeField] MoveTarget target;
+    [SerializeField] List<MoveFlag> flags;
 
     [SerializeField] bool isMultiHitMove = false;
     [SerializeField] Vector2Int hitRange = new Vector2Int(2, 0);
@@ -66,6 +67,11 @@ public class MoveBase : ScriptableObject
         }
         else
             return 1;
+    }
+
+    public bool HasFlag(MoveFlag flag)
+    {
+        return flags.Contains(flag);
     }
 }
 
@@ -110,6 +116,8 @@ public class StatBoost
 
 public enum MoveTarget { Foe, Self, Area, Ally, }
 
+public enum MoveFlag { Contact, Punch, Bite, Sound, }
+
 //Erina's tutorials
 [System.Serializable]
 public class RecoilMoveEffect
@@ -118,14 +126,9 @@ public class RecoilMoveEffect
     public int recoilDamagePercent = 0;
 }
 
-public enum RecoilType
-{
-    none, RecoilByMaxHP, RecoilByCurrentHP, RecoilByDamage
-}
-public enum CritBehavior
-{
-    none, HighCritRatio, AlwaysCrits, NeverCrits
-}
+public enum RecoilType { none, RecoilByMaxHP, RecoilByCurrentHP, RecoilByDamage }
+
+public enum CritBehavior { none, HighCritRatio, AlwaysCrits, NeverCrits }
 
 [System.Serializable]
 public class OneHitKoMoveEffect

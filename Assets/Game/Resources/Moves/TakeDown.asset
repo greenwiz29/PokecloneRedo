@@ -19,7 +19,6 @@ MonoBehaviour:
   accuracy: 90
   pp: 20
   priority: 0
-  critChance: 6.25
   alwaysHits: 0
   moveType: 0
   effects:
@@ -32,8 +31,15 @@ MonoBehaviour:
       hasValue: 0
   secondaryEffects: []
   target: 0
+  flags: 00000000
   isMultiHitMove: 0
   hitRange: {x: 2, y: 0}
   recoil:
     recoilType: 3
     recoilDamagePercent: 25
+  drainingPercentage: 0
+  critBehavior: 0
+  oneHitKoMoveEffect:
+    isOneHitKnockOut: 0
+    lowerOddsException: 0
+    immunityType: 0

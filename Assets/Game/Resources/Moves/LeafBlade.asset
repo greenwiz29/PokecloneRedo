@@ -32,6 +32,7 @@ MonoBehaviour:
       hasValue: 0
   secondaryEffects: []
   target: 0
+  flags: 00000000
   isMultiHitMove: 0
   hitRange: {x: 2, y: 0}
   recoil:
@@ -39,3 +40,7 @@ MonoBehaviour:
     recoilDamagePercent: 0
   drainingPercentage: 0
   critBehavior: 1
+  oneHitKoMoveEffect:
+    isOneHitKnockOut: 0
+    lowerOddsException: 0
+    immunityType: 0

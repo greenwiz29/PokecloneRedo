@@ -771,6 +771,11 @@ public class Pokemon
         //Erina's tutorial
         damageDetails.DamageDealt = damage;
 
+        if(damage > 0)
+        {
+            Ability?.OnDamagingHit?.Invoke(damage, attacker, this, move);
+        }
+        
         return damageDetails;
     }
 
