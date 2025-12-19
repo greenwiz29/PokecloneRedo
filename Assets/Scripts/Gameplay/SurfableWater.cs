@@ -36,6 +36,7 @@ public class SurfableWater : MonoBehaviour, IInteractable, IPlayerTriggerable
                 isJumpingToWater = false;
                 animator.IsSurfing = true;
             }
+            DialogManager.I.CloseDialog();
         }
         else
         {

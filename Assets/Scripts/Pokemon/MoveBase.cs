@@ -80,6 +80,8 @@ public class SecondaryEffects : MoveEffects
     public MoveTarget Target => target;
 }
 
+public enum EffectSource { Move, Ability, Item }
+
 [System.Serializable]
 public class MoveEffects
 {

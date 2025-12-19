@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class StatusConditionsDB
@@ -171,6 +172,58 @@ public class StatusConditionsDB
                     target.AddStatusEvent(StatusEventType.Text, $"{target.Name}'s health is sapped by Leech Seed.");
                 }
             }
+        },
+        {
+            StatusConditionID.evoboost,
+            new StatusCondition()
+            {
+                Name = "Evolution Boost",
+                StartMessage = "is overflowing with energy!",
+                CatchBonus = 0.5f,
+                OnStart = p =>
+                {
+                    p.VolatileStatusTime = 2;
+                    p.CureStatus();
+
+                    p.ApplyBoosts(new List<StatBoost>()
+                    {
+                        new(){ stat = Stat.Attack, boost = 2},
+                        new(){ stat = Stat.Defense, boost = 2},
+                        new(){ stat = Stat.SpAttack, boost = 2},
+                        new(){ stat = Stat.SpDefense, boost = 2},
+                        new(){ stat = Stat.Speed, boost = 2},
+                        new(){ stat = Stat.Accuracy, boost = 2},
+                        new(){ stat = Stat.Evasion, boost = 2}
+                    },
+                    p);
+                },
+                OnBeforeMove = p =>
+                {
+                    // Energy boost should dissipate slightly each round, back to pre-evo levels.
+                    p.AddStatusEvent(StatusEventType.Text, $"{p.Name}'s excess energy fades a bit.");
+                    p.ApplyBoosts(new List<StatBoost>()
+                    {
+                        new(){ stat = Stat.Attack, boost = -1},
+                        new(){ stat = Stat.Defense, boost = -1},
+                        new(){ stat = Stat.SpAttack, boost = -1},
+                        new(){ stat = Stat.SpDefense, boost = -1},
+                        new(){ stat = Stat.Speed, boost = -1},
+                        new(){ stat = Stat.Accuracy, boost = -1},
+                        new(){ stat = Stat.Evasion, boost = -1}
+                    },
+                    p);
+
+                    if (p.VolatileStatusTime <= 0)
+                    {
+                        p.CureVolatileStatus();
+                        p.AddStatusEvent($"{p.Base.Name}'s excess energy has all faded.");
+                        return true;
+                    }
+                    p.VolatileStatusTime--;
+
+                    return true;
+                }
+            }
         }
     };
 
@@ -181,4 +234,4 @@ public class StatusConditionsDB
     }
 }
 
-public enum StatusConditionID { none, psn, brn, par, slp, frz, confusion, seeded }
+public enum StatusConditionID { none, psn, brn, par, slp, frz, confusion, seeded, evoboost }

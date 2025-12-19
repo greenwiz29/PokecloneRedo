@@ -291,7 +291,145 @@ public class AbilityDB
                 }
             }
         },
+        {
+            AbilityID.insomnia,
+            new Ability()
+            {
+                Name = "Insomnia",
+                Description = "Prevents the Pokemon from falling asleep.",
+                OnTrySetStatus = (StatusConditionID condition, Pokemon p, EffectSource source) =>
+                {
+                    if(condition == StatusConditionID.slp)
+                    {
+                        if(source == EffectSource.Move)
+                        {
+                            p.AddStatusEvent(StatusEventType.Text, $"{p.Name}'s insomnia won't let it fall asleep...");
+                        }
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+        },
+        {
+            AbilityID.immunity,
+            new Ability()
+            {
+                Name = "Poison Immunity",
+                Description = "Prevents the Pokemon from being poisoned.",
+                OnTrySetStatus = (StatusConditionID condition, Pokemon p, EffectSource source) =>
+                {
+                    if(condition == StatusConditionID.psn)
+                    {
+                        if(source == EffectSource.Move)
+                        {
+                            p.AddStatusEvent(StatusEventType.Text, $"{p.Name} is immune to poison.");
+                        }
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+        },
+        {
+            AbilityID.limber,
+            new Ability()
+            {
+                Name = "Limber",
+                Description = "Prevents the Pokemon from being paralyzed.",
+                OnTrySetStatus = (StatusConditionID condition, Pokemon p, EffectSource source) =>
+                {
+                    if(condition == StatusConditionID.par)
+                    {
+                        if(source == EffectSource.Move)
+                        {
+                            p.AddStatusEvent(StatusEventType.Text, $"{p.Name} is too flexible to be paralyzed.");
+                        }
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+        },
+        {
+            AbilityID.waterveil,
+            new Ability()
+            {
+                Name = "Water Veil",
+                Description = "Prevents the Pokemon from being burned.",
+                OnTrySetStatus = (StatusConditionID condition, Pokemon p, EffectSource source) =>
+                {
+                    if(condition == StatusConditionID.brn)
+                    {
+                        if(source == EffectSource.Move)
+                        {
+                            p.AddStatusEvent(StatusEventType.Text, $"{p.Name}'s watery physique prevents burns.");
+                        }
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+        },
+        {
+            AbilityID.vitalspirit,
+            new Ability()
+            {
+                Name = "Vital Spirit",
+                Description = "Prevents the Pokemon from falling asleep.",
+                OnTrySetStatus = (StatusConditionID condition, Pokemon p, EffectSource source) =>
+                {
+                    if(condition == StatusConditionID.slp)
+                    {
+                        if(source == EffectSource.Move)
+                        {
+                            p.AddStatusEvent(StatusEventType.Text, $"{p.Name}'s fighting spirit won't let it fall asleep...");
+                        }
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+        },
+        {
+            AbilityID.owntempo,
+            new Ability()
+            {
+                Name = "Own Tempo",
+                Description = "Prevents the Pokemon from becoming confused.",
+                OnTrySetVolatileStatus = (StatusConditionID condition, Pokemon p, EffectSource source) =>
+                {
+                    if(condition == StatusConditionID.confusion)
+                    {
+                        if(source == EffectSource.Move)
+                        {
+                            p.AddStatusEvent(StatusEventType.Text, $"{p.Name} moves at its own tempo...");
+                        }
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+        },
     };
 }
 
-public enum AbilityID { none, blaze, overgrow, torrent, swarm, guts, marvelscale, quickfeet, compoundeyes, keeneyes, hypercutter, bigpecks, clearbody, whitesmoke }
+public enum AbilityID { none, blaze, overgrow, torrent, swarm, guts, marvelscale, quickfeet, compoundeyes, keeneyes, hypercutter, bigpecks, clearbody, whitesmoke, insomnia, immunity, limber, waterveil, vitalspirit, owntempo }

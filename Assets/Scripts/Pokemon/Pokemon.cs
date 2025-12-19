@@ -454,6 +454,12 @@ public class Pokemon
 
         Mathf.Clamp(HP += statChanges.hpDiff, 0, MaxHP);
 
+        // Forcefully override status condition
+        VolatileStatus = StatusConditionsDB.Conditions[StatusConditionID.evoboost];
+        VolatileStatus?.OnStart?.Invoke(this);
+        AddStatusEvent($"{Base.Name} {VolatileStatus.StartMessage}");
+        OnStatusChanged?.Invoke();
+
         return statChanges;
     }
 
@@ -607,9 +613,13 @@ public class Pokemon
     /// <summary>
     /// Set the given status condition that will persit between battles.
     /// </summary>
-    public void SetStatus(StatusConditionID conditionID)
+    public void SetStatus(StatusConditionID conditionID, EffectSource effectSource = EffectSource.Move)
     {
         if (Status != null)
+            return;
+
+        var canSetStatus = Ability?.OnTrySetStatus?.Invoke(conditionID, this, effectSource);
+        if (!canSetStatus.Value)
             return;
 
         Status = StatusConditionsDB.Conditions[conditionID];
@@ -621,9 +631,13 @@ public class Pokemon
     /// <summary>
     /// Set the given status condition that will be removed on battle's end.
     /// </summary>
-    public void SetVolatileStatus(StatusConditionID conditionID)
+    public void SetVolatileStatus(StatusConditionID conditionID, EffectSource effectSource = EffectSource.Move)
     {
         if (Status != null)
+            return;
+
+        var canSetStatus = Ability?.OnTrySetVolatileStatus?.Invoke(conditionID, this, effectSource);
+        if (!canSetStatus.Value)
             return;
 
         VolatileStatus = StatusConditionsDB.Conditions[conditionID];
