@@ -71,6 +71,7 @@ public class PokemonEncounterRecord
     /// <para>If the second value is 0, the level will always be the first value.</para>
     /// </summary>
     public Vector2Int levelRange;
+    [Range(1, 100)]
     public int encounterRate;
 
     public int ChanceLowerInclusive { get; set; }

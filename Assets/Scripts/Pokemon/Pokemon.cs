@@ -619,7 +619,7 @@ public class Pokemon
             return;
 
         var canSetStatus = Ability?.OnTrySetStatus?.Invoke(conditionID, this, effectSource);
-        if (!canSetStatus.Value)
+        if (canSetStatus == null || !canSetStatus.Value)
             return;
 
         Status = StatusConditionsDB.Conditions[conditionID];
@@ -637,7 +637,7 @@ public class Pokemon
             return;
 
         var canSetStatus = Ability?.OnTrySetVolatileStatus?.Invoke(conditionID, this, effectSource);
-        if (!canSetStatus.Value)
+        if (canSetStatus == null || !canSetStatus.Value)
             return;
 
         VolatileStatus = StatusConditionsDB.Conditions[conditionID];
@@ -771,11 +771,11 @@ public class Pokemon
         //Erina's tutorial
         damageDetails.DamageDealt = damage;
 
-        if(damage > 0)
+        if (damage > 0)
         {
             Ability?.OnDamagingHit?.Invoke(damage, attacker, this, move);
         }
-        
+
         return damageDetails;
     }
 

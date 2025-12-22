@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15ddb0b24272b6109ad97542dc7ba963, type: 3}
+  m_Name: Pikachu
+  m_EditorClassIdentifier: Assembly-CSharp::PokemonBase
+  name: Pikachu
+  dexNumber: 25
+  description: pikachu
+  frontSprite: {fileID: 21300000, guid: e1b92dfcbb38c562ea2331190b6f2d90, type: 3}
+  backSprite: {fileID: 21300000, guid: e47d0f19bfd16725ea59841fa5dda2b1, type: 3}
+  frontSpriteFemale: {fileID: 21300000, guid: a80e7433298a8e888a15379dbb61e207, type: 3}
+  backSpriteFemale: {fileID: 21300000, guid: 510a3cc380a04e0c1882c7abc057e24a, type: 3}
+  walkDownSprites:
+  - {fileID: 21300000, guid: 8f56e4d5121d723bc9ced40039fd6006, type: 3}
+  - {fileID: 21300000, guid: 80c3ab503b6da20b7bacbdfab4507b89, type: 3}
+  walkUpSprites:
+  - {fileID: 21300000, guid: 6c84553d329b48c09b85ab297e9c8679, type: 3}
+  - {fileID: 21300000, guid: feafb7b1bdb67e5ce952b6f4701058ad, type: 3}
+  walkLeftSprites:
+  - {fileID: 21300000, guid: 02ee730a359e09dda97bb43a84f86570, type: 3}
+  - {fileID: 21300000, guid: dfb43d4013e64e72bb822f91c58fab0c, type: 3}
+  walkRightSprites:
+  - {fileID: 21300000, guid: fde9f36394591fc1a95ffd9cad9cae19, type: 3}
+  - {fileID: 21300000, guid: b7de0b6ab04e5888f9a538de3d4e8b84, type: 3}
+  frontSpriteShiny: {fileID: 21300000, guid: 1a0c5362763a5972cb01221e08523405, type: 3}
+  backSpriteShiny: {fileID: 21300000, guid: db741bc7d52e3f5d793de34eeb6c8657, type: 3}
+  frontSpriteFemaleShiny: {fileID: 21300000, guid: 72163eae48258b806b125bc2f60e8d04, type: 3}
+  backSpriteFemaleShiny: {fileID: 21300000, guid: 8d02338099c713d9296c3fe30fd41318, type: 3}
+  walkDownSpritesShiny:
+  - {fileID: 21300000, guid: c93e26f1ac9727112b27844f0cd828ac, type: 3}
+  - {fileID: 21300000, guid: 1c577aac45404cca78595ebbc0ca1c6d, type: 3}
+  walkUpSpritesShiny:
+  - {fileID: 21300000, guid: 543ac9c0272c9029287a8596186285c8, type: 3}
+  - {fileID: 21300000, guid: 3a7992966959b5af5863f9cec7d86459, type: 3}
+  walkLeftSpritesShiny:
+  - {fileID: 21300000, guid: b2fd849ac5504e744808bb9202c10898, type: 3}
+  - {fileID: 21300000, guid: 0a4d62f6964857a31923c413e2a4dca5, type: 3}
+  walkRightSpritesShiny:
+  - {fileID: 21300000, guid: eff77c03c9c5be7dcaec55b41cbe81c2, type: 3}
+  - {fileID: 21300000, guid: 858e23479147e9734b8bf7e7fbb5ae84, type: 3}
+  ability: 0
+  hiddenAbility: 0
+  normalAbilityPercent: 70
+  type1: 8
+  type2: 0
+  maxHP: 35
+  attack: 55
+  defense: 40
+  spAttack: 50
+  spDefense: 50
+  speed: 90
+  expYield: 112
+  catchRate: 190
+  genderRatio: 0
+  learnableMoves: []
+  learnableByItems: []
+  evolutions: []
+  defaultPursuitProfile: {fileID: 11400000, guid: 616b881560bfaebf2a69b4d720af4b2b, type: 2}

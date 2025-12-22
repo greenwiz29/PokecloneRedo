@@ -771,6 +771,7 @@ GameObject:
   - component: {fileID: 944464818102695765}
   - component: {fileID: 7942011396249908406}
   - component: {fileID: 907947815710818290}
+  - component: {fileID: 8763397521857125418}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -1117,6 +1118,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StorageState
   storageUI: {fileID: 5926984301908469938}
+--- !u!114 &8763397521857125418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177379073849594759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e4b993502e31d135b15bd4326d6bd75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &1439176550826066877
 GameObject:
   m_ObjectHideFlags: 0

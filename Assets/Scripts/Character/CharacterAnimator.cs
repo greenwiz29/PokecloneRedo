@@ -77,6 +77,30 @@ public class CharacterAnimator : MonoBehaviour
         wasMoving = IsMoving;
     }
 
+    public void SetWalkingDownSprites(List<Sprite> sprites)
+    {
+        walkDownSprites = sprites;
+        walkDownAnim = new SpriteAnimator(walkDownSprites, spriteRenderer);
+    }
+
+    public void SetWalkingUpSprites(List<Sprite> sprites)
+    {
+        walkUpSprites = sprites;
+        walkUpAnim = new SpriteAnimator(walkUpSprites, spriteRenderer);
+    }
+
+    public void SetWalkingLeftSprites(List<Sprite> sprites)
+    {
+        walkLeftSprites = sprites;
+        walkLeftAnim = new SpriteAnimator(walkLeftSprites, spriteRenderer);
+    }
+
+    public void SetWalkingRightSprites(List<Sprite> sprites)
+    {
+        walkRightSprites = sprites;
+        walkRightAnim = new SpriteAnimator(walkRightSprites, spriteRenderer);
+    }
+
     public void SetFacingDirection(FacingDirection dir)
     {
         MoveX = 0;

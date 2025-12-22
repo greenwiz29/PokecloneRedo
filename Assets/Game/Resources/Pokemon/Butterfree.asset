@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Butterfree
   m_EditorClassIdentifier: 
   name: Butterfree
+  dexNumber: 12
   description: butterfree
   frontSprite: {fileID: 21300000, guid: 91d78714fbef3147398e4d544fd16fae, type: 3}
   backSprite: {fileID: 21300000, guid: 3c596c72f9ab23f928040c24e70d9d40, type: 3}
@@ -35,17 +36,17 @@ MonoBehaviour:
   frontSpriteFemaleShiny: {fileID: 21300000, guid: 333a460f47ed78be3ac19f66e463c571, type: 3}
   backSpriteFemaleShiny: {fileID: 21300000, guid: 22c4d8be450a5a6f4a67efb903eb6fc7, type: 3}
   walkDownSpritesShiny:
-  - {fileID: -1540426309290004842, guid: 01f8a89193d29b5588771c15e4b82d3a, type: 3}
-  - {fileID: -1540426309290004842, guid: 225c371c1f0cd40b58900a6d53ad3cac, type: 3}
+  - {fileID: 21300000, guid: 01f8a89193d29b5588771c15e4b82d3a, type: 3}
+  - {fileID: 21300000, guid: 225c371c1f0cd40b58900a6d53ad3cac, type: 3}
   walkUpSpritesShiny:
-  - {fileID: -1540426309290004842, guid: 74cca8336edd36730a88e60dd8256724, type: 3}
-  - {fileID: -1540426309290004842, guid: 5d7b1ef4f0707280a9c083df76431ed9, type: 3}
+  - {fileID: 21300000, guid: 74cca8336edd36730a88e60dd8256724, type: 3}
+  - {fileID: 21300000, guid: 5d7b1ef4f0707280a9c083df76431ed9, type: 3}
   walkLeftSpritesShiny:
-  - {fileID: -1540426309290004842, guid: cd6a310192b5573d4bebeaad38f48548, type: 3}
-  - {fileID: -1540426309290004842, guid: 7ef79a28a68652e9985c8f7fbdffbe58, type: 3}
+  - {fileID: 21300000, guid: cd6a310192b5573d4bebeaad38f48548, type: 3}
+  - {fileID: 21300000, guid: 7ef79a28a68652e9985c8f7fbdffbe58, type: 3}
   walkRightSpritesShiny:
-  - {fileID: -1540426309290004842, guid: 8a123eb935b053cc0a95b131564b6938, type: 3}
-  - {fileID: -1540426309290004842, guid: ac67f94f493849fe3b09c603fbb97852, type: 3}
+  - {fileID: 21300000, guid: 8a123eb935b053cc0a95b131564b6938, type: 3}
+  - {fileID: 21300000, guid: ac67f94f493849fe3b09c603fbb97852, type: 3}
   ability: 8
   hiddenAbility: 4
   normalAbilityPercent: 70
@@ -59,6 +60,7 @@ MonoBehaviour:
   speed: 70
   expYield: 178
   catchRate: 255
+  genderRatio: 0
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: d017063ff934bbe3ca502cc5d1bec0a9, type: 2}
     levelLearned: 1
@@ -66,4 +68,4 @@ MonoBehaviour:
     levelLearned: 10
   learnableByItems: []
   evolutions: []
-  genderRatio: 0
+  defaultPursuitProfile: {fileID: 11400000, guid: 616b881560bfaebf2a69b4d720af4b2b, type: 2}

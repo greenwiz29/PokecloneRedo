@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Ivysaur
   m_EditorClassIdentifier: 
   name: Ivysaur
+  dexNumber: 2
   description: ivysaur
   frontSprite: {fileID: 21300000, guid: d358b84d1db021b85a93dfc056125dc8, type: 3}
   backSprite: {fileID: 21300000, guid: 653a6fe1d97188644a3747cd5e674bc4, type: 3}
@@ -59,10 +60,11 @@ MonoBehaviour:
   speed: 60
   expYield: 142
   catchRate: 45
+  genderRatio: 0
   learnableMoves: []
   learnableByItems: []
   evolutions:
   - evolvesInto: {fileID: 11400000, guid: 021d9c21635ecee7eaefbe15cd1e9c92, type: 2}
     requiredLevel: 36
     requiredItem: {fileID: 0}
-  genderRatio: 0
+  defaultPursuitProfile: {fileID: 11400000, guid: 616b881560bfaebf2a69b4d720af4b2b, type: 2}

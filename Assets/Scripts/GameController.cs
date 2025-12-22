@@ -64,8 +64,7 @@ public class GameController : MonoBehaviour
     public void OnEnterTrainerView(TrainerController trainer)
     {
         if (trainer != null)
-        {
-            
+        {            
             StartCoroutine(trainer.TriggerTrainerBattle(playerController));
         }
     }
@@ -75,6 +74,13 @@ public class GameController : MonoBehaviour
         BattleState.I.Trigger = trigger;
         BattleState.I.Trainer = null;
         stateMachine.Push(BattleState.I);        
+    }
+
+    public void StartOverworldPokemonBattle(WildPokemonController wildPokemon, BattleTrigger trigger = BattleTrigger.LongGrass)
+    {
+        BattleState.I.WildPokemon = wildPokemon;
+        BattleState.I.Trigger = trigger;
+        stateMachine.Push(BattleState.I);
     }
 
     public void StartTrainerBattle(TrainerController trainer, BattleTrigger trigger = BattleTrigger.LongGrass)

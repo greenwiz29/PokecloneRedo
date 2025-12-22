@@ -1,0 +1,255 @@
+1. A shared base class (`OverworldEntity`)
+2. How `NpcController` fits into it with minimal change
+3. A purpose-built `WildPokemonController`
+4. Bounded wandering around a spawner
+5. Spawn / despawn + battle flow
+
+---
+
+## Design goals (re-stated)
+
+* Passive Pokémon:
+
+  * Wander randomly
+  * Never initiate interaction
+* Aggressive Pokémon:
+
+  * Detect the player
+  * Chase within a radius
+  * Start battle on contact
+* **No breaking changes** to:
+
+  * `OverworldEntity`
+  * `NpcController`
+  * Passive wild Pokémon
+* Minimal extra per-frame cost
+
+---
+
+Later you can add:
+
+* Timid Pokémon (flee from player)
+* Territorial Pokémon (leash radius smaller than spawn radius)
+* Night-only aggression
+* Species-specific detection ranges
+
+Each is just another `IWildPokemonBehavior`.
+
+Below is a design that:
+
+* Keeps **passive Pokémon untouched**
+* Extends aggressive behavior without conditionals
+* Allows species + nature + personality to influence behavior
+* Avoids hard-coding logic into `AggressiveBehavior`
+* Scales to many future behavior types
+
+---
+
+## Core idea
+
+Split aggressive behavior into **three orthogonal concepts**:
+
+1. **Detection** – *When do I notice the player?*
+2. **Leash / pursuit rules** – *How far will I chase?*
+3. **Chase persistence** – *When do I give up?*
+
+Each Pokémon combines these via **data**, not code branches.
+
+### Interpretation
+
+* **Territorial Pokémon**
+
+  * Small `maxChaseDistanceFromTerritory`
+* **Determined Pokémon**
+
+  * Large `maxChaseDistanceFromSpawn`
+  * Long `giveUpTime`
+* **Skittish Pokémon**
+
+  * Short `giveUpTime`
+  * Small detection radius
+
+---
+
+---
+
+## 5. Species + nature influence (no hard logic)
+
+### Species
+
+* Assign default `WildPursuitProfile` per species
+
+### Nature / personality
+
+At spawn time:
+
+```csharp
+public WildPursuitProfile ApplyPersonality(
+    WildPursuitProfile baseProfile,
+    Nature nature)
+{
+    var profile = Instantiate(baseProfile);
+
+    switch (nature)
+    {
+        case Nature.Bold:
+            profile.giveUpTime *= 1.5f;
+            break;
+        case Nature.Timid:
+            profile.giveUpTime *= 0.6f;
+            profile.detectionRadius *= 0.8f;
+            break;
+        case Nature.Impish:
+            profile.maxChaseDistanceFromTerritory *= 1.2f;
+            break;
+    }
+
+    return profile;
+}
+```
++----------------------------------------------------+
+|                WildPokemonController                |
+|----------------------------------------------------|
+| - SpawnPosition : Vector3                          |
+| - Territory : Territory (optional)                 |
+| - Profile : WildPursuitProfile                     |
+| - LastAggroTime : float                            |
+| - LastMeasuredPlayerDistance : float               |
+|----------------------------------------------------|
+| + Move(dir : Vector2) : IEnumerator                |
+| + Interact(player) : IEnumerator                   |
+| + CanChaseTo(pos : Vector3) : bool                 |
+| + RecordAggroStart()                               |
+| + RecordAggroEnd()                                 |
+| + IsClosingDistanceTo(target) : bool               |
++---------------------------^------------------------+
+                            |
+                            |
+            implements       |
+                            |
++---------------------------+------------------------+
+|             IWildPokemonBehavior                   |
+|----------------------------------------------------|
+| + Run(controller) : IEnumerator                    |
++---------------------------^------------------------+
+                            |
+        +-------------------+-------------------+
+        |                   |                   |
++------------------+ +------------------+ +------------------+
+| PassiveBehavior  | | AggressiveBehavior| | TimidBehavior    |
+|------------------| |------------------| |------------------|
+| Wander randomly  | | Detect player    | | Detect player    |
+| Never interacts  | | Chase player     | | Flee player      |
++------------------+ | Start battle     | +------------------+
+                     +------------------+
+
+AggressiveBehavior
+|
++-- Detection (via Profile.detectionRadius)
+|
++-- Chase Loop
+    |
+    +-- NextStepTowards()
+    |
+    +-- CanChaseTo()
+    |
+    +-- Move(Vector2)
+    |
+    +-- Progress Check
+    |
+    +-- Give-Up Logic
+
+---
+
+For timid behavior, use this instead of NextStepTowards:
+Vector3 NextStepAwayFrom(Vector3 from, Vector3 threat)
+{
+    Vector3 delta = from - threat;
+
+    if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y))
+        return from + new Vector3(Mathf.Sign(delta.x), 0f, 0f);
+    else
+        return from + new Vector3(0f, Mathf.Sign(delta.y), 0f);
+}
+
+| Variant          | Change                                     |
+| ---------------- | ------------------------------------------ |
+| Panicky          | Small `giveUpTime`, large `chaseMoveDelay` |
+| Brave-at-night   | Swap behavior based on time                |
+| Territorial prey | Small territory radius                     |
+| Herd prey        | Shared territory + alert radius            |
+
+IWildPokemonBehavior
+        ^
+        |
++------------------+
+| TimidBehavior    |
+|------------------|
+| DetectPlayer     |
+| Flee             |
+| StopAtSafety     |
++------------------+
+
++------------------------+
+|      Territory         |
+|------------------------|
+| center, radius         |
+| members                |
+|------------------------|
+| Register(c)            |
+| BroadcastThreat(t)     |
++-----------+------------+
+            |
+            | signals
+            v
++------------------------+
+| WildPokemonController  |
+|------------------------|
+| behavior               |
+| SwitchBehavior()       |
+| OnTerritoryThreat()    |
++-----------+------------+
+            |
+            | runs
+            v
++------------------------+
+| IWildPokemonBehavior   |
++-----------+------------+
+            |
+   +--------+--------+
+   |                 |
++------+        +-----------+
+|Passive|        |Aggressive|
++------+        +-----------+
+   |
++--------------------+
+| Timid / HerdTimid  |
++--------------------+
+
+---Final mental model (important)
+Concern	          Lives where
+Behavior logic	  IWildPokemonBehavior
+State changes	    Behavior → Controller
+Debug drawing	    Controller only
+Territory shape	  Territory / TerritoryDebugDrawer
+Group alerts	    Territory → Controller
+
+Behaviors never draw. Controllers never decide behavior.
+
+That separation is what keeps this understandable as the system grows.
+
+---What this gives you immediately:
+
+When you press Play and look at the Scene view:
+
+* Label over each Pokémon showing behavior class
+
+* Green/yellow ring for idle/moving
+
+* Red ring for aggressive, blue for fleeing
+
+* Cyan leash when selected
+
+* Purple lines when group alerts fire
+
+If something looks wrong, you’ll see it instantly.

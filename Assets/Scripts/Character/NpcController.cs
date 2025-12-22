@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NpcController : MonoBehaviour, IInteractable, ISavable
+public class NpcController : OverworldEntity, ISavable
 {
     [SerializeField] Dialog dialog;
 
@@ -15,9 +15,7 @@ public class NpcController : MonoBehaviour, IInteractable, ISavable
     [SerializeField] float moveDelay;
 
     float idleTimer = 0f;
-    NPCState state;
 
-    private Character character;
     ItemGiver itemGiver;
     private int currentPattern;
     Quest activeQuest;
@@ -25,21 +23,18 @@ public class NpcController : MonoBehaviour, IInteractable, ISavable
     Healer healer;
     Merchant merchant;
 
-    void Awake()
+    protected override void Awake()
     {
-        character = GetComponent<Character>();
+        base.Awake();
         itemGiver = GetComponent<ItemGiver>();
         pokemonGiver = GetComponent<PokemonGiver>();
         healer = GetComponent<Healer>();
         merchant = GetComponent<Merchant>();
     }
 
-    public IEnumerator Interact(Transform initiator)
+    protected override IEnumerator OnInteract(Transform initiator)
     {
-        if (state == NPCState.Idle)
-        {
-            state = NPCState.Dialog;
-            character.LookTowards(initiator.position);
+        character.LookTowards(initiator.position);
 
             if (questToComplete != null)
             {
@@ -95,10 +90,9 @@ public class NpcController : MonoBehaviour, IInteractable, ISavable
 
             state = NPCState.Idle;
             idleTimer = 0f;
-        }
     }
 
-    void Update()
+    protected override void Update()
     {
         if (state == NPCState.Idle)
         {
@@ -112,7 +106,7 @@ public class NpcController : MonoBehaviour, IInteractable, ISavable
                 }
             }
         }
-        character.HandleUpdate();
+        base.Update();
     }
 
     private IEnumerator Walk()
@@ -183,6 +177,7 @@ public class NpcController : MonoBehaviour, IInteractable, ISavable
             questToComplete = (saveData.questToComplete != null) ? new Quest(saveData.questToComplete).Base : null;
         }
     }
+
 }
 
 public enum NPCState { Idle, Walking, Dialog }

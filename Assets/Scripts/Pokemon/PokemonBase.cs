@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Pokemon", menuName = "Pokemon/Create new Pokemon")]
 public class PokemonBase : ScriptableObject
 {
     [SerializeField] new string name;
+    [SerializeField] int dexNumber;
 
     [TextArea]
     [SerializeField] string description;
@@ -16,14 +18,18 @@ public class PokemonBase : ScriptableObject
     [SerializeField] Sprite backSprite;
     [SerializeField] Sprite frontSpriteFemale;
     [SerializeField] Sprite backSpriteFemale;
-    [SerializeField] List<Sprite> walkDownSprites, walkUpSprites, walkLeftSprites, walkRightSprites;
+    [Header("Overworld")]
+    [SerializeField] List<Sprite> walkDownSprites;
+    [SerializeField] List<Sprite> walkUpSprites, walkLeftSprites, walkRightSprites;
 
     [Header("Shiny")]
     [SerializeField] Sprite frontSpriteShiny;
     [SerializeField] Sprite backSpriteShiny;
     [SerializeField] Sprite frontSpriteFemaleShiny;
     [SerializeField] Sprite backSpriteFemaleShiny;
-    [SerializeField] List<Sprite> walkDownSpritesShiny, walkUpSpritesShiny, walkLeftSpritesShiny, walkRightSpritesShiny;
+    [Header("Overworld")]
+    [SerializeField] List<Sprite> walkDownSpritesShiny;
+    [SerializeField] List<Sprite> walkUpSpritesShiny, walkLeftSpritesShiny, walkRightSpritesShiny;
 
     [Header("Abilities")]
     [SerializeField] AbilityID ability;
@@ -35,22 +41,31 @@ public class PokemonBase : ScriptableObject
     [SerializeField] PokemonType type2;
 
     // Base Stats
-    [SerializeField] int maxHP, attack, defense, spAttack, spDefense, speed;
+    [Header("Visible Stats")]
+    [SerializeField] int maxHP;
+    [SerializeField] int attack, defense, spAttack, spDefense, speed;
 
     // Hidden Stats
+    [Header("Hidden Stats")]
     [SerializeField] int expYield;
     [SerializeField] int catchRate = 255;
+    [SerializeField] PokemonGenderRatio genderRatio;
 
     [Header("Moves")]
     [SerializeField] List<LearnableMove> learnableMoves;
     [SerializeField] List<MoveBase> learnableByItems;
 
+    [Header("Evolutions")]
     [SerializeField] List<Evolution> evolutions;
-    [SerializeField] PokemonGenderRatio genderRatio;
+
+    [Header("Overworld Behavior")]
+    public List<IWildPokemonBehavior> possibleBehaviors;
+    public WildPursuitProfile defaultPursuitProfile;
 
     public string Name => name;
     public string Desc => description;
     public PokemonGenderRatio GenderRatio { get { return genderRatio; } }
+    public WildPursuitProfile DefaultPursuitProfile => defaultPursuitProfile;
     public Sprite FrontSprite => frontSprite;
     public Sprite BackSprite => backSprite;
     public Sprite FrontSpriteFemale => frontSpriteFemale;
@@ -83,6 +98,11 @@ public class PokemonBase : ScriptableObject
     public List<LearnableMove> LearnableMoves => learnableMoves;
     public List<MoveBase> LearnableByItems => learnableByItems;
     public List<Evolution> Evolutions => evolutions;
+
+    public bool HasBehaviorType(WildPersonality wildPersonality)
+    {
+        return possibleBehaviors.Any(b => b.Personality == wildPersonality);
+    }
 }
 
 [Serializable]

@@ -32,7 +32,7 @@ public class GlobalSettings : MonoSingleton<GlobalSettings>
 
 	public Color GetStatusColor(StatusConditionID condition) => statusColors[condition];
 
-    void Awake()
+    new void Awake()
     {
         base.Awake();
         

@@ -11,8 +11,17 @@ public class SceneDetails : MonoBehaviour
 {
     [SerializeField] List<SceneDetails> connectedScenes;
 
+    public string SceneName => gameObject.name;
     public bool IsLoaded { get; private set; }
     List<SavableEntity> savableEntities;
+    public MapArea MapArea { get; private set; }
+
+    void Awake()
+    {
+        MapArea = GetComponentInParent<MapArea>();
+        if (MapArea == null)
+            Debug.LogWarning($"SceneDetails on {name} has no MapArea.");
+    }
 
     void OnTriggerEnter2D(Collider2D collision)
     {

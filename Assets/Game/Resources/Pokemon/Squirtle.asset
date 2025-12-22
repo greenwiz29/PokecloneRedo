@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Squirtle
   m_EditorClassIdentifier: 
   name: Squirtle
+  dexNumber: 7
   description: a squirtle
   frontSprite: {fileID: 21300000, guid: 39e761212a05f5db4bea74bb8f343384, type: 3}
   backSprite: {fileID: 21300000, guid: 18fc6e8e3f72b154fba88f358748be28, type: 3}
@@ -59,6 +60,7 @@ MonoBehaviour:
   speed: 43
   expYield: 65
   catchRate: 255
+  genderRatio: 0
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: d6d7f5d17e381c7de85d5e218f6edf93, type: 2}
     levelLearned: 1
@@ -72,4 +74,4 @@ MonoBehaviour:
   - evolvesInto: {fileID: 11400000, guid: bb48e502b596613ca8a126dfafede198, type: 2}
     requiredLevel: 16
     requiredItem: {fileID: 0}
-  genderRatio: 0
+  defaultPursuitProfile: {fileID: 11400000, guid: 616b881560bfaebf2a69b4d720af4b2b, type: 2}

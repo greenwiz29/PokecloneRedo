@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ExpBall
   m_EditorClassIdentifier: 
   name: ExpBall
+  dexNumber: 0
   description: A weak ball full of wisdom for whoever breaks it
   frontSprite: {fileID: -6134421028427622431, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
   backSprite: {fileID: -6134421028427622431, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
@@ -43,6 +44,7 @@ MonoBehaviour:
   speed: 1
   expYield: 1023
   catchRate: 0
+  genderRatio: 0
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: d6d7f5d17e381c7de85d5e218f6edf93, type: 2}
     levelLearned: 1
@@ -50,4 +52,4 @@ MonoBehaviour:
     levelLearned: 1
   learnableByItems: []
   evolutions: []
-  genderRatio: 0
+  defaultPursuitProfile: {fileID: 11400000, guid: 616b881560bfaebf2a69b4d720af4b2b, type: 2}

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Charmeleon
   m_EditorClassIdentifier: 
   name: Charmeleon
+  dexNumber: 5
   description: charmeleon
   frontSprite: {fileID: 21300000, guid: 3df90e343435f1338a929535ded7dca2, type: 3}
   backSprite: {fileID: 21300000, guid: ade6afd9cbd5c1740bf6046d9a18b97d, type: 3}
@@ -59,10 +60,11 @@ MonoBehaviour:
   speed: 80
   expYield: 142
   catchRate: 45
+  genderRatio: 0
   learnableMoves: []
   learnableByItems: []
   evolutions:
   - evolvesInto: {fileID: 11400000, guid: c168d7f267dd2412a9d22ac8b6a62010, type: 2}
     requiredLevel: 36
     requiredItem: {fileID: 11400000, guid: 11ef074bcdbabd3dca4175c02e05e630, type: 2}
-  genderRatio: 0
+  defaultPursuitProfile: {fileID: 11400000, guid: 616b881560bfaebf2a69b4d720af4b2b, type: 2}

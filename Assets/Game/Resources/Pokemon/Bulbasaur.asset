@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Bulbasaur
   m_EditorClassIdentifier: 
   name: Bulbasaur
+  dexNumber: 1
   description: A bulbasaur
   frontSprite: {fileID: 21300000, guid: ebfdba9b053aca1a282b016896c43bba, type: 3}
   backSprite: {fileID: 21300000, guid: aacaae602a38f884ab9e02e43de3736d, type: 3}
@@ -59,6 +60,7 @@ MonoBehaviour:
   speed: 45
   expYield: 65
   catchRate: 255
+  genderRatio: 0
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: d6d7f5d17e381c7de85d5e218f6edf93, type: 2}
     levelLearned: 1
@@ -73,4 +75,4 @@ MonoBehaviour:
   - evolvesInto: {fileID: 11400000, guid: c8beb122e19a711a18e5a4f7038dab8f, type: 2}
     requiredLevel: 16
     requiredItem: {fileID: 0}
-  genderRatio: 0
+  defaultPursuitProfile: {fileID: 11400000, guid: 616b881560bfaebf2a69b4d720af4b2b, type: 2}
