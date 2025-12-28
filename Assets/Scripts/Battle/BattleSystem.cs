@@ -310,16 +310,19 @@ public class BattleSystem : MonoBehaviour
     {
         var pokemon = sourceUnit.Pokemon;
         string enemy = !sourceUnit.IsPlayerUnit ? "Enemy " : "";
+
+        int startingLevel = pokemon.Level;
+        // Snapshot BEFORE any level-ups
+        var beforeStats = pokemon.CloneStatsSnapshot();
+        bool leveledAtLeastOnce = false;
+        LearnableMove newMove;
+
         // Check level up
-        var leveledUp = pokemon.CheckForLevelUp(out LearnableMove newMove);
+        var leveledUp = pokemon.CheckForLevelUp(out newMove);
         while (leveledUp != null)
         {
             playerHud.SetLevel();
-            if (sourceUnit.IsPlayerUnit)
-                yield return dialogBox.TypeDialog($"{enemy}{pokemon.Name} grew to level {pokemon.Level}!");
-
-            // Show stat changes dialog
-            var statChanges = leveledUp;
+            leveledAtLeastOnce = true;
 
             var evolution = pokemon.CheckForEvolution();
             if (evolution != null)
@@ -328,23 +331,6 @@ public class BattleSystem : MonoBehaviour
                 yield return EvolutionState.I.Evolve(pokemon, evolution, changes);
                 sourceUnit.Setup(pokemon);
                 partyScreen.SetPartyData();
-                statChanges = changes.Changes;
-            }
-
-            if (sourceUnit.IsPlayerUnit)
-            {
-                statChangesUI.gameObject.SetActive(true);
-                statChangesUI.SetStatChanges(statChanges);
-
-                yield return new WaitForEndOfFrame();
-                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
-
-                statChangesUI.SetStats(pokemon);
-
-                yield return new WaitForEndOfFrame();
-                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
-
-                statChangesUI.gameObject.SetActive(false);
             }
 
             // Try to learn a new Move
@@ -397,6 +383,38 @@ public class BattleSystem : MonoBehaviour
             yield return playerHud.UpdateEXP(true);
 
             leveledUp = pokemon.CheckForLevelUp(out newMove);
+        }
+
+        if (leveledAtLeastOnce && sourceUnit.IsPlayerUnit)
+        {
+            yield return dialogBox.TypeDialog(
+                $"{pokemon.Name} grew from level {startingLevel} to level {pokemon.Level}!"
+            );
+
+            // Snapshot AFTER all leveling/evolution
+            var afterStats = pokemon.CloneStatsSnapshot();
+
+            var cumulativeChanges = new StatChanges
+            {
+                atkDiff = afterStats.Stats[Stat.Attack] - beforeStats.Stats[Stat.Attack],
+                defDiff = afterStats.Stats[Stat.Defense] - beforeStats.Stats[Stat.Defense],
+                spAtkDiff = afterStats.Stats[Stat.SpAttack] - beforeStats.Stats[Stat.SpAttack],
+                spDefDiff = afterStats.Stats[Stat.SpDefense] - beforeStats.Stats[Stat.SpDefense],
+                speedDiff = afterStats.Stats[Stat.Speed] - beforeStats.Stats[Stat.Speed],
+                hpDiff = afterStats.MaxHP - beforeStats.MaxHP
+            };
+
+            statChangesUI.gameObject.SetActive(true);
+            statChangesUI.SetStatChanges(cumulativeChanges);
+
+            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+
+            statChangesUI.SetStats(pokemon);
+            
+            yield return new WaitForEndOfFrame();
+            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+
+            statChangesUI.gameObject.SetActive(false);
         }
     }
 

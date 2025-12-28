@@ -540,6 +540,15 @@ public class Pokemon
         else return null;
     }
 
+    public PokemonStatsSnapshot CloneStatsSnapshot()
+    {
+        return new PokemonStatsSnapshot
+        {
+            Stats = new Dictionary<Stat, int>(Stats),
+            MaxHP = MaxHP
+        };
+    }
+
     public void ResetStatBoosts()
     {
         StatBoosts = new Dictionary<Stat, int>()
@@ -849,7 +858,7 @@ public class Pokemon
 
     public float ModifyMoveBasePower(Move move, Pokemon defender)
     {
-        if(Ability?.OnModifyMoveBasePower != null)
+        if (Ability?.OnModifyMoveBasePower != null)
         {
             return Ability.OnModifyMoveBasePower.Invoke(move.Base.Power, this, defender, move);
         }
@@ -914,11 +923,42 @@ public class StatusEvent
 public class StatChanges
 {
     public int atkDiff, defDiff, spAtkDiff, spDefDiff, speedDiff, hpDiff;
+
+    public void Add(StatChanges other)
+    {
+        if (other == null) return;
+
+        atkDiff += other.atkDiff;
+        defDiff += other.defDiff;
+        spAtkDiff += other.spAtkDiff;
+        spDefDiff += other.spDefDiff;
+        speedDiff += other.speedDiff;
+        hpDiff += other.hpDiff;
+    }
+
+    public static StatChanges FromBeforeAfter(Pokemon before, Pokemon after)
+    {
+        return new StatChanges
+        {
+            atkDiff = after.Stats[Stat.Attack] - before.Stats[Stat.Attack],
+            defDiff = after.Stats[Stat.Defense] - before.Stats[Stat.Defense],
+            spAtkDiff = after.Stats[Stat.SpAttack] - before.Stats[Stat.SpAttack],
+            spDefDiff = after.Stats[Stat.SpDefense] - before.Stats[Stat.SpDefense],
+            speedDiff = after.Stats[Stat.Speed] - before.Stats[Stat.Speed],
+            hpDiff = after.MaxHP - before.MaxHP
+        };
+    }
 }
 
 public class StatChangesWrapper
 {
     public StatChanges Changes;
+}
+
+public class PokemonStatsSnapshot
+{
+    public Dictionary<Stat, int> Stats;
+    public int MaxHP;
 }
 
 [Serializable]
