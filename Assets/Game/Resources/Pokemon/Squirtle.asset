@@ -68,6 +68,8 @@ MonoBehaviour:
     levelLearned: 4
   - moveBase: {fileID: 11400000, guid: ece86ee67b22d4da283dde8f9dd68593, type: 2}
     levelLearned: 7
+  - moveBase: {fileID: 11400000, guid: 03d6873cdf51079b683a5d056ad16f0f, type: 2}
+    levelLearned: 10
   learnableByItems:
   - {fileID: 11400000, guid: 63920f4d270908829bef4e14b5d5d0f4, type: 2}
   evolutions:

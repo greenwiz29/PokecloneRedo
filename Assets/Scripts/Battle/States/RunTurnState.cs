@@ -50,7 +50,7 @@ public class RunTurnState : State<BattleSystem>
             {
                 case BattleActionType.Move:
                     action.User.Pokemon.CurrentMove = action.SelectedMove;
-                    yield return RunMove(action.User, action.Target, action.SelectedMove);
+                    yield return RunMove(action.User, action.Targets, action.SelectedMove);
                     yield return RunAfterTurn(action.User, action.Target);
                     break;
 
@@ -87,7 +87,7 @@ public class RunTurnState : State<BattleSystem>
         }
     }
 
-    private IEnumerator RunMove(BattleUnit source, BattleUnit target, Move move)
+    private IEnumerator RunMove(BattleUnit source, List<BattleUnit> targets, Move move)
     {
         if (!source.Pokemon.OnBeforeMove())
         {
@@ -109,6 +109,28 @@ public class RunTurnState : State<BattleSystem>
 
         yield return dialogBox.TypeDialog($"{enemy}{source.Pokemon.Name} used {move.Base.Name}");
 
+        source.PlayAttackAnimation();
+        yield return new WaitForSeconds(0.75f);
+
+        switch (move.Base.Target)
+        {
+            case MoveTarget.Self:
+            case MoveTarget.Foe:
+            case MoveTarget.Ally:
+                yield return ExecuteMove(source, move, targets[0]);
+                break;
+            case MoveTarget.Area:
+                foreach (var target in targets)
+                {
+                    yield return ExecuteMove(source, move, target);
+                }
+                break;
+        }
+
+    }
+
+    private IEnumerator ExecuteMove(BattleUnit source, Move move, BattleUnit target)
+    {
         if (!CheckIfMoveHits(move, source.Pokemon, target.Pokemon))
         {
             yield return dialogBox.TypeDialog("... but it missed.");
@@ -120,9 +142,6 @@ public class RunTurnState : State<BattleSystem>
             for (i = 0; i < hitCount; i++)
             {
                 DamageDetails damageDetails = null;
-
-                source.PlayAttackAnimation();
-                yield return new WaitForSeconds(0.75f);
 
                 target.PlayHitAnimation();
 
@@ -265,7 +284,7 @@ public class RunTurnState : State<BattleSystem>
         if (bs.IsBattleOver)
             yield break;
 
-        source.Pokemon.OnAfterTurn(target.Pokemon);
+        source.Pokemon.OnAfterTurn(target?.Pokemon);
         yield return ShowStatusChanges(source);
 
         // Check if source pokemon fainted after status effect

@@ -62,26 +62,62 @@ public class MoveSelectionState : State<BattleSystem>
     {
         StartCoroutine(OnMoveSelectedAsync(selection));
     }
-    
+
     IEnumerator OnMoveSelectedAsync(int selection)
     {
-        // TODO: adjust to use the MoveTarget enum to determine what set of units to choose from
-        int moveTarget = 0;
-        if (bs.ActiveEnemyUnitsCount > 1)
+        var move = Moves[selection];
+        var user = bs.SelectedUnit; // or however you track the acting unit
+
+        var validTargets = TargetSelectionState.I.GetValidTargets(move, user, bs);
+
+        // No valid targets → move fails
+        if (validTargets.Count == 0)
         {
-            yield return bs.StateMachine.PushAndWait(TargetSelectionState.I);
-            if (!TargetSelectionState.I.SelectionMade)
-            {
-                yield break;
-            }
-            moveTarget = TargetSelectionState.I.SelectedTarget;
+            bs.DialogBox.SetDialog(
+                $"{user.Pokemon.Name} tried to use {move.Base.Name}, but it failed!"
+            );
+            yield return new WaitForSeconds(1f);
+            yield break;
         }
 
-        bs.AddBattleAction(new BattleAction()
+        // SELF or forced single-target auto-pick
+        if (move.Base.Target == MoveTarget.Self ||
+            validTargets.Count == 1)
+        {
+            CommitAction(move, validTargets[0], validTargets);
+            yield break;
+        }
+
+        // AREA moves: no selector, targets resolved now
+        if (move.Base.Target == MoveTarget.Area)
+        {
+            bs.AddBattleAction(new BattleAction
+            {
+                Type = BattleActionType.Move,
+                SelectedMove = move,
+                Targets = validTargets,
+                MoveTargetType = MoveTarget.Area
+            });
+            yield break;
+        }
+
+        // Otherwise: player must choose
+        TargetSelectionState.I.ValidTargets = validTargets;
+        yield return bs.StateMachine.PushAndWait(TargetSelectionState.I);
+
+        var chosenTarget = validTargets[TargetSelectionState.I.SelectedTarget];
+        CommitAction(move, chosenTarget, new List<BattleUnit> { chosenTarget });
+    }
+
+    void CommitAction(Move move, BattleUnit target, List<BattleUnit> areaTargets)
+    {
+        bs.AddBattleAction(new BattleAction
         {
             Type = BattleActionType.Move,
-            SelectedMove = Moves[selection],
-            Target = bs.EnemyUnits[moveTarget]
+            SelectedMove = move,
+            Target = target,
+            Targets = areaTargets,
+            MoveTargetType = move.Base.Target
         });
     }
 }

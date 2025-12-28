@@ -763,7 +763,8 @@ public class Pokemon
             defense = ModifyDef(Defense, attacker, move);
         }
 
-        float d = a * move.Base.Power * ((float)attack / defense);
+        float basePower = attacker.ModifyMoveBasePower(move, this);
+        float d = a * basePower * ((float)attack / defense);
 
         int damage = Mathf.FloorToInt(d * modifiers);
 
@@ -844,6 +845,18 @@ public class Pokemon
             return Ability.OnModifyDef(def, attacker, this, move);
         }
         return def;
+    }
+
+    public float ModifyMoveBasePower(Move move, Pokemon defender)
+    {
+        if(Ability?.OnModifyMoveBasePower != null)
+        {
+            return Ability.OnModifyMoveBasePower.Invoke(move.Base.Power, this, defender, move);
+        }
+        else
+        {
+            return move.Base.Power;
+        }
     }
 
     public float ModifySpDef(float spDef, Pokemon attacker, Move move)

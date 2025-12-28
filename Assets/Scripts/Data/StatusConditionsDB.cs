@@ -26,8 +26,8 @@ public class StatusConditionsDB
                 CatchBonus = 1.5f,
                 OnAfterTurn = (target, user) =>
                 {
-                    target.ReduceHP(target.MaxHP / 8);
-                    target.AddStatusEvent(StatusEventType.Damage, $"{target.Base.Name} is hurt by poison!");
+                    target?.ReduceHP((int)(target?.MaxHP / 8));
+                    target?.AddStatusEvent(StatusEventType.Damage, $"{target?.Base.Name} is hurt by poison!");
                 }
             }
         },
@@ -40,8 +40,8 @@ public class StatusConditionsDB
                 CatchBonus = 1.5f,
                 OnAfterTurn = (target, user) =>
                 {
-                    target.ReduceHP(target.MaxHP / 16);
-                    target.AddStatusEvent(StatusEventType.Damage, $"{target.Base.Name} is hurt by its burn!");
+                    target?.ReduceHP((int)(target?.MaxHP / 16));
+                    target?.AddStatusEvent(StatusEventType.Damage, $"{target?.Base.Name} is hurt by its burn!");
                 }
             }
         },
@@ -166,10 +166,10 @@ public class StatusConditionsDB
                 },
                 OnAfterTurn = (Pokemon target, Pokemon user) =>
                 {
-                    int damage = target.MaxHP/16;
-                    target.ReduceHP(damage, true);
+                    int damage = (int)(target?.MaxHP/16);
+                    target?.ReduceHP(damage, true);
                     user.IncreaseHP(damage, true);
-                    target.AddStatusEvent(StatusEventType.Text, $"{target.Name}'s health is sapped by Leech Seed.");
+                    target?.AddStatusEvent(StatusEventType.Text, $"{target?.Name}'s health is sapped by Leech Seed.");
                 }
             }
         },

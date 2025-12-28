@@ -1,11 +1,21 @@
+using System.Collections.Generic;
 using GDEUtils.StateMachine;
 using UnityEngine;
 
+/// <summary>
+/// Make sure to set <see cref="ValidTargets"/> before pushing this state!
+/// </summary>
 public class TargetSelectionState : State<BattleSystem>
 {
     int selectedTarget = 0;
+
+    /// <summary>
+    /// Make sure to set <see cref="ValidTargets"/> before pushing this state!
+    /// </summary>
     public static TargetSelectionState I { get; private set; }
 
+    // Input
+    public List<BattleUnit> ValidTargets { get; set; }
     //Output
     public int SelectedTarget => selectedTarget;
     public bool SelectionMade { get; private set; }
@@ -26,7 +36,7 @@ public class TargetSelectionState : State<BattleSystem>
 
     public override void Exit()
     {
-        bs.EnemyUnits[selectedTarget].SetSelected(false);
+        ValidTargets[selectedTarget].SetSelected(false);
     }
 
     public override void Execute()
@@ -35,16 +45,16 @@ public class TargetSelectionState : State<BattleSystem>
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             selectedTarget++;
-            if (selectedTarget == bs.ActiveEnemyUnitsCount)
+            if (selectedTarget == ValidTargets.Count)
                 selectedTarget = 0;
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             selectedTarget--;
             if (selectedTarget < 0)
-                selectedTarget = bs.ActiveEnemyUnitsCount - 1;
+                selectedTarget = ValidTargets.Count - 1;
         }
-        
+
         if (selectedTarget != prevSelection)
         {
             UpdateSelectionInUI();
@@ -61,12 +71,42 @@ public class TargetSelectionState : State<BattleSystem>
             bs.StateMachine.Pop();
         }
     }
-    
+
     void UpdateSelectionInUI()
     {
-        for (int i = 0; i < bs.EnemyUnits.Count; i++)
+        for (int i = 0; i < ValidTargets.Count; i++)
         {
-            bs.EnemyUnits[i].SetSelected(i == selectedTarget);
+            ValidTargets[i].SetSelected(i == selectedTarget);
+        }
+    }
+
+    public List<BattleUnit> GetValidTargets(
+        Move move,
+        BattleUnit user,
+        BattleSystem bs)
+    {
+        switch (move.Base.Target)
+        {
+            case MoveTarget.Foe:
+                return bs.EnemyUnits;
+
+            case MoveTarget.Ally:
+                // Other friendly units only
+                return bs.PlayerUnits.FindAll(u => u != user);
+
+            case MoveTarget.Self:
+                return new List<BattleUnit> { user };
+
+            case MoveTarget.Area:
+                // All units except self
+                var targets = new List<BattleUnit>();
+                targets.AddRange(bs.PlayerUnits);
+                targets.AddRange(bs.EnemyUnits);
+                targets.Remove(user);
+                return targets;
+
+            default:
+                return new List<BattleUnit>();
         }
     }
 }

@@ -167,7 +167,7 @@ public class BattleSystem : MonoBehaviour
             Field.SetWeather(weatherId);
             yield return dialogBox.TypeDialog(Field.Weather.StartMessage);
         }
-        
+
         EscapeAttempts = 0;
         selectedUnit = 0;
         IsBattleOver = false;
@@ -202,12 +202,14 @@ public class BattleSystem : MonoBehaviour
             // Add enemy actions
             foreach (var enemy in enemyUnits)
             {
+                var target = playerUnits[UnityEngine.Random.Range(0, ActivePlayerUnitsCount)];
                 battleActions.Add(new BattleAction()
                 {
                     Type = BattleActionType.Move,
                     SelectedMove = enemy.Pokemon.GetRandomMove(),
                     User = enemy,
-                    Target = playerUnits[UnityEngine.Random.Range(0, ActivePlayerUnitsCount)]
+                    Target = target,
+                    Targets = new List<BattleUnit> { target }
                 });
             }
 
