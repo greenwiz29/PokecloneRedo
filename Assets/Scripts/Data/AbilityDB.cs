@@ -477,11 +477,67 @@ public class AbilityDB
                 }
             }
         },
+        // Boost power of moves
+        {
+            AbilityID.toughclaws,
+            new Ability()
+            {
+                Name = "Tough Claws",
+                Description = "Boosts the power of contact moves",
+                OnModifyMoveBasePower = (float basePower, Pokemon attacker, Pokemon defender, Move move) =>
+                {
+                    if (move.Base.HasFlag(MoveFlag.Contact))
+                    {
+                        return basePower * 1.3f;
+                    }
+                    else
+                        return basePower;
+                }
+            }
+        },
+        {
+            AbilityID.strongjaw,
+            new Ability()
+            {
+                Name = "Strong Jaw",
+                Description = "Boosts the power of bite moves",
+                OnModifyMoveBasePower = (float basePower, Pokemon attacker, Pokemon defender, Move move) =>
+                {
+                    if (move.Base.HasFlag(MoveFlag.Bite))
+                    {
+                        return basePower * 1.5f;
+                    }
+                    else
+                        return basePower;
+                }
+            }
+        },
+        {
+            AbilityID.ironfist,
+            new Ability()
+            {
+                Name = "Iron Fist",
+                Description = "Boosts the power of punching moves",
+                OnModifyMoveBasePower = (float basePower, Pokemon attacker, Pokemon defender, Move move) =>
+                {
+                    if (move.Base.HasFlag(MoveFlag.Punch))
+                    {
+                        return basePower * 1.2f;
+                    }
+                    else
+                        return basePower;
+                }
+            }
+        }
     };
 }
 
-public enum AbilityID { none, 
-blaze, overgrow, torrent, swarm, guts, marvelscale, quickfeet, compoundeyes, 
-keeneyes, hypercutter, bigpecks, clearbody, whitesmoke, 
-insomnia, immunity, limber, waterveil, vitalspirit, owntempo,
-staticbody, poisonpoint,flamebody, }
+public enum AbilityID
+{
+    none,
+    blaze, overgrow, torrent, swarm, guts, marvelscale, quickfeet, compoundeyes,
+    keeneyes, hypercutter, bigpecks, clearbody, whitesmoke,
+    insomnia, immunity, limber, waterveil, vitalspirit, owntempo,
+    staticbody, poisonpoint, flamebody,
+    toughclaws, strongjaw, ironfist,
+}
