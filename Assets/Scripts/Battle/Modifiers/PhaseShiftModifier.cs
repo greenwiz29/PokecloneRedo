@@ -19,7 +19,7 @@ public class PhaseShiftModifier : BattleModifier
             defender.Pokemon.HP <= defender.Pokemon.MaxHP / 2)
         {
             triggered = true;
-            bs.DialogBox.TypeDialog("The Gym Leader gets serious!");
+            bs.EnqueueEvent(new DialogBattleEvent("The Gym Leader gets serious!"));
         }
     }
 }

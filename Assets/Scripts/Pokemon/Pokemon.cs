@@ -592,7 +592,7 @@ public class Pokemon
     /// </summary>
     /// <param name="boosts">Boosts to apply</param>
     /// <param name="source">The <see cref="Pokemon"/> that originated the boost (usually by <see cref="Move"/>).</param>
-    public void ApplyBoosts(List<StatBoost> boosts, Pokemon source)
+    public void ApplyBoosts(List<StatBoost> boosts, Pokemon source, bool hideMessages = false)
     {
         var statsDict = boosts.ToDictionary(x => x.stat, x => x.boost);
         Ability?.OnBoost?.Invoke(statsDict, source, this);
@@ -606,7 +606,7 @@ public class Pokemon
             if ((changeIsPositive && boost == 6) || (!changeIsPositive && boost == -6))
             {
                 string riseOrFall = changeIsPositive ? "higher" : "lower";
-                AddStatusEvent(StatusEventType.Text, $"{Base.Name}'s {stat} won't go any {riseOrFall}!");
+                AddStatusEvent(StatusEventType.Text, $"{Base.Name}'s {stat} won't go any {riseOrFall}!", hideMessages);
             }
             else
             {
@@ -614,7 +614,7 @@ public class Pokemon
 
                 string riseOrFall = changeIsPositive ? "rose" : boost < 0 ? "fell" : "did not change";
                 string bigChange = (Mathf.Abs(boost) >= 3) ? " severly " : (Mathf.Abs(boost) == 2) ? " harsly " : " ";
-                AddStatusEvent(StatusEventType.Text, $"{Base.Name}'s {stat}{bigChange}{riseOrFall}!");
+                AddStatusEvent(StatusEventType.Text, $"{Base.Name}'s {stat}{bigChange}{riseOrFall}!", hideMessages);
             }
         }
     }
@@ -678,9 +678,10 @@ public class Pokemon
     /// <summary>
     /// Add a status event of the given type with the given message to the queue.
     /// </summary>
-    public void AddStatusEvent(StatusEventType type, string message)
+    public void AddStatusEvent(StatusEventType type, string message, bool hideEvent = false)
     {
-        StatusChanges.Enqueue(new StatusEvent(type, message));
+        if (!hideEvent)
+            StatusChanges.Enqueue(new StatusEvent(type, message));
     }
 
     /// <summary>
@@ -827,6 +828,7 @@ public class Pokemon
     {
         ResetStatBoosts();
         CureVolatileStatus();
+        StatusChanges.Clear();
     }
 
     public float ModifyAtk(float atk, Pokemon defender, Move move)

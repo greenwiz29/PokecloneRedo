@@ -6,3 +6,13 @@ GymLeader
 ├── PokemonParty
 ├── GymLeaderController
 ├── FieldOfView (disabled or zero-length)
+
+Other event types you’ll want later
+
+You now have a scriptable pipeline for battle drama:
+BattleStatChangeEvent
+BattleCameraShakeEvent
+BattleWeatherChangeEvent
+BattlePokemonSwapEvent
+BattleMusicChangeEvent
+BattleScreenGlitchEvent (😉 AR gym)

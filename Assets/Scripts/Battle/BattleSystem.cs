@@ -61,6 +61,18 @@ public class BattleSystem : MonoBehaviour
     public BattleField Field { get; private set; }
     List<BattleModifier> activeModifiers = new();
     public IReadOnlyList<BattleModifier> ActiveModifiers => activeModifiers;
+    Queue<BattleEvent> eventQueue = new();
+    public bool HasPendingEvents => eventQueue.Count > 0;
+
+    public void EnqueueEvent(BattleEvent evt)
+    {
+        eventQueue.Enqueue(evt);
+    }
+    
+    public BattleEvent DequeueEvent()
+    {
+        return eventQueue.Dequeue();
+    }
 
     public void StartBattle(BattleContext context)
     {

@@ -195,7 +195,8 @@ public class StatusConditionsDB
                         new(){ stat = Stat.Accuracy, boost = 2},
                         new(){ stat = Stat.Evasion, boost = 2}
                     },
-                    p);
+                    p,
+                    hideMessages: true);
                 },
                 OnBeforeMove = p =>
                 {

@@ -90,7 +90,7 @@ public class RunTurnState : State<BattleSystem>
         {
             mod.OnTurnEnd(bs);
         }
-        
+
         if (!bs.IsBattleOver)
         {
             bs.StateMachine.ChangeState(ActionSelectionState.I);
@@ -175,6 +175,8 @@ public class RunTurnState : State<BattleSystem>
                         move, source.Pokemon, finalMultiplier, hitCount
                     );
 
+                    ProcessBattleEvents(bs);
+
                     foreach (var mod in bs.ActiveModifiers)
                     {
                         mod.OnAfterDamage(bs, source, target, move, damageDetails);
@@ -256,6 +258,7 @@ public class RunTurnState : State<BattleSystem>
             yield return dialogBox.TypeDialog(bs.Field.Weather.StartByMoveMessage ?? bs.Field.Weather.StartMessage);
         }
 
+        ProcessBattleEvents(bs);
         yield return ShowStatusChanges(source);
         yield return ShowStatusChanges(target);
     }
@@ -311,6 +314,7 @@ public class RunTurnState : State<BattleSystem>
             yield break;
 
         source.Pokemon.OnAfterTurn(target?.Pokemon);
+        ProcessBattleEvents(bs);
         yield return ShowStatusChanges(source);
 
         // Check if source pokemon fainted after status effect
@@ -598,6 +602,15 @@ public class RunTurnState : State<BattleSystem>
             {
                 yield return dialogBox.TypeDialog($"Can't escape!");
             }
+        }
+    }
+
+    IEnumerator ProcessBattleEvents(BattleSystem bs)
+    {
+        while (bs.HasPendingEvents)
+        {
+            var evt = bs.DequeueEvent();
+            yield return evt.Execute(bs);
         }
     }
 
