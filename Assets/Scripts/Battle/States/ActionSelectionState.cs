@@ -45,16 +45,28 @@ public class ActionSelectionState : State<BattleSystem>
                 bs.StateMachine.ChangeState(MoveSelectionState.I);
                 break;
             case 1: // Bag
+                if (!bs.Context.CanUseItems)
+                {
+                    bs.DialogBox.SetDialog("Items can't be used in this battle!");
+                    return;
+                }
                 StartCoroutine(GoToInventoryState());
                 break;
-            case 2: // Switch Pokemon
+            case 2: // Switch
+                if (!bs.Context.CanSwitchPokemon)
+                {
+                    bs.DialogBox.SetDialog("You can't switch Pokémon now!");
+                    return;
+                }
                 StartCoroutine(GoToPartyState());
                 break;
             case 3: // Run
-                bs.AddBattleAction(new BattleAction()
+                if (!bs.Context.CanRun)
                 {
-                    Type = BattleActionType.Run
-                });
+                    bs.DialogBox.SetDialog("You can't run from this battle!");
+                    return;
+                }
+                bs.AddBattleAction(new BattleAction { Type = BattleActionType.Run });
                 break;
         }
     }

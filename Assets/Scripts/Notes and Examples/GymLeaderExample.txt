@@ -1,0 +1,8 @@
+Gym Leader prefab setup (Unity Inspector)
+GymLeader GameObject
+GymLeader
+├── SpriteRenderer
+├── Character
+├── PokemonParty
+├── GymLeaderController
+├── FieldOfView (disabled or zero-length)

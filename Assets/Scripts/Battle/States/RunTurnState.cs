@@ -41,6 +41,11 @@ public class RunTurnState : State<BattleSystem>
 
     IEnumerator RunTurns()
     {
+        foreach (var mod in bs.ActiveModifiers)
+        {
+            mod.OnTurnStart(bs);
+        }
+
         foreach (var action in BattleActions)
         {
             if (action.IsInvalid)
@@ -81,6 +86,11 @@ public class RunTurnState : State<BattleSystem>
         }
         bs.ClearBattleActions();
 
+        foreach (var mod in bs.ActiveModifiers)
+        {
+            mod.OnTurnEnd(bs);
+        }
+        
         if (!bs.IsBattleOver)
         {
             bs.StateMachine.ChangeState(ActionSelectionState.I);
@@ -151,8 +161,24 @@ public class RunTurnState : State<BattleSystem>
                 }
                 else
                 {
+                    float modifierMultiplier = 1f;
+
+                    foreach (var mod in bs.ActiveModifiers)
+                    {
+                        mod.OnBeforeDamage(bs, source, target, move, ref modifierMultiplier);
+                    }
+
                     float weatherModifier = bs.Field.Weather?.OnDamageModify?.Invoke(move) ?? 1f;
-                    damageDetails = target.Pokemon.ApplyDamage(move, source.Pokemon, weatherModifier, hitCount);
+                    float finalMultiplier = weatherModifier * modifierMultiplier;
+
+                    damageDetails = target.Pokemon.ApplyDamage(
+                        move, source.Pokemon, finalMultiplier, hitCount
+                    );
+
+                    foreach (var mod in bs.ActiveModifiers)
+                    {
+                        mod.OnAfterDamage(bs, source, target, move, damageDetails);
+                    }
 
                     yield return target.HUD.UpdateHP();
 
@@ -420,6 +446,7 @@ public class RunTurnState : State<BattleSystem>
         {
             if (!bs.IsTrainerBattle)
             {
+                // Wild battle
                 bs.BattleOver(true);
                 yield break;
             }

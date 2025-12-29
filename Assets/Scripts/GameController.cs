@@ -73,12 +73,14 @@ public class GameController : MonoBehaviour
     {
         BattleState.I.Trigger = trigger;
         BattleState.I.Trainer = null;
+        BattleState.I.WildPokemon = null;
         stateMachine.Push(BattleState.I);        
     }
 
     public void StartOverworldPokemonBattle(WildPokemonController wildPokemon, BattleTrigger trigger = BattleTrigger.LongGrass)
     {
         BattleState.I.WildPokemon = wildPokemon;
+        BattleState.I.Trainer = null;
         BattleState.I.Trigger = trigger;
         stateMachine.Push(BattleState.I);
     }
@@ -87,6 +89,7 @@ public class GameController : MonoBehaviour
     {
         BattleState.I.Trigger = trigger;
         BattleState.I.Trainer = trainer;
+        BattleState.I.WildPokemon = null;
         stateMachine.Push(BattleState.I); 
     }
 

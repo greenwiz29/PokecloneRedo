@@ -1782,10 +1782,13 @@ MonoBehaviour:
   wildPoolGrass:
   - pokemon: {fileID: 11400000, guid: 91b504117fe63ee7d843920729763021, type: 2}
     levelRange: {x: 7, y: 10}
-    encounterRate: 50
+    encounterRate: 40
   - pokemon: {fileID: 11400000, guid: c8beb122e19a711a18e5a4f7038dab8f, type: 2}
     levelRange: {x: 7, y: 10}
-    encounterRate: 50
+    encounterRate: 40
+  - pokemon: {fileID: 11400000, guid: 7309f5f8365944c75b33b92e50db89d1, type: 2}
+    levelRange: {x: 7, y: 10}
+    encounterRate: 20
   wildPoolInWater: []
   weather: 0
   totalChance: 100

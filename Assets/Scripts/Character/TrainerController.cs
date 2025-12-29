@@ -6,17 +6,21 @@ public class TrainerController : MonoBehaviour, IInteractable, ISavable
     [SerializeField] new string name;
     [SerializeField] Sprite sprite;
     [SerializeField] GameObject exclamation, fov;
-    [SerializeField] Dialog preBattleDialog, postBattleDialog;
-    [SerializeField] int battleUnitCount = 1;
+    [SerializeField] protected Dialog preBattleDialog, postBattleDialog;
+    [SerializeField] TrainerBattleProfile battleProfile;
+
+    public TrainerBattleProfile BattleProfile => battleProfile;
+    protected virtual bool CanTriggerFieldBattle => true;
 
     // state
     bool battleLost = false;
 
-    Character character;
+    protected Character character;
 
     public string Name { get => name; }
     public Sprite Sprite { get => sprite; }
-    public int BattleUnitCount => battleUnitCount;
+    public int BattleUnitCount => battleProfile.unitCount;
+    public bool IsBattleLost => battleLost;
 
     void Awake()
     {
@@ -28,7 +32,7 @@ public class TrainerController : MonoBehaviour, IInteractable, ISavable
         SetFovRotation(character.Animator.DefaultDirection);
     }
 
-    public IEnumerator Interact(Transform initiator)
+    public virtual IEnumerator Interact(Transform initiator)
     {
         character.LookTowards(initiator.position);
 
@@ -51,6 +55,9 @@ public class TrainerController : MonoBehaviour, IInteractable, ISavable
 
     public IEnumerator TriggerTrainerBattle(PlayerController player)
     {
+        if (!CanTriggerFieldBattle || battleLost)
+            yield break;
+
         GameController.I.stateMachine.Push(CutsceneState.I);
         exclamation.SetActive(true);
         yield return new WaitForSeconds(0.5f);
@@ -97,10 +104,10 @@ public class TrainerController : MonoBehaviour, IInteractable, ISavable
         fov.transform.localPosition += new Vector3(offsetX, offsetY);
     }
 
-    public void BattleLost()
+    public virtual void BattleLost()
     {
         battleLost = true;
-        fov.SetActive(false);
+        fov?.SetActive(false);
     }
 
     public object CaptureState()

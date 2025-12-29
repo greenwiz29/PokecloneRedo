@@ -1,10 +1,10 @@
 using GDEUtils.StateMachine;
 using UnityEngine;
 
-    /// <summary>
-    /// Make sure to set <see cref="Trigger"/> and <see cref="Trainer"/> before pushing this state!
-    /// <para><see cref="WildPokemon"/> must be set for overworld wild pokemon, but can be left null.</para>
-    /// </summary>
+/// <summary>
+/// Make sure to set <see cref="Trigger"/> and <see cref="Trainer"/> before pushing this state!
+/// <para><see cref="WildPokemon"/> must be set for overworld wild pokemon, but can be left null.</para>
+/// </summary>
 public class BattleState : State<GameController>
 {
     [SerializeField] BattleSystem battleSystem;
@@ -35,25 +35,40 @@ public class BattleState : State<GameController>
 
         var playerParty = gc.Player.GetComponent<PokemonParty>();
         var mapArea = gc.CurrentScene.GetComponent<MapArea>();
+        var context = new BattleContext
+        {
+            Trigger = Trigger,
+            PlayerParty = playerParty,
+            CanCatchPokemon = true,
+            CanRun = true,
+            CanSwitchPokemon = true,
+            CanUseItems = true,
+            StartingWeather = mapArea.Weather
+        };
         if (Trainer == null && WildPokemon == null)
         {
             // normal random encounter
             var wildPokemon = gc.CurrentScene.GetComponent<MapArea>().GetRandomWildPokemon(Trigger);
             var wildCopy = new Pokemon(wildPokemon.Base, wildPokemon.Level);
+            context.Type = BattleType.Wild;
+            context.WildPokemon = wildCopy;
 
-            battleSystem.StartBattle(playerParty, wildCopy, Trigger, mapArea.Weather);
+            battleSystem.StartBattle(context);
         }
         else if (WildPokemon == null)
         {
             // trainer battle
+            var profile = Trainer.BattleProfile;
             var trainerParty = Trainer.GetComponent<PokemonParty>();
 
-            battleSystem.StartTrainerBattle(playerParty, trainerParty, Trigger, Trainer.BattleUnitCount, mapArea.Weather);
+            battleSystem.StartTrainerBattle(Trainer, Trigger);
         }
         else
         {
             // battle with overworld pokemon
-            battleSystem.StartBattle(playerParty, WildPokemon.WildPokemon, Trigger, mapArea.Weather);
+            context.Type = BattleType.Wild;
+            context.WildPokemon = WildPokemon.WildPokemon;
+            battleSystem.StartBattle(context);
         }
 
         battleSystem.OnBattleOver += EndBattle;
@@ -81,7 +96,7 @@ public class BattleState : State<GameController>
             Trainer.BattleLost();
             Trainer = null;
         }
-        if(WildPokemon != null)
+        if (WildPokemon != null)
         {
             WildPokemon.OnBattleOver();
         }

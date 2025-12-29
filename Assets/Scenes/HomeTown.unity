@@ -1799,6 +1799,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1898861581556339008, guid: 9b8089e465f9001fe8267c1d1971eeb6, type: 3}
+      propertyPath: battleProfile
+      value: 
+      objectReference: {fileID: 11400000, guid: 111aacd8be9e7c60193520c0b4688546, type: 2}
+    - target: {fileID: 1898861581556339008, guid: 9b8089e465f9001fe8267c1d1971eeb6, type: 3}
       propertyPath: postBattleDialog.lines.Array.size
       value: 2
       objectReference: {fileID: 0}

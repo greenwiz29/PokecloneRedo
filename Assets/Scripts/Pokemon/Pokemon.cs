@@ -628,7 +628,7 @@ public class Pokemon
             return;
 
         var canSetStatus = Ability?.OnTrySetStatus?.Invoke(conditionID, this, effectSource);
-        if (canSetStatus == null || !canSetStatus.Value)
+        if (canSetStatus != null && !canSetStatus.Value)
             return;
 
         Status = StatusConditionsDB.Conditions[conditionID];
@@ -642,11 +642,11 @@ public class Pokemon
     /// </summary>
     public void SetVolatileStatus(StatusConditionID conditionID, EffectSource effectSource = EffectSource.Move)
     {
-        if (Status != null)
+        if (VolatileStatus != null)
             return;
 
         var canSetStatus = Ability?.OnTrySetVolatileStatus?.Invoke(conditionID, this, effectSource);
-        if (canSetStatus == null || !canSetStatus.Value)
+        if (canSetStatus != null && !canSetStatus.Value)
             return;
 
         VolatileStatus = StatusConditionsDB.Conditions[conditionID];

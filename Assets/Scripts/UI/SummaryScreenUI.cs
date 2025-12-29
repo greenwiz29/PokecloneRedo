@@ -146,8 +146,8 @@ public class SummaryScreenUI : SelectionUI<TextSlot>
         spDefenseText.text = "" + pokemon.SpDefense;
         speedText.text = "" + pokemon.Speed;
 
-        abilityNameText.text = pokemon.Ability.Name;
-        abilityDescText.text = pokemon.Ability.Description;
+        abilityNameText.text = pokemon.Ability?.Name;
+        abilityDescText.text = pokemon.Ability?.Description;
 
         expPointsText.text = "" + pokemon.Exp;
         nextLevelExpText.text = "" + (pokemon.CalculateBaseExpForLevel(pokemon.Level + 1) - pokemon.Exp);

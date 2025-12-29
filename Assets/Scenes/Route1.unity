@@ -20820,6 +20820,10 @@ PrefabInstance:
       value: Mysterious Old Man
       objectReference: {fileID: 0}
     - target: {fileID: 1898861581556339008, guid: 9b8089e465f9001fe8267c1d1971eeb6, type: 3}
+      propertyPath: battleProfile
+      value: 
+      objectReference: {fileID: 11400000, guid: 2dc0f418ab2056bc7a881115f20543fb, type: 2}
+    - target: {fileID: 1898861581556339008, guid: 9b8089e465f9001fe8267c1d1971eeb6, type: 3}
       propertyPath: battleUnitCount
       value: 2
       objectReference: {fileID: 0}

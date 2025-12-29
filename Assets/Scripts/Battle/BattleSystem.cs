@@ -29,11 +29,10 @@ public class BattleSystem : MonoBehaviour
     PokemonParty playerParty, trainerParty;
     Pokemon wildPokemon;
 
-    bool isTrainerBattle = false;
+    BattleContext context;
     PlayerController player;
     TrainerController trainer;
     public int EscapeAttempts { get; set; }
-    int unitCount = 1;
     int selectedUnit = 0;
     List<BattleAction> battleActions;
     List<BattleUnit> playerUnits, enemyUnits;
@@ -46,58 +45,76 @@ public class BattleSystem : MonoBehaviour
 
     BattleTrigger trigger;
     public StateMachine<BattleSystem> StateMachine { get; private set; }
+    public BattleContext Context => context;
     public BattleDialogBox DialogBox => dialogBox;
     public List<BattleUnit> PlayerUnits => playerUnits;
     public List<BattleUnit> EnemyUnits => enemyUnits;
     public bool IsBattleOver { get; private set; }
-    public bool IsTrainerBattle => isTrainerBattle;
+    public bool IsTrainerBattle => context != null && context.Type != BattleType.Wild;
     public PokemonParty PlayerParty => playerParty;
     public PokemonParty TrainerParty => trainerParty;
     public TrainerController Trainer => trainer;
     public BattleUnit SelectedUnit => playerUnits[selectedUnit];
-    public int UnitCount => unitCount;
+    public int UnitCount => context != null ? context.UnitCount : 1;
     public int ActivePlayerUnitsCount => playerUnits.Count(u => u.Pokemon != null && u.Pokemon.HP > 0);
     public int ActiveEnemyUnitsCount => enemyUnits.Count(u => u.Pokemon != null && u.Pokemon.HP > 0);
     public BattleField Field { get; private set; }
+    List<BattleModifier> activeModifiers = new();
+    public IReadOnlyList<BattleModifier> ActiveModifiers => activeModifiers;
 
-    public void StartBattle(PokemonParty playerParty, Pokemon wildPokemon, BattleTrigger trigger = BattleTrigger.LongGrass, WeatherConditionID weatherId = WeatherConditionID.none)
+    public void StartBattle(BattleContext context)
     {
-        this.trigger = trigger;
-        this.unitCount = 1;
+        this.context = context;
 
-        this.playerParty = playerParty;
-        this.wildPokemon = wildPokemon;
-        isTrainerBattle = false;
-        player = playerParty.GetComponent<PlayerController>();
+        playerParty = context.PlayerParty;
+        trainerParty = context.EnemyParty;
+        wildPokemon = context.WildPokemon;
+        trainer = context.Trainer;
 
-        StartCoroutine(SetupBattle(weatherId));
+        StartCoroutine(SetupBattle(context.StartingWeather));
     }
 
-    public void StartTrainerBattle(PokemonParty playerParty, PokemonParty trainerParty, BattleTrigger trigger = BattleTrigger.LongGrass, int unitCount = 1, WeatherConditionID weatherId = WeatherConditionID.none)
+    public void StartTrainerBattle(TrainerController trainer, BattleTrigger trigger)
     {
-        this.trigger = trigger;
-        this.unitCount = unitCount;
+        var profile = trainer.BattleProfile;
 
-        this.playerParty = playerParty;
-        this.trainerParty = trainerParty;
-        isTrainerBattle = true;
-        player = playerParty.GetComponent<PlayerController>();
-        trainer = trainerParty.GetComponent<TrainerController>();
+        context = new BattleContext
+        {
+            Type = trainer is GymLeaderController ? BattleType.GymLeader : BattleType.Trainer,
+            Trigger = trigger,
+            UnitCount = profile.unitCount,
+            PlayerParty = GameController.I.Player.GetComponent<PokemonParty>(),
+            EnemyParty = trainer.GetComponent<PokemonParty>(),
+            Trainer = trainer,
+            Profile = profile,
 
-        StartCoroutine(SetupBattle(weatherId));
+            CanUseItems = profile.allowItems,
+            CanSwitchPokemon = profile.allowSwitching,
+            CanRun = profile.allowRunning,
+            CanCatchPokemon = false,
+
+            StartingWeather = profile.forcedWeather
+        };
+        playerParty = context.PlayerParty;
+        trainerParty = context.EnemyParty;
+        wildPokemon = context.WildPokemon;
+        this.trainer = context.Trainer;
+
+        StartCoroutine(SetupBattle(context.StartingWeather));
     }
 
     public IEnumerator SetupBattle(WeatherConditionID weatherId)
     {
-        singleBattleElements.SetActive(unitCount == 1);
-        multiBattleElements.SetActive(unitCount > 1);
+        player = GameController.I.Player;
+        singleBattleElements.SetActive(UnitCount == 1);
+        multiBattleElements.SetActive(UnitCount > 1);
 
-        if (unitCount == 1)
+        if (UnitCount == 1)
         {
             playerUnits = new List<BattleUnit>() { playerUnitSingle };
             enemyUnits = new List<BattleUnit>() { enemyUnitSingle };
         }
-        else if (unitCount > 1)
+        else if (UnitCount > 1)
         {
             playerUnits = playerUnitsMulti.GetRange(0, playerUnitsMulti.Count);
             enemyUnits = enemyUnitsMulti.GetRange(0, enemyUnitsMulti.Count);
@@ -106,7 +123,7 @@ public class BattleSystem : MonoBehaviour
         StateMachine = new StateMachine<BattleSystem>(this);
         battleActions = new List<BattleAction>();
 
-        for (int i = 0; i < unitCount; i++)
+        for (int i = 0; i < UnitCount; i++)
         {
             playerUnits[i].Clear();
             enemyUnits[i].Clear();
@@ -114,7 +131,7 @@ public class BattleSystem : MonoBehaviour
 
         SetBackground(trigger);
 
-        if (!isTrainerBattle)
+        if (!IsTrainerBattle)
         {
             enemyUnits[0].gameObject.SetActive(true);
             enemyUnits[0].Setup(wildPokemon);
@@ -123,7 +140,7 @@ public class BattleSystem : MonoBehaviour
         else
         {
             // Trainer battle
-            for (int i = 0; i < unitCount; i++)
+            for (int i = 0; i < UnitCount; i++)
             {
                 playerUnits[0].gameObject.SetActive(false);
                 enemyUnits[0].gameObject.SetActive(false);
@@ -139,7 +156,7 @@ public class BattleSystem : MonoBehaviour
 
             trainerImage.gameObject.SetActive(false);
 
-            var enemyPokemon = trainerParty.GetHealthyPokemon(unitCount);
+            var enemyPokemon = trainerParty.GetHealthyPokemon(UnitCount);
             for (int i = 0; i < enemyPokemon.Count; i++)
             {
                 enemyUnits[i].gameObject.SetActive(true);
@@ -151,7 +168,7 @@ public class BattleSystem : MonoBehaviour
             playerImage.gameObject.SetActive(false);
         }
 
-        var playerPokemon = playerParty.GetHealthyPokemon(unitCount);
+        var playerPokemon = playerParty.GetHealthyPokemon(UnitCount);
         for (int i = 0; i < playerPokemon.Count; i++)
         {
             playerUnits[i].gameObject.SetActive(true);
@@ -173,7 +190,23 @@ public class BattleSystem : MonoBehaviour
         IsBattleOver = false;
         partyScreen.Init();
 
+        InitializeModifiers();
         StateMachine.ChangeState(ActionSelectionState.I);
+    }
+
+    void InitializeModifiers()
+    {
+        activeModifiers.Clear();
+
+        if (context?.Profile?.modifiers != null)
+        {
+            activeModifiers.AddRange(context.Profile.modifiers);
+        }
+
+        foreach (var mod in activeModifiers)
+        {
+            mod.OnBattleStart(this);
+        }
     }
 
     private void SetBackground(BattleTrigger trigger)
@@ -410,7 +443,7 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
 
             statChangesUI.SetStats(pokemon);
-            
+
             yield return new WaitForEndOfFrame();
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
 
@@ -421,6 +454,13 @@ public class BattleSystem : MonoBehaviour
     public void BattleOver(bool playerWon)
     {
         IsBattleOver = true;
+        context.OnBattleEnd?.Invoke(this, playerWon);
+
+        foreach (var mod in activeModifiers)
+        {
+            mod.OnBattleEnd(this, playerWon);
+        }
+
         playerParty.Pokemon.ForEach(p => p.OnBattleOver());
         partyScreen.Cleanup();
 
@@ -447,9 +487,9 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator ThrowPokeball(PokeballItem pokeballItem)
     {
         dialogBox.EnableDialogText(true);
-        if (isTrainerBattle)
+        if (!context.CanCatchPokemon)
         {
-            yield return dialogBox.TypeDialog($"You can't steal another trainer's pokemon!");
+            yield return dialogBox.TypeDialog("You can't catch Pokémon in this battle!");
             yield break;
         }
         var enemyUnit = enemyUnits[0];
