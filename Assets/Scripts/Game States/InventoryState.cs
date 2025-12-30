@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using GDEUtils.StateMachine;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class InventoryState : State<GameController>
 {

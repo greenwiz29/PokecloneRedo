@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public enum ItemCategories { RECOVERY, EVOLUTION, POKEBALLS, TMs, KEY }
+public enum ItemCategories { RECOVERY, EVOLUTION, POKEBALLS, TMs, KEY, BADGE }
 
 public class Inventory : MonoBehaviour, ISavable
 {
@@ -12,19 +12,20 @@ public class Inventory : MonoBehaviour, ISavable
     [SerializeField] List<ItemSlot> pokeballSlots;
     [SerializeField] List<ItemSlot> keyItemSlots;
     [SerializeField] List<ItemSlot> TMSlots;
+    [SerializeField] List<ItemSlot> BadgeSlots;
 
     List<List<ItemSlot>> allSlots;
 
     public static List<string> ItemCategories { get; set; } = new List<string>()
     {
-        "RECOVERY", "EVOLUTION", "POKEBALLS","TMs & HMs","KEY ITEMS"
+        "RECOVERY", "EVOLUTION", "POKEBALLS","TMs & HMs","KEY ITEMS","GYM BADGES"
     };
 
     public event Action OnUpdated;
 
     void Awake()
     {
-        allSlots = new List<List<ItemSlot>>() { recoveryItemSlots, evolutionItemSlots, pokeballSlots, TMSlots, keyItemSlots };
+        allSlots = new List<List<ItemSlot>>() { recoveryItemSlots, evolutionItemSlots, pokeballSlots, TMSlots, keyItemSlots, BadgeSlots };
     }
 
     public List<ItemSlot> GetSlotsByCategory(ItemCategories category)
@@ -119,6 +120,8 @@ public class Inventory : MonoBehaviour, ISavable
             return global::ItemCategories.POKEBALLS;
         else if (item is KeyItem)
             return global::ItemCategories.KEY;
+        else if (item is GymBadge)
+            return global::ItemCategories.BADGE;
         else
             return global::ItemCategories.TMs;
     }
@@ -131,7 +134,7 @@ public class Inventory : MonoBehaviour, ISavable
             pokeballs = pokeballSlots.Select(i => i.GetSaveData()).ToList(),
             tms = TMSlots.Select(i => i.GetSaveData()).ToList(),
             keyItems = keyItemSlots.Select(i => i.GetSaveData()).ToList(),
-
+            badges = BadgeSlots.Select(i => i.GetSaveData()).ToList(),
         };
         return saveData;
     }
@@ -144,8 +147,9 @@ public class Inventory : MonoBehaviour, ISavable
         pokeballSlots = saveData.pokeballs.Select(i => new ItemSlot(i)).ToList();
         TMSlots = saveData.tms.Select(i => new ItemSlot(i)).ToList();
         keyItemSlots = saveData.keyItems.Select(i => new ItemSlot(i)).ToList();
+        BadgeSlots = saveData.badges.Select(i => new ItemSlot(i)).ToList();
 
-        allSlots = new List<List<ItemSlot>>() { recoveryItemSlots, pokeballSlots, TMSlots, keyItemSlots };
+        allSlots = new List<List<ItemSlot>>() { recoveryItemSlots, pokeballSlots, TMSlots, keyItemSlots, BadgeSlots };
 
         OnUpdated?.Invoke();
     }
@@ -196,4 +200,5 @@ public class InventorySaveData
     public List<ItemSaveData> pokeballs;
     public List<ItemSaveData> tms;
     public List<ItemSaveData> keyItems;
+    public List<ItemSaveData> badges;
 }

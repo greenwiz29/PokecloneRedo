@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ec8051861c2e4615b91b9df679c6af01, type: 3}
-  m_Name: TM01
-  m_EditorClassIdentifier: 
-  name: TM-01
-  description: A video manual to teach a Pokemon the move Supersonic
-  icon: {fileID: 229968653, guid: 3ae12697ae504414bbf0797ea36dfddd, type: 3}
-  price: 500
-  canSell: 1
-  move: {fileID: 11400000, guid: 63920f4d270908829bef4e14b5d5d0f4, type: 2}
+  m_Name: TM_FlameBurst
+  m_EditorClassIdentifier: Assembly-CSharp::TMItem
+  name: TM-02
+  description: A video manual to teach a Pokemon the move Flame Burst
+  icon: {fileID: 0}
+  price: 100
+  canSell: 0
+  move: {fileID: 11400000, guid: 06d20e645c5864980aa09f0b74362fc1, type: 2}

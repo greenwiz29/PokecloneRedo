@@ -43,15 +43,21 @@ public class BattleState : State<GameController>
             CanRun = true,
             CanSwitchPokemon = true,
             CanUseItems = true,
-            StartingWeather = mapArea.Weather
         };
         if (Trainer == null && WildPokemon == null)
         {
             // normal random encounter
             var wildPokemon = gc.CurrentScene.GetComponent<MapArea>().GetRandomWildPokemon(Trigger);
+            if (wildPokemon == null)
+            {
+                Debug.LogError("No valid wild Pokémon generated");
+                gc.stateMachine.Pop();
+                return;
+            }
             var wildCopy = new Pokemon(wildPokemon.Base, wildPokemon.Level);
             context.Type = BattleType.Wild;
             context.WildPokemon = wildCopy;
+            context.StartingWeather = mapArea == null ? WeatherConditionID.none : mapArea.Weather;
 
             battleSystem.StartBattle(context);
         }
@@ -68,6 +74,7 @@ public class BattleState : State<GameController>
             // battle with overworld pokemon
             context.Type = BattleType.Wild;
             context.WildPokemon = WildPokemon.WildPokemon;
+            context.StartingWeather = mapArea == null ? WeatherConditionID.none : mapArea.Weather;
             battleSystem.StartBattle(context);
         }
 

@@ -3,6 +3,13 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Battles/Modifiers/Phase Shift")]
 public class PhaseShiftModifier : BattleModifier
 {
+    [Header("Trigger")]
+    [SerializeField] BattleTriggerCondition trigger;
+
+    [Header("Effects")]
+    [TextArea]
+    [SerializeField] string dialog;
+
     bool triggered = false;
 
     public override void OnAfterDamage(
@@ -13,13 +20,16 @@ public class PhaseShiftModifier : BattleModifier
         DamageDetails details
     )
     {
-        if (triggered) return;
+        if (triggered && trigger.triggerOnce)
+            return;
 
-        if (!defender.IsPlayerUnit &&
-            defender.Pokemon.HP <= defender.Pokemon.MaxHP / 2)
-        {
-            triggered = true;
-            bs.EnqueueEvent(new DialogBattleEvent("The Gym Leader gets serious!"));
-        }
+        if (!trigger.Check(defender))
+            return;
+
+        triggered = true;
+
+        bs.EnqueueEvent(
+            new DialogBattleEvent(dialog)
+        );
     }
 }

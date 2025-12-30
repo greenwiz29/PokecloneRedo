@@ -53,7 +53,12 @@ public class MapArea : MonoBehaviour
     public Pokemon GetRandomWildPokemon(BattleTrigger trigger)
     {
         var wildPool = trigger == BattleTrigger.Water ? wildPoolInWater : wildPoolGrass;
-        int roll = UnityEngine.Random.Range(0, totalChance + 1);
+
+        if (wildPool.Count == 0)
+            return null;
+            
+        var triggerTotalChance = trigger == BattleTrigger.Water ? totalChanceWater : totalChance;
+        int roll = UnityEngine.Random.Range(0, triggerTotalChance);
         var record = wildPool.First(p => roll >= p.ChanceLowerInclusive && roll < p.ChanceUpperExclusive);
         var levelRange = record.levelRange;
         var level = levelRange.y == 0 ? levelRange.x : UnityEngine.Random.Range(levelRange.x, levelRange.y + 1);

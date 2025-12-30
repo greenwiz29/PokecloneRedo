@@ -4,7 +4,7 @@ using UnityEngine;
 public class GymLeaderController : TrainerController
 {
     [Header("Gym Rewards")]
-    [SerializeField] ItemBase badge;
+    [SerializeField] GymBadge badge;
     [SerializeField] ItemBase rewardItem;
     [SerializeField] int rewardItemCount = 1;
 
@@ -21,8 +21,6 @@ public class GymLeaderController : TrainerController
 
         if (!IsBattleLost)
         {
-            questToStart?.StartQuest();
-
             yield return DialogManager.I.ShowDialog(preBattleDialog);
             GameController.I.StartTrainerBattle(this);
         }
@@ -34,14 +32,15 @@ public class GymLeaderController : TrainerController
 
     public override void BattleLost()
     {
-        base.BattleLost();
-
         if (badge != null)
             Inventory.GetPlayerInventory().AddItem(badge, 1);
 
         if (rewardItem != null)
             Inventory.GetPlayerInventory().AddItem(rewardItem, rewardItemCount);
 
+        questToStart?.StartQuest();
         questToComplete?.CompleteQuest();
+
+        base.BattleLost();
     }
 }

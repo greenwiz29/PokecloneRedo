@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69668a61c9bed5a96a14a7d2a13a14f3, type: 3}
+  m_Name: FireGymProfile
+  m_EditorClassIdentifier: Assembly-CSharp::TrainerBattleProfile
+  unitCount: 1
+  allowItems: 1
+  allowSwitching: 1
+  allowRunning: 0
+  forcedWeather: 4
+  modifiers:
+  - {fileID: 11400000, guid: fb83549d55738a2b2bd3a36d20ab2e0e, type: 2}
+  - {fileID: 11400000, guid: 65d05a2d5c39a15d491376a10a2da7fb, type: 2}
+  introDialogOverride: 
+  defeatDialogOverride: 

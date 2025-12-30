@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Battles/Trainer Battle Profile")]
@@ -14,7 +16,7 @@ public class TrainerBattleProfile : ScriptableObject
     public WeatherConditionID forcedWeather;
 
     [Header("Modifiers")]
-    public BattleModifier[] modifiers;
+    public List<BattleModifier> modifiers;
 
     [Header("Presentation")]
     public string introDialogOverride;
@@ -54,4 +56,31 @@ public abstract class BattleModifier : ScriptableObject
 
     // Called once when battle ends
     public virtual void OnBattleEnd(BattleSystem bs, bool playerWon) { }
+}
+
+[Serializable]
+public class BattleTriggerCondition
+{
+    [Range(0f, 1f)]
+    public float hpThreshold = 0.5f;
+
+    public bool checkPlayerUnit = false;
+    public bool checkEnemyUnit = true;
+
+    public bool triggerOnce = true;
+
+    public bool Check(BattleUnit unit)
+    {
+        if (unit == null || unit.Pokemon == null)
+            return false;
+
+        if (checkPlayerUnit && !unit.IsPlayerUnit)
+            return false;
+
+        if (checkEnemyUnit && unit.IsPlayerUnit)
+            return false;
+
+        float hpPercent = (float)unit.Pokemon.HP / unit.Pokemon.MaxHP;
+        return hpPercent <= hpThreshold;
+    }
 }

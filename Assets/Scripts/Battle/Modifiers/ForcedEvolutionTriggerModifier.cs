@@ -3,7 +3,13 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Battles/Modifiers/Forced Evolution Trigger")]
 public class ForcedEvolutionTriggerModifier : BattleModifier
 {
-    [SerializeField] Evolution evolution;
+    [Header("Trigger")]
+    [SerializeField] BattleTriggerCondition trigger;
+
+    [Header("Evolution")]
+    [SerializeField] Evolution forcedEvolution;
+
+    [TextArea]
     [SerializeField] string dialog;
 
     bool triggered = false;
@@ -16,8 +22,11 @@ public class ForcedEvolutionTriggerModifier : BattleModifier
         DamageDetails details
     )
     {
-        if (triggered) return;
-        if (!defender.IsPlayerUnit) return;
+        if (triggered && trigger.triggerOnce)
+            return;
+
+        if (!trigger.Check(defender))
+            return;
 
         triggered = true;
 
@@ -26,7 +35,7 @@ public class ForcedEvolutionTriggerModifier : BattleModifier
                 new EvolutionRequest
                 {
                     Unit = defender,
-                    ForcedEvolution = evolution,
+                    ForcedEvolution = forcedEvolution,
                     Reason = dialog
                 }
             )

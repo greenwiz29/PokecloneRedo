@@ -8,12 +8,12 @@ public class Ledge : MonoBehaviour
     [SerializeField] int xDir;
     [SerializeField] int yDir;
 
-	void Awake()
-	{
-		GetComponent<SpriteRenderer>().enabled = false;
-	}
-    
-	public bool TryToJump(Character character, Vector2 moveDir)
+    void Awake()
+    {
+        GetComponent<SpriteRenderer>().enabled = false;
+    }
+
+    public bool TryToJump(Character character, Vector2 moveDir)
     {
         if (moveDir.x == xDir && moveDir.y == yDir)
         {
@@ -25,13 +25,15 @@ public class Ledge : MonoBehaviour
 
     private IEnumerator Jump(Character character)
     {
-        GameController.I.PauseGame(true);
+        if (character == GameController.I.Player.Character)
+            GameController.I.PauseGame(true);
         character.Animator.IsJumping = true;
 
         var jumpDest = character.transform.position + new Vector3(xDir, yDir) * 2;
         yield return character.transform.DOJump(jumpDest, 0.3f, 1, 0.5f).WaitForCompletion();
 
         character.Animator.IsJumping = false;
-        GameController.I.PauseGame(false);
+        if (character == GameController.I.Player.Character)
+            GameController.I.PauseGame(false);
     }
 }

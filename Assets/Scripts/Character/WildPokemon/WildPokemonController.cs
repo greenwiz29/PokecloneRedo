@@ -90,6 +90,12 @@ public class WildPokemonController : OverworldEntity
     public void Init(MapArea mapArea, Vector3 spawnPoint, BattleTrigger trigger = BattleTrigger.LongGrass, Territory territory = null)
     {
         var wild = mapArea.GetRandomWildPokemon(trigger);
+        if (wild == null)
+        {
+            Debug.LogError("No valid wild Pokémon generated");
+            Destroy(gameObject);
+            return;
+        }
         WildPokemon = new Pokemon(wild.Base, wild.Level);
 
         // Set character sprites

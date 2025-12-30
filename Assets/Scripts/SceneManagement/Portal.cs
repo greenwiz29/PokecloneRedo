@@ -27,6 +27,7 @@ public class Portal : MonoBehaviour, IPlayerTriggerable
     {
         fader = FindAnyObjectByType<Fader>();
     }
+    
     IEnumerator SwitchScene()
     {
         DontDestroyOnLoad(gameObject);

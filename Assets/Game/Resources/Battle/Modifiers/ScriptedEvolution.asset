@@ -12,8 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f18c74ec233b35edb48a17b33afc8de, type: 3}
   m_Name: ScriptedEvolution
   m_EditorClassIdentifier: Assembly-CSharp::ForcedEvolutionTriggerModifier
-  evolution:
-    evolvesInto: {fileID: 0}
+  trigger:
+    hpThreshold: 0.333
+    checkPlayerUnit: 0
+    checkEnemyUnit: 1
+    triggerOnce: 1
+  forcedEvolution:
+    evolvesInto: {fileID: 11400000, guid: c168d7f267dd2412a9d22ac8b6a62010, type: 2}
     requiredLevel: -1
     requiredItem: {fileID: 0}
-  dialog: 
+  dialog: "Blaze's Pok\xE9mon is reacting to the heat!"
