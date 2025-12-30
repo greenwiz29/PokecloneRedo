@@ -24,6 +24,7 @@ public class SummaryState : State<GameController>
 
     List<Pokemon> playerParty;
 
+    int selectedPage = 0;
     GameController gc;
     public override void Enter(GameController owner)
     {
@@ -35,29 +36,31 @@ public class SummaryState : State<GameController>
         summaryScreen.ShowPage(selectedPage);
     }
 
-    int selectedPage = 0;
     public override void Execute()
     {
         if (!summaryScreen.InMoveSelection)
         {
             // Pokemon selection
             int prevIndex = SelectedPokemonIndex;
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                SelectedPokemonIndex++;
-                if (SelectedPokemonIndex >= playerParty.Count)
-                {
-                    SelectedPokemonIndex = 0;
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                SelectedPokemonIndex--;
-                if (SelectedPokemonIndex < 0)
-                {
-                    SelectedPokemonIndex = playerParty.Count - 1;
-                }
-            }
+            int index = SelectedPokemonIndex;
+            MenuSelectionMethods.HandleListSelection(ref index, playerParty.Count);
+            // if (Input.GetKeyDown(KeyCode.DownArrow))
+            // {
+            //     SelectedPokemonIndex++;
+            //     if (SelectedPokemonIndex >= playerParty.Count)
+            //     {
+            //         SelectedPokemonIndex = 0;
+            //     }
+            // }
+            // else if (Input.GetKeyDown(KeyCode.UpArrow))
+            // {
+            //     SelectedPokemonIndex--;
+            //     if (SelectedPokemonIndex < 0)
+            //     {
+            //         SelectedPokemonIndex = playerParty.Count - 1;
+            //     }
+            // }
+            SelectedPokemonIndex = index;
 
             if (SelectedPokemonIndex != prevIndex)
             {
@@ -67,14 +70,16 @@ public class SummaryState : State<GameController>
 
             // Page selection
             int prevPage = selectedPage;
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                selectedPage = Mathf.Abs(selectedPage - 1) % pageCount;
-            }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                selectedPage = (selectedPage + 1) % pageCount;
-            }
+            MenuSelectionMethods.HandleCategorySelection(ref selectedPage, pageCount);
+
+            // if (Input.GetKeyDown(KeyCode.LeftArrow))
+            // {
+            //     selectedPage = (selectedPage - 1) % pageCount;
+            // }
+            // else if (Input.GetKeyDown(KeyCode.RightArrow))
+            // {
+            //     selectedPage = (selectedPage + 1) % pageCount;
+            // }
 
             if (selectedPage != prevPage)
             {

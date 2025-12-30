@@ -41,7 +41,7 @@ public class InventoryUI : SelectionUI<TextSlot>
     {
         int prevCategory = selectedCategory;
 
-        MenuSelectionMethods.HandleCategorySelection(ref selectedCategory, Inventory.ItemCategories.Count - 1);
+        MenuSelectionMethods.HandleCategorySelection(ref selectedCategory, Inventory.ItemCategories.Count);
 
         if (selectedCategory != prevCategory)
         {
