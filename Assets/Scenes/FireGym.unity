@@ -612,7 +612,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: f688b165844afb8ee9657ee98b69078f, type: 2}
     - target: {fileID: 9154046531521133101, guid: 8a7670bcde7df545a9008d70d8bf7542, type: 3}
       propertyPath: party.Array.data[0].level
-      value: 12
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 9154046531521133101, guid: 8a7670bcde7df545a9008d70d8bf7542, type: 3}
       propertyPath: party.Array.data[1]._base
@@ -620,7 +620,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: f688b165844afb8ee9657ee98b69078f, type: 2}
     - target: {fileID: 9154046531521133101, guid: 8a7670bcde7df545a9008d70d8bf7542, type: 3}
       propertyPath: party.Array.data[1].level
-      value: 12
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 9154046531521133101, guid: 8a7670bcde7df545a9008d70d8bf7542, type: 3}
       propertyPath: party.Array.data[0].gender

@@ -8,9 +8,11 @@ public class NoHealingModifier : BattleModifier
         BattleUnit attacker,
         BattleUnit defender,
         Move move,
-        ref float damageMultiplier
+        ref float damageMultiplier,
+        BattleContext ctx
     )
     {
+        // TODO: re-evaluate what this should be doing.
         if (move.Base.DrainingPercentage > 0)
         {
             damageMultiplier = 0f;

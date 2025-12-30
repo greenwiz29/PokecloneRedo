@@ -17,7 +17,7 @@ public class MoveSelectionUI : SelectionUI<TextSlot>
     public void SetMoves(List<Move> moves)
     {
         _moves = moves;
-        selection = 0; // reset selection to prevent ArgumentOutOfRangeException
+        selection = Mathf.Min(selection, moves.Count);
 
         for (int i = 0; i < moveTexts.Count; i++)
         {

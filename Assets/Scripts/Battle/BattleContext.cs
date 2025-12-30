@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
 
 public class BattleContext
 {
+    public BattleModifierState ModifierState { get; } = new();
+
+    public IReadOnlyList<BattleModifier> Modifiers { get; set; }
     public BattleType Type;
     public BattleTrigger Trigger;
 

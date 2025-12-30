@@ -26,10 +26,10 @@ public class TrainerBattleProfile : ScriptableObject
 public abstract class BattleModifier : ScriptableObject
 {
     // Called once when battle starts
-    public virtual void OnBattleStart(BattleSystem bs) { }
+    public virtual void OnBattleStart(BattleSystem bs, BattleContext ctx) { }
 
     // Called at start of each turn (before actions resolve)
-    public virtual void OnTurnStart(BattleSystem bs) { }
+    public virtual void OnTurnStart(BattleSystem bs, BattleContext ctx) { }
 
     // Called before damage is applied
     public virtual void OnBeforeDamage(
@@ -37,7 +37,8 @@ public abstract class BattleModifier : ScriptableObject
         BattleUnit attacker,
         BattleUnit defender,
         Move move,
-        ref float damageMultiplier
+        ref float damageMultiplier, 
+        BattleContext ctx
     )
     { }
 
@@ -47,12 +48,13 @@ public abstract class BattleModifier : ScriptableObject
         BattleUnit attacker,
         BattleUnit defender,
         Move move,
-        DamageDetails details
+        DamageDetails details, 
+        BattleContext ctx
     )
     { }
 
     // Called at end of turn (after weather, status)
-    public virtual void OnTurnEnd(BattleSystem bs) { }
+    public virtual void OnTurnEnd(BattleSystem bs, BattleContext ctx) { }
 
     // Called once when battle ends
     public virtual void OnBattleEnd(BattleSystem bs, bool playerWon) { }
@@ -83,4 +85,15 @@ public class BattleTriggerCondition
         float hpPercent = (float)unit.Pokemon.HP / unit.Pokemon.MaxHP;
         return hpPercent <= hpThreshold;
     }
+}
+
+public class BattleModifierState
+{
+    private HashSet<BattleModifier> triggeredModifiers = new();
+
+    public bool HasTriggered(BattleModifier modifier)
+        => triggeredModifiers.Contains(modifier);
+
+    public void MarkTriggered(BattleModifier modifier)
+        => triggeredModifiers.Add(modifier);
 }

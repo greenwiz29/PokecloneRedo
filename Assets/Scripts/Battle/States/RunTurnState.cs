@@ -43,7 +43,7 @@ public class RunTurnState : State<BattleSystem>
     {
         foreach (var mod in bs.ActiveModifiers)
         {
-            mod.OnTurnStart(bs);
+            mod.OnTurnStart(bs, bs.Context);
         }
 
         foreach (var action in BattleActions)
@@ -88,7 +88,7 @@ public class RunTurnState : State<BattleSystem>
 
         foreach (var mod in bs.ActiveModifiers)
         {
-            mod.OnTurnEnd(bs);
+            mod.OnTurnEnd(bs, bs.Context);
         }
 
         if (!bs.IsBattleOver)
@@ -165,7 +165,7 @@ public class RunTurnState : State<BattleSystem>
 
                     foreach (var mod in bs.ActiveModifiers)
                     {
-                        mod.OnBeforeDamage(bs, source, target, move, ref modifierMultiplier);
+                        mod.OnBeforeDamage(bs, source, target, move, ref modifierMultiplier, bs.Context);
                     }
 
                     float weatherModifier = bs.Field.Weather?.OnDamageModify?.Invoke(move) ?? 1f;
@@ -175,11 +175,11 @@ public class RunTurnState : State<BattleSystem>
                         move, source.Pokemon, finalMultiplier, hitCount
                     );
 
-                    ProcessBattleEvents(bs);
+                    yield return ProcessBattleEvents(bs);
 
                     foreach (var mod in bs.ActiveModifiers)
                     {
-                        mod.OnAfterDamage(bs, source, target, move, damageDetails);
+                        mod.OnAfterDamage(bs, source, target, move, damageDetails, bs.Context);
                     }
 
                     yield return target.HUD.UpdateHP();
@@ -258,7 +258,7 @@ public class RunTurnState : State<BattleSystem>
             yield return dialogBox.TypeDialog(bs.Field.Weather.StartByMoveMessage ?? bs.Field.Weather.StartMessage);
         }
 
-        ProcessBattleEvents(bs);
+        yield return ProcessBattleEvents(bs);
         yield return ShowStatusChanges(source);
         yield return ShowStatusChanges(target);
     }
@@ -314,7 +314,7 @@ public class RunTurnState : State<BattleSystem>
             yield break;
 
         source.Pokemon.OnAfterTurn(target?.Pokemon);
-        ProcessBattleEvents(bs);
+        yield return ProcessBattleEvents(bs);
         yield return ShowStatusChanges(source);
 
         // Check if source pokemon fainted after status effect

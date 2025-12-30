@@ -18,5 +18,6 @@ public class EvolutionRequestEvent : BattleEvent
 
         // 🔑 THIS is the important line:
         yield return EvolutionState.I.Evolve(request.Unit.Pokemon, request.ForcedEvolution, null);
+        request.Unit.Setup(request.Unit.Pokemon);
     }
 }

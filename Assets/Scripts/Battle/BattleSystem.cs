@@ -68,7 +68,7 @@ public class BattleSystem : MonoBehaviour
     {
         eventQueue.Enqueue(evt);
     }
-    
+
     public BattleEvent DequeueEvent()
     {
         return eventQueue.Dequeue();
@@ -217,7 +217,7 @@ public class BattleSystem : MonoBehaviour
 
         foreach (var mod in activeModifiers)
         {
-            mod.OnBattleStart(this);
+            mod.OnBattleStart(this, context);
         }
     }
 

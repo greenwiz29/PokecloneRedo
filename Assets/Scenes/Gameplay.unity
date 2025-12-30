@@ -311,6 +311,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FireGym
       objectReference: {fileID: 0}
+    - target: {fileID: 951323634119459266, guid: b122500589cc8711fab8f196ef780041, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2412965814253058188, guid: b122500589cc8711fab8f196ef780041, type: 3}
       propertyPath: m_LocalPosition.x
       value: -28.60448

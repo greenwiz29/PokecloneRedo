@@ -10,23 +10,22 @@ public class PhaseShiftModifier : BattleModifier
     [TextArea]
     [SerializeField] string dialog;
 
-    bool triggered = false;
-
     public override void OnAfterDamage(
         BattleSystem bs,
         BattleUnit attacker,
         BattleUnit defender,
         Move move,
-        DamageDetails details
+        DamageDetails details,
+        BattleContext ctx
     )
     {
-        if (triggered && trigger.triggerOnce)
+        if (trigger.triggerOnce && ctx.ModifierState.HasTriggered(this))
             return;
 
         if (!trigger.Check(defender))
             return;
 
-        triggered = true;
+        ctx.ModifierState.MarkTriggered(this);
 
         bs.EnqueueEvent(
             new DialogBattleEvent(dialog)

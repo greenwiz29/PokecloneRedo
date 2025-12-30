@@ -32,15 +32,30 @@ public class GymLeaderController : TrainerController
 
     public override void BattleLost()
     {
-        if (badge != null)
-            Inventory.GetPlayerInventory().AddItem(badge, 1);
-
-        if (rewardItem != null)
-            Inventory.GetPlayerInventory().AddItem(rewardItem, rewardItemCount);
-
+        StartCoroutine(GiveRewardItems());
+        
         questToStart?.StartQuest();
         questToComplete?.CompleteQuest();
 
         base.BattleLost();
+    }
+
+    IEnumerator GiveRewardItems()
+    {
+        yield return DialogManager.I.ShowDialog(postBattleDialog);
+
+        if (badge != null)
+        {
+            Inventory.GetPlayerInventory().AddItem(badge, 1);
+            yield return DialogManager.I.ShowDialogText($"You received {badge.Name} X{1}");
+        }
+
+        if (rewardItem != null)
+        {
+            yield return DialogManager.I.ShowDialogText($"Take this as well.");
+
+            Inventory.GetPlayerInventory().AddItem(rewardItem, rewardItemCount);
+            yield return DialogManager.I.ShowDialogText($"You received {rewardItem.Name} X{rewardItemCount}");
+        }
     }
 }
