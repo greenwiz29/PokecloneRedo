@@ -15,6 +15,7 @@ public class SceneDetails : MonoBehaviour
     public bool IsLoaded { get; private set; }
     List<SavableEntity> savableEntities;
     public MapArea MapArea { get; private set; }
+    public List<SceneDetails> ConnectedScenes => connectedScenes;
 
     void Awake()
     {
@@ -27,6 +28,8 @@ public class SceneDetails : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            Debug.Log($"Entered SceneDetails trigger: {name}");
+
             LoadScene();
             GameController.I.SetCurrentScene(this);
 
@@ -55,6 +58,15 @@ public class SceneDetails : MonoBehaviour
         }
     }
 
+    public SceneEntryPoint GetEntryPoint(string id)
+    {
+        return FindObjectsByType<SceneEntryPoint>(FindObjectsSortMode.None)
+            .FirstOrDefault(e =>
+                e.EntryId == id &&
+                e.gameObject.scene.name == SceneName
+            );
+    }
+
     public void LoadScene()
     {
         if (!IsLoaded)
@@ -75,7 +87,8 @@ public class SceneDetails : MonoBehaviour
         if (IsLoaded)
         {
             // Save state for all SavableEntity objects
-            SavingSystem.i.CaptureEntityStates(savableEntities);
+            var entities = GetSavableEntitiesInScene();
+            SavingSystem.i.CaptureEntityStates(entities);
 
             // Unload scene
             SceneManager.UnloadSceneAsync(gameObject.name);

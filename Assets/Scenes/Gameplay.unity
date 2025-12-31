@@ -143,6 +143,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Town2
       objectReference: {fileID: 0}
+    - target: {fileID: 1019974297816365400, guid: b122500589cc8711fab8f196ef780041, type: 3}
+      propertyPath: sceneName
+      value: Town2
+      objectReference: {fileID: 0}
     - target: {fileID: 2412965814253058188, guid: b122500589cc8711fab8f196ef780041, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9
@@ -182,6 +186,22 @@ PrefabInstance:
     - target: {fileID: 2412965814253058188, guid: b122500589cc8711fab8f196ef780041, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938492721077518469, guid: b122500589cc8711fab8f196ef780041, type: 3}
+      propertyPath: m_Size.x
+      value: 33.15489
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938492721077518469, guid: b122500589cc8711fab8f196ef780041, type: 3}
+      propertyPath: m_Size.y
+      value: 11.230228
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938492721077518469, guid: b122500589cc8711fab8f196ef780041, type: 3}
+      propertyPath: m_Offset.x
+      value: 3.5123582
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938492721077518469, guid: b122500589cc8711fab8f196ef780041, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.66095924
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -226,6 +246,10 @@ PrefabInstance:
     - target: {fileID: 951323634119459266, guid: b122500589cc8711fab8f196ef780041, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019974297816365400, guid: b122500589cc8711fab8f196ef780041, type: 3}
+      propertyPath: sceneName
+      value: Route1
       objectReference: {fileID: 0}
     - target: {fileID: 2412965814253058188, guid: b122500589cc8711fab8f196ef780041, type: 3}
       propertyPath: m_LocalPosition.x
@@ -315,6 +339,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1019974297816365400, guid: b122500589cc8711fab8f196ef780041, type: 3}
+      propertyPath: sceneName
+      value: FireGym
+      objectReference: {fileID: 0}
     - target: {fileID: 2412965814253058188, guid: b122500589cc8711fab8f196ef780041, type: 3}
       propertyPath: m_LocalPosition.x
       value: -28.60448
@@ -354,6 +382,22 @@ PrefabInstance:
     - target: {fileID: 2412965814253058188, guid: b122500589cc8711fab8f196ef780041, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938492721077518469, guid: b122500589cc8711fab8f196ef780041, type: 3}
+      propertyPath: m_Size.x
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938492721077518469, guid: b122500589cc8711fab8f196ef780041, type: 3}
+      propertyPath: m_Size.y
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938492721077518469, guid: b122500589cc8711fab8f196ef780041, type: 3}
+      propertyPath: m_Offset.x
+      value: -33.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938492721077518469, guid: b122500589cc8711fab8f196ef780041, type: 3}
+      propertyPath: m_Offset.y
+      value: -6.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1851,6 +1895,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ProfLab
       objectReference: {fileID: 0}
+    - target: {fileID: 1019974297816365400, guid: b122500589cc8711fab8f196ef780041, type: 3}
+      propertyPath: sceneName
+      value: ProfLab
+      objectReference: {fileID: 0}
     - target: {fileID: 2412965814253058188, guid: b122500589cc8711fab8f196ef780041, type: 3}
       propertyPath: m_LocalPosition.x
       value: -63.5
@@ -1987,6 +2035,10 @@ PrefabInstance:
       objectReference: {fileID: 1447425508}
     - target: {fileID: 951323634119459266, guid: b122500589cc8711fab8f196ef780041, type: 3}
       propertyPath: m_Name
+      value: HomeTown
+      objectReference: {fileID: 0}
+    - target: {fileID: 1019974297816365400, guid: b122500589cc8711fab8f196ef780041, type: 3}
+      propertyPath: sceneName
       value: HomeTown
       objectReference: {fileID: 0}
     - target: {fileID: 2412965814253058188, guid: b122500589cc8711fab8f196ef780041, type: 3}

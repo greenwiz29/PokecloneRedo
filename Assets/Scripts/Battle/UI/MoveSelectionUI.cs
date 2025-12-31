@@ -17,7 +17,7 @@ public class MoveSelectionUI : SelectionUI<TextSlot>
     public void SetMoves(List<Move> moves)
     {
         _moves = moves;
-        selection = Mathf.Min(selection, moves.Count);
+        selection = Mathf.Min(selection, moves.Count -1);
 
         for (int i = 0; i < moveTexts.Count; i++)
         {

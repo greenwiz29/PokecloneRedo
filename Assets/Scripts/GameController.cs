@@ -64,7 +64,7 @@ public class GameController : MonoBehaviour
     public void OnEnterTrainerView(TrainerController trainer)
     {
         if (trainer != null)
-        {            
+        {
             StartCoroutine(trainer.TriggerTrainerBattle(playerController));
         }
     }
@@ -74,7 +74,7 @@ public class GameController : MonoBehaviour
         BattleState.I.Trigger = trigger;
         BattleState.I.Trainer = null;
         BattleState.I.WildPokemon = null;
-        stateMachine.Push(BattleState.I);        
+        stateMachine.Push(BattleState.I);
     }
 
     public void StartOverworldPokemonBattle(WildPokemonController wildPokemon, BattleTrigger trigger = BattleTrigger.LongGrass)
@@ -90,7 +90,7 @@ public class GameController : MonoBehaviour
         BattleState.I.Trigger = trigger;
         BattleState.I.Trainer = trainer;
         BattleState.I.WildPokemon = null;
-        stateMachine.Push(BattleState.I); 
+        stateMachine.Push(BattleState.I);
     }
 
     // Update is called once per frame
@@ -103,6 +103,30 @@ public class GameController : MonoBehaviour
     {
         PreviousScene = CurrentScene;
         CurrentScene = currScene;
+    }
+    
+    public void TransitionToScene(SceneDetails newScene)
+    {
+        var prevScene = CurrentScene;
+        PreviousScene = prevScene;
+        CurrentScene = newScene;
+
+        newScene.LoadScene();
+
+        foreach (var scene in newScene.ConnectedScenes)
+            scene.LoadScene();
+
+        if (prevScene != null)
+        {
+            foreach (var scene in prevScene.ConnectedScenes)
+            {
+                if (!newScene.ConnectedScenes.Contains(scene))
+                    scene.UnloadScene();
+            }
+
+            if (!newScene.ConnectedScenes.Contains(prevScene))
+                prevScene.UnloadScene();
+        }
     }
 
     public IEnumerator MoveCamera(Vector2 offset, bool waitForFadeOut = false)
@@ -119,11 +143,11 @@ public class GameController : MonoBehaviour
 #if UNITY_EDITOR
     private void OnGUI()
     {
-		var style = new GUIStyle
-		{
-			fontSize = 25
-		};
-		style.normal.textColor = Color.black;
+        var style = new GUIStyle
+        {
+            fontSize = 25
+        };
+        style.normal.textColor = Color.black;
 
         GUILayout.Label(" State Stack", style);
         foreach (var s in stateMachine.StateStack)

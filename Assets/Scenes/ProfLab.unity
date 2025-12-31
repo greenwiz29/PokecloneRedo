@@ -127,13 +127,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4065534957506929375, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+      propertyPath: entryId
+      value: ExitDoor
+      objectReference: {fileID: 0}
     - target: {fileID: 5497746749197770612, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
       propertyPath: m_LocalPosition.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6052022202006921642, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+      propertyPath: m_Name
+      value: Entry_ExitDoor
+      objectReference: {fileID: 0}
     - target: {fileID: 6228143142054609656, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
       propertyPath: m_Name
-      value: LocationPortal
+      value: Portal_ProfLab_to_HomeTown_ExitDoor
       objectReference: {fileID: 0}
     - target: {fileID: 7297370954029422828, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
       propertyPath: m_LocalPosition.x
@@ -175,11 +183,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7607780639261353300, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+      propertyPath: entryPoint
+      value: 
+      objectReference: {fileID: 773391567}
+    - target: {fileID: 7607780639261353300, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+      propertyPath: targetScene
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7607780639261353300, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+      propertyPath: entryPointId
+      value: ExitDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 7607780639261353300, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+      propertyPath: targetSceneName
+      value: HomeTown
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 4065534957506929375, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6052022202006921642, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 773391569}
   m_SourcePrefab: {fileID: 100100000, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+--- !u!4 &773391567 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5497746749197770612, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+  m_PrefabInstance: {fileID: 773391566}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &773391568 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6052022202006921642, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+  m_PrefabInstance: {fileID: 773391566}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &773391569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 773391568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 740ec66ff40f51d189a530ee0fa9b4db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneEntryPoint
+  entryId: ExitDoor
 --- !u!1001 &1225516661
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -468,10 +519,13 @@ MonoBehaviour:
   pokemonToGive:
   - _base: {fileID: 11400000, guid: 4c6feca4ca1cc0de3b24d335088590bd, type: 2}
     level: 5
+    gender: 0
   - _base: {fileID: 11400000, guid: c177616e5aca466f1ba788b88f6c9756, type: 2}
     level: 5
+    gender: 0
   - _base: {fileID: 11400000, guid: 8e69715726ca125c790fac7f23341fdb, type: 2}
     level: 5
+    gender: 0
   dialog:
     lines:
     - You'll need a Pokemon of your own before you can go walking through the long

@@ -127,9 +127,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4065534957506929375, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+      propertyPath: entryId
+      value: FrontDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 6052022202006921642, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+      propertyPath: m_Name
+      value: Entry_FrontDoor
+      objectReference: {fileID: 0}
     - target: {fileID: 6228143142054609656, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
       propertyPath: m_Name
-      value: LocationPortal (1)
+      value: Portal_Town2_to_FireGym_FrontDoor
       objectReference: {fileID: 0}
     - target: {fileID: 7297370954029422828, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
       propertyPath: m_LocalPosition.x
@@ -172,6 +180,22 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7607780639261353300, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+      propertyPath: entryPoint
+      value: 
+      objectReference: {fileID: 122774044}
+    - target: {fileID: 7607780639261353300, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+      propertyPath: targetScene
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7607780639261353300, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+      propertyPath: entryPointId
+      value: FrontDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 7607780639261353300, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+      propertyPath: targetSceneName
+      value: FireGym
+      objectReference: {fileID: 0}
+    - target: {fileID: 7607780639261353300, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
       propertyPath: destinationPortal
       value: 1
       objectReference: {fileID: 0}
@@ -180,6 +204,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+--- !u!4 &122774044 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5497746749197770612, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+  m_PrefabInstance: {fileID: 122774043}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &465235581
 GameObject:
   m_ObjectHideFlags: 0

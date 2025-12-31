@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2412965814253058188}
   - component: {fileID: 3938492721077518469}
   - component: {fileID: 246576170840947137}
+  - component: {fileID: 1019974297816365400}
   m_Layer: 0
   m_Name: SceneTrigger
   m_TagString: Untagged
@@ -91,3 +92,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8b44710f1879bc75b0d678844eee572, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  connectedScenes: []
+--- !u!114 &1019974297816365400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 951323634119459266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e6524aac48a06eda8f51d6eceef536e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'

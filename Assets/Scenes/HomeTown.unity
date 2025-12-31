@@ -1729,9 +1729,17 @@ PrefabInstance:
       propertyPath: m_Size.x
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4065534957506929375, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+      propertyPath: entryId
+      value: FrontDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 6052022202006921642, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+      propertyPath: m_Name
+      value: Entry_ExitDoor
+      objectReference: {fileID: 0}
     - target: {fileID: 6228143142054609656, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
       propertyPath: m_Name
-      value: LocationPortal
+      value: Portal_HomeTown_to_ProfLab_ExitDoor
       objectReference: {fileID: 0}
     - target: {fileID: 7297370954029422828, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1773,11 +1781,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7607780639261353300, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+      propertyPath: entryPoint
+      value: 
+      objectReference: {fileID: 1163142594}
+    - target: {fileID: 7607780639261353300, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+      propertyPath: targetScene
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7607780639261353300, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+      propertyPath: entryPointId
+      value: ExitDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 7607780639261353300, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+      propertyPath: targetSceneName
+      value: ProfLab
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 4065534957506929375, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6052022202006921642, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1163142596}
   m_SourcePrefab: {fileID: 100100000, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+--- !u!4 &1163142594 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5497746749197770612, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+  m_PrefabInstance: {fileID: 1163142593}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1163142595 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6052022202006921642, guid: cacecae15ba23068383761e2da3b1b50, type: 3}
+  m_PrefabInstance: {fileID: 1163142593}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1163142596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163142595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 740ec66ff40f51d189a530ee0fa9b4db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneEntryPoint
+  entryId: ExitDoor
 --- !u!1001 &1312963380
 PrefabInstance:
   m_ObjectHideFlags: 0

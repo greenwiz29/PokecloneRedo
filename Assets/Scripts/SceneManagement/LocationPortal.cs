@@ -1,42 +1,116 @@
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using System;
+
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class LocationPortal : MonoBehaviour, IPlayerTriggerable
 {
-    [SerializeField] DestinationID destinationPortal;
-    [SerializeField] Transform spawnPoint;
+    public enum PortalDirection { TwoWay, OneWay }
 
-    public Transform SpawnPoint => spawnPoint;
+    [SerializeField] string returnEntryPointId = "Return";
 
-	public bool TriggerRepeatedly => false;
+    [Header("Portal Rules")]
+    [SerializeField] PortalDirection direction = PortalDirection.TwoWay;
+    [SerializeField] PortalLock lockCondition;
 
-	PlayerController player;
+    [Header("Destination")]
+    [SerializeField] string targetSceneName;
+    [SerializeField] string entryPointId;
+    public bool TriggerRepeatedly => false;
+    public string TargetSceneName => targetSceneName;
+    public string EntryPointId => entryPointId;
+    public string ReturnEntryPointId => returnEntryPointId;
+    SceneDetails TargetScene =>
+        FindObjectsByType<SceneDetails>(FindObjectsSortMode.None)
+            .FirstOrDefault(s => s.SceneName == targetSceneName);
+#if UNITY_EDITOR
+    public void SetEditorValues(string sceneName, string entryId)
+    {
+        targetSceneName = sceneName;
+        entryPointId = entryId;
+    }
+#endif
+
+    Fader fader;
+    SceneEntryPoint entry;
+    Vector2 entryPoint;
+
+    void Awake()
+    {
+        fader = FindAnyObjectByType<Fader>();
+
+    }
 
     public void OnPlayerTriggered(PlayerController player)
     {
-        this.player = player;
-        StartCoroutine(Teleport());
+        StartCoroutine(Teleport(player));
     }
 
-    Fader fader;
+    IEnumerator Teleport(PlayerController player)
+    {
+        if (lockCondition != null && !lockCondition.IsUnlocked())
+        {
+            yield return DialogManager.I.ShowDialogText(lockCondition.LockedMessage);
+            yield break;
+        }
 
-    void Start()
-    {
-        fader = FindAnyObjectByType<Fader>();
-    }
-    IEnumerator Teleport()
-    {
         GameController.I.PauseGame(true);
         yield return fader.FadeIn(0.5f);
 
-        var destPortal = FindObjectsByType<LocationPortal>(FindObjectsSortMode.None).First(x => x != this && x.destinationPortal == destinationPortal);
-        player.Character.SetPositionAndSnapToTile(destPortal.SpawnPoint.position);
+        var scene = TargetScene;
+        if (scene == null)
+        {
+            Debug.LogError($"Target scene '{targetSceneName}' not found or not loaded.");
+            yield break;
+        }
+
+        GameController.I.TransitionToScene(scene);
+
+        entry = scene.GetEntryPoint(entryPointId);
+        if (entry == null)
+        {
+            Debug.LogError($"Entry point '{entryPointId}' not found in scene '{targetSceneName}'.");
+            yield break;
+        }
+
+        // Move player
+        entryPoint = entry.gameObject.transform.position;
+        player.Character.SetPositionAndSnapToTile(entryPoint);
 
         yield return fader.FadeOut(0.5f);
         GameController.I.PauseGame(false);
     }
 
-    public enum DestinationID { A, B, C, D, E }
+#if UNITY_EDITOR
+    void OnDrawGizmos()
+    {
+        if (entry == null || TargetScene == null)
+            return;
+
+        Gizmos.color = direction == PortalDirection.OneWay
+            ? Color.red
+            : Color.green;
+
+        Gizmos.DrawLine(transform.position, entryPoint);
+
+        // Arrow head
+        Vector3 dir = ((Vector3)entryPoint - transform.position).normalized;
+        Vector3 right = Quaternion.Euler(0, 0, 25) * -dir;
+        Vector3 left = Quaternion.Euler(0, 0, -25) * -dir;
+
+        Gizmos.DrawLine(entryPoint, (Vector3)entryPoint + right * 0.5f);
+        Gizmos.DrawLine(entryPoint, (Vector3)entryPoint + left * 0.5f);
+
+        Handles.Label(
+            (transform.position + (Vector3)entryPoint) / 2,
+            TargetScene.SceneName
+        );
+    }
+#endif
+
 }

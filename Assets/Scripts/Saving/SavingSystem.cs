@@ -20,6 +20,9 @@ public class SavingSystem : MonoBehaviour
     {
         foreach (SavableEntity savable in savableEntities)
         {
+            if (savable == null)
+                continue;
+
             gameState[savable.UniqueId] = savable.CaptureState();
         }
     }
