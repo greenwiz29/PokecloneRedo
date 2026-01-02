@@ -22,6 +22,10 @@ public class CameraController : MonoBehaviour
         if (currentBounds != null)
         {
             desired = ClampToBounds(desired, currentBounds.Bounds);
+            float pixelsPerUnit = 16f;
+
+            desired.x = Mathf.Round(desired.x * pixelsPerUnit) / pixelsPerUnit;
+            desired.y = Mathf.Round(desired.y * pixelsPerUnit) / pixelsPerUnit;
         }
 
         transform.position = desired;

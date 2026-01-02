@@ -2048,7 +2048,7 @@ PrefabInstance:
     - target: {fileID: 246576170840947137, guid: b122500589cc8711fab8f196ef780041, type: 3}
       propertyPath: backgroundTile
       value: 
-      objectReference: {fileID: 11400000, guid: 19fac07105815f4e397a5d845e885f34, type: 2}
+      objectReference: {fileID: 11400000, guid: 9e0673d45111f9d0dbb7ea748267a8e1, type: 2}
     - target: {fileID: 246576170840947137, guid: b122500589cc8711fab8f196ef780041, type: 3}
       propertyPath: connectedScenes.Array.size
       value: 2
