@@ -23,8 +23,13 @@ public class TrainerBattleProfile : ScriptableObject
     public string defeatDialogOverride;
 }
 
-public abstract class BattleModifier : ScriptableObject
+public abstract class BattleModifier : ScriptableObject, IBattleModifierInfo
 {
+    [SerializeField] string id;
+    public string Id => id;
+
+    public virtual bool IsActive => true;
+
     // Called once when battle starts
     public virtual void OnBattleStart(BattleSystem bs, BattleContext ctx) { }
 
@@ -37,7 +42,7 @@ public abstract class BattleModifier : ScriptableObject
         BattleUnit attacker,
         BattleUnit defender,
         Move move,
-        ref float damageMultiplier, 
+        ref float damageMultiplier,
         BattleContext ctx
     )
     { }
@@ -48,7 +53,7 @@ public abstract class BattleModifier : ScriptableObject
         BattleUnit attacker,
         BattleUnit defender,
         Move move,
-        DamageDetails details, 
+        DamageDetails details,
         BattleContext ctx
     )
     { }

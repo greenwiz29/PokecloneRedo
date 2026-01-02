@@ -398,6 +398,11 @@ public class Pokemon
         return Mathf.Clamp01(normalizedExp);
     }
 
+    public float GetNormalizedHp()
+    {
+        return (float)HP/MaxHP;
+    }
+
     /// <summary>
     /// Also returns a <see cref="StatChanges"/> object for displaying stat changes,
     /// and any new moves that can be learned.

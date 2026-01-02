@@ -16,3 +16,19 @@ BattleWeatherChangeEvent
 BattlePokemonSwapEvent
 BattleMusicChangeEvent
 BattleScreenGlitchEvent (😉 AR gym)
+
+Suggested next gym AI rules (high-value)
+
+If you want to keep going, these give the biggest payoff:
+
+Prefer status moves early
+
+Avoid ineffective moves
+
+Force-switch on bad matchups
+
+Bait player into weather traps
+
+Save ace Pokémon for last
+
+Trigger forced evolution intelligently

@@ -145,7 +145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1923638512373716255, guid: 720f856de012cb76d85018362403bf3f, type: 3}
       propertyPath: m_IsTrigger
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5235610562248351913, guid: 720f856de012cb76d85018362403bf3f, type: 3}
       propertyPath: m_Name
@@ -309,6 +309,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 837ad983ef0938c2086b09a359a6a5dc, type: 3}
     - target: {fileID: 7252677665872642819, guid: 8a7670bcde7df545a9008d70d8bf7542, type: 3}
+      propertyPath: aiProfile
+      value: 
+      objectReference: {fileID: 11400000, guid: b844b451098c797aab5ebeb90da07fc2, type: 2}
+    - target: {fileID: 7252677665872642819, guid: 8a7670bcde7df545a9008d70d8bf7542, type: 3}
       propertyPath: rewardItem
       value: 
       objectReference: {fileID: 11400000, guid: a47d07809741c57bbba54108677d6d48, type: 2}
@@ -448,7 +452,7 @@ TilemapRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1055189843
   m_SortingLayer: 1
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -1652,7 +1656,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 882407097
-  m_SortingLayer: 4
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -6225,7 +6229,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 817227589
-  m_SortingLayer: 3
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -6933,7 +6937,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 465235583}
+  - {fileID: 350646152}
   - {fileID: 7244657474684804204}
   - {fileID: 7297370953984260855}
   - {fileID: 793714922}
-  - {fileID: 350646152}

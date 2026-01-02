@@ -12,4 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2aecd892f14a5933a7796ba7cd23875, type: 3}
   m_Name: FireGymPhaseShift
   m_EditorClassIdentifier: Assembly-CSharp::PhaseShiftModifier
+  id: FireGymPhase2
+  trigger:
+    hpThreshold: 0.5
+    checkPlayerUnit: 0
+    checkEnemyUnit: 1
+    triggerOnce: 1
   dialog: Blaze's expression hardens...

@@ -212,7 +212,8 @@ public class StatusConditionsDB
                         new(){ stat = Stat.Accuracy, boost = -1},
                         new(){ stat = Stat.Evasion, boost = -1}
                     },
-                    p);
+                    p,
+                    hideMessages: true);
 
                     if (p.VolatileStatusTime <= 0)
                     {

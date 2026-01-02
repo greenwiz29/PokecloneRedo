@@ -242,20 +242,13 @@ public class BattleSystem : MonoBehaviour
         action.User = SelectedUnit;
         battleActions.Add(action);
 
-        if (battleActions.Count == ActivePlayerUnitsCount)
+        if (battleActions.Count >= ActivePlayerUnitsCount)
         {
             // Add enemy actions
             foreach (var enemy in enemyUnits)
             {
-                var target = playerUnits[UnityEngine.Random.Range(0, ActivePlayerUnitsCount)];
-                battleActions.Add(new BattleAction()
-                {
-                    Type = BattleActionType.Move,
-                    SelectedMove = enemy.Pokemon.GetRandomMove(),
-                    User = enemy,
-                    Target = target,
-                    Targets = new List<BattleUnit> { target }
-                });
+                var enemyAction = ChooseEnemyAction(enemy);
+                battleActions.Add(enemyAction);
             }
 
             // Sort actions by priority and speed
@@ -273,6 +266,85 @@ public class BattleSystem : MonoBehaviour
             // Select another action
             StateMachine.ChangeState(ActionSelectionState.I);
         }
+    }
+
+    BattleAction ChooseEnemyAction(BattleUnit enemy)
+    {
+        var possibleActions = GenerateEnemyActions(enemy);
+
+        var trainer = Trainer;
+        var profile = trainer != null ? trainer.AIProfile : null;
+
+        // Wild Pokémon or no AI profile → random (old behavior)
+        if (profile == null || profile.rules.Count == 0)
+        {
+            return possibleActions[UnityEngine.Random.Range(0, possibleActions.Count)];
+        }
+
+        int bestScore = int.MinValue;
+        BattleAction bestAction = possibleActions[0];
+
+        foreach (var action in possibleActions)
+        {
+            int score = 0;
+
+            foreach (var rule in profile.rules)
+            {
+                score += rule.ScoreAction(this, enemy, action);
+            }
+
+            // Small randomness so AI isn't robotic
+            score += UnityEngine.Random.Range(0, 5);
+
+            if (score > bestScore)
+            {
+                bestScore = score;
+                bestAction = action;
+            }
+        }
+
+        Debug.Log(
+            $"[AI] {enemy.Pokemon.Base.Name} chose {bestAction.SelectedMove.Base.Name} → {bestAction.Target.Pokemon.Base.Name} (score {bestScore})"
+        );
+
+        return bestAction;
+    }
+
+    List<BattleAction> GenerateEnemyActions(BattleUnit enemy)
+    {
+        var actions = new List<BattleAction>();
+
+        foreach (var move in enemy.Pokemon.Moves)
+        {
+            foreach (var target in playerUnits.Take(ActivePlayerUnitsCount))
+            {
+                actions.Add(new BattleAction()
+                {
+                    Type = BattleActionType.Move,
+                    SelectedMove = move,
+                    User = enemy,
+                    Target = target,
+                    Targets = new List<BattleUnit> { target }
+                });
+            }
+        }
+
+        if (actions.Count == 0)
+        {
+            // If move == null, RunTurnState will replace it with Struggle
+
+            var target = playerUnits.Take(ActivePlayerUnitsCount).FirstOrDefault();
+            actions.Add(new BattleAction()
+            {
+                Type = BattleActionType.Move,
+                SelectedMove = null,
+                User = enemy,
+                Target = target,
+                Targets = new List<BattleUnit> { target }
+            });
+        }
+
+        return actions;
     }
 
     /// <summary>
@@ -467,6 +539,12 @@ public class BattleSystem : MonoBehaviour
     {
         IsBattleOver = true;
         context.OnBattleEnd?.Invoke(this, playerWon);
+        if (Trainer != null)
+        {
+            string dialog = Trainer.BattleLostDialog;
+            if (!string.IsNullOrEmpty(dialog))
+                StartCoroutine(dialogBox.TypeDialog(dialog));
+        }
 
         foreach (var mod in activeModifiers)
         {
@@ -632,6 +710,16 @@ public class BattleSystem : MonoBehaviour
         }
 
         return shakeCount;
+    }
+
+    public bool HasModifier(string id)
+    {
+        return activeModifiers.Any(m => m.Id == id && m.IsActive);
+    }
+
+    public T GetModifier<T>() where T : BattleModifier
+    {
+        return activeModifiers.OfType<T>().FirstOrDefault(m => m.IsActive);
     }
 
 #if UNITY_EDITOR

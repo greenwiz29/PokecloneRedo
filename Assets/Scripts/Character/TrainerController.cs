@@ -6,7 +6,12 @@ public class TrainerController : MonoBehaviour, IInteractable, ISavable
     [SerializeField] new string name;
     [SerializeField] Sprite sprite;
     [SerializeField] GameObject exclamation, fov;
-    [SerializeField] protected Dialog preBattleDialog, postBattleDialog;
+    [SerializeField] protected Dialog preBattleDialog, postBattleDialog, battleLostDialog;
+
+    [Header("Behavior")]
+    [SerializeField] BattleAIProfile aiProfile;
+    public BattleAIProfile AIProfile => aiProfile;
+
     [SerializeField] TrainerBattleProfile battleProfile;
 
     public TrainerBattleProfile BattleProfile => battleProfile;
@@ -21,6 +26,7 @@ public class TrainerController : MonoBehaviour, IInteractable, ISavable
     public Sprite Sprite { get => sprite; }
     public int BattleUnitCount => battleProfile.unitCount;
     public bool IsBattleLost => battleLost;
+    public string BattleLostDialog => string.Join('\n', battleLostDialog.Lines);
 
     void Awake()
     {

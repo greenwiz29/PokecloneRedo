@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e9ed08807f38fd9488962f4a31a7a8c, type: 3}
-  m_Name: FireGym
-  m_EditorClassIdentifier: Assembly-CSharp::FireGymArenaModifier
-  id: FireGymTerrain
+  m_Script: {fileID: 11500000, guid: fa46a13c3ccbdf7758bdabdcce5cec55, type: 3}
+  m_Name: FireGymPhase2Rule
+  m_EditorClassIdentifier: Assembly-CSharp::AggressiveAfterPhaseRule
+  phaseModifierId: FireGymPhase2
+  bonus: 30

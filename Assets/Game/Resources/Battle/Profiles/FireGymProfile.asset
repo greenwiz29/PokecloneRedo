@@ -19,6 +19,6 @@ MonoBehaviour:
   forcedWeather: 4
   modifiers:
   - {fileID: 11400000, guid: fb83549d55738a2b2bd3a36d20ab2e0e, type: 2}
-  - {fileID: 11400000, guid: 65d05a2d5c39a15d491376a10a2da7fb, type: 2}
+  - {fileID: 11400000, guid: 6f14b33f47d3008b58a56628d0955fe5, type: 2}
   introDialogOverride: 
   defeatDialogOverride: 

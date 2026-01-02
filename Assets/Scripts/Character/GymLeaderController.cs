@@ -33,7 +33,7 @@ public class GymLeaderController : TrainerController
     public override void BattleLost()
     {
         StartCoroutine(GiveRewardItems());
-        
+
         questToStart?.StartQuest();
         questToComplete?.CompleteQuest();
 
