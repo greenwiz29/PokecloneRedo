@@ -4,13 +4,11 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEditor.SceneManagement;
+using System;
 
 [CustomEditor(typeof(LocationPortal))]
 public class LocationPortalEditor : Editor
 {
-    [SerializeField]
-    GameObject locationPortalPrefab;
-
     SerializedProperty targetSceneName;
     SerializedProperty entryPointId;
 
@@ -19,6 +17,8 @@ public class LocationPortalEditor : Editor
     string[] sceneNames;
     string[] entryPointIds;
     Dictionary<string, int> entryPointIdCounts;
+    List<Action> fixAllActions = new List<Action>();
+
 
     void OnEnable()
     {
@@ -152,14 +152,20 @@ public class LocationPortalEditor : Editor
         return $"Entry_{entry.EntryId}";
     }
 
-    void DrawFixableWarning(string message, MessageType type, System.Action fixAction, string fixLabel)
+    void DrawFixableWarning(string message, MessageType type, Action fixAction, string fixLabel)
     {
         EditorGUILayout.BeginVertical("box");
         EditorGUILayout.HelpBox(message, type);
 
-        if (fixAction != null && GUILayout.Button(fixLabel))
+        if (fixAction != null)
         {
-            fixAction.Invoke();
+            // Register for Fix All
+            fixAllActions.Add(fixAction);
+
+            if (GUILayout.Button(fixLabel))
+            {
+                fixAction.Invoke();
+            }
         }
 
         EditorGUILayout.EndVertical();
@@ -243,19 +249,10 @@ public class LocationPortalEditor : Editor
     // -----------------------------
     void DrawValidationWarnings()
     {
+        fixAllActions.Clear();
+
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Validation", EditorStyles.boldLabel);
-
-        // 1️⃣ Scene not in Build Settings
-        if (!sceneNames.Contains(targetSceneName.stringValue))
-        {
-            DrawFixableWarning(
-                $"Scene '{targetSceneName.stringValue}' is not in Build Settings.",
-                MessageType.Warning,
-                () => AddSceneToBuildSettings(targetSceneName.stringValue),
-                "Add to Build Settings"
-            );
-        }
 
         // 2️⃣ Scene not loaded
         Scene scene = SceneManager.GetSceneByName(targetSceneName.stringValue);
@@ -356,6 +353,60 @@ public class LocationPortalEditor : Editor
             }
         }
 
+        // -----------------------------
+        // Scene Connectivity Validation
+        // -----------------------------
+
+        var sourceScene = portal.gameObject.scene.name;
+
+        var mapScenes = SceneDetails.FindAllMapScenes();
+        var sourceDetails = mapScenes.FirstOrDefault(s => s.SceneName == sourceScene);
+
+        var targetDetails = mapScenes.FirstOrDefault(s => s.SceneName == portal.TargetSceneName);
+
+        if (sourceDetails != null && targetDetails != null)
+        {
+            if (!sourceDetails.ConnectedScenes.Contains(targetDetails))
+            {
+                DrawFixableWarning(
+                    $"Portal target scene '{targetDetails.SceneName}' is not in connectedScenes of '{sourceDetails.SceneName}'.",
+                    MessageType.Error,
+                    () => AddConnectedScene(sourceDetails, targetDetails),
+                    "Fix Connectivity"
+                );
+            }
+
+            if (portal.Direction == PortalDirection.TwoWay &&
+                !targetDetails.ConnectedScenes.Contains(sourceDetails))
+            {
+                DrawFixableWarning(
+                    $"Two-way portal requires reverse connectivity from '{targetDetails.SceneName}' to '{sourceDetails.SceneName}'.",
+                    MessageType.Error,
+                    () => AddConnectedScene(targetDetails, sourceDetails),
+                    "Fix Reverse Connectivity"
+                );
+            }
+        }
+
+
+        if (fixAllActions.Count > 0)
+        {
+            EditorGUILayout.Space();
+
+            if (GUILayout.Button("Fix All"))
+            {
+                Undo.IncrementCurrentGroup();
+                Undo.SetCurrentGroupName("Fix All Portal Issues");
+
+                foreach (var fix in fixAllActions.Distinct())
+                {
+                    fix.Invoke();
+                }
+
+                Undo.CollapseUndoOperations(Undo.GetCurrentGroup());
+            }
+        }
+
     }
 
     // -----------------------------
@@ -421,21 +472,6 @@ public class LocationPortalEditor : Editor
         Selection.objects = duplicates;
     }
 
-    void AddSceneToBuildSettings(string sceneName)
-    {
-        var scenes = EditorBuildSettings.scenes.ToList();
-
-        string path = AssetDatabase.FindAssets($"t:Scene {sceneName}")
-            .Select(AssetDatabase.GUIDToAssetPath)
-            .FirstOrDefault();
-
-        if (!string.IsNullOrEmpty(path))
-        {
-            scenes.Add(new EditorBuildSettingsScene(path, true));
-            EditorBuildSettings.scenes = scenes.ToArray();
-        }
-    }
-
     void FixMissingEntryPoint(LocationPortal portal)
     {
         GameObject child = new GameObject("SpawnPoint");
@@ -478,6 +514,16 @@ public class LocationPortalEditor : Editor
 
         EditorUtility.SetDirty(entry);
         EditorSceneManager.MarkSceneDirty(entry.gameObject.scene);
+    }
+
+    void AddConnectedScene(SceneDetails from, SceneDetails to)
+    {
+        if (!from.ConnectedScenes.Contains(to))
+        {
+            from.ConnectedScenes.Add(to);
+            EditorUtility.SetDirty(from);
+            EditorSceneManager.MarkSceneDirty(from.gameObject.scene);
+        }
     }
 
 }

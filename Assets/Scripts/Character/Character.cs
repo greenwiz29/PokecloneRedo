@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
+    [SerializeField] bool canPassLedges = true;
     public float moveSpeed;
     public bool IsMoving { get; private set; }
     public CharacterAnimator Animator => animator;
@@ -31,7 +32,7 @@ public class Character : MonoBehaviour
         targetPos.y += moveVector.y;
         
         var ledge = CheckForLedge(targetPos);
-        if (ledge != null)
+        if (ledge != null && canPassLedges)
         {
             if (ledge.TryToJump(this, moveVector))
             {

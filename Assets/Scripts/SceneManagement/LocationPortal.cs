@@ -10,8 +10,6 @@ using UnityEditor;
 
 public class LocationPortal : MonoBehaviour, IPlayerTriggerable
 {
-    public enum PortalDirection { TwoWay, OneWay }
-
     [SerializeField] string returnEntryPointId = "Return";
 
     [Header("Portal Rules")]
@@ -25,7 +23,9 @@ public class LocationPortal : MonoBehaviour, IPlayerTriggerable
     public string TargetSceneName => targetSceneName;
     public string EntryPointId => entryPointId;
     public string ReturnEntryPointId => returnEntryPointId;
-    SceneDetails TargetScene =>
+    public PortalDirection Direction => direction;
+    public PortalLock LockCondition => lockCondition;
+    public SceneDetails TargetScene =>
         FindObjectsByType<SceneDetails>(FindObjectsSortMode.None)
             .FirstOrDefault(s => s.SceneName == targetSceneName);
 #if UNITY_EDITOR
@@ -114,3 +114,5 @@ public class LocationPortal : MonoBehaviour, IPlayerTriggerable
 #endif
 
 }
+
+public enum PortalDirection { TwoWay, OneWay }

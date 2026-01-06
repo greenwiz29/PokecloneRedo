@@ -15,6 +15,7 @@ public class SceneTrigger : MonoBehaviour
 
     public string SceneName => sceneName;
     public SceneTypeEnum SceneType => sceneType;
+    public SceneDetails SceneDetails => sceneDetails;
     public Bounds WorldBounds => bounds.bounds;
 
 #if UNITY_EDITOR

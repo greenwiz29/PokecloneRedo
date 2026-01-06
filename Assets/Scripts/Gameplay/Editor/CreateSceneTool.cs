@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -23,13 +24,13 @@ public static class CreateSceneTool
         return scene;
     }
 
-    [MenuItem("Tools/Scenes/Create Overworld Scene Here")]
+    [MenuItem("GameObject/Scenes/Create Overworld Scene Here")]
     public static void CreateOverworldSceneHere()
     {
         CreateSceneInternal(SceneTypeEnum.World);
     }
 
-    [MenuItem("Tools/Scenes/Create Interior Scene Here")]
+    [MenuItem("GameObject/Scenes/Create Interior Scene Here")]
     public static void CreateInteriorSceneHere()
     {
         CreateSceneInternal(SceneTypeEnum.Interior);
@@ -49,6 +50,8 @@ public static class CreateSceneTool
 
         Scene scene = CreateBaseScene(path);
 
+        AddSceneToBuildSettingsIfMissing(scene.path);
+
         // Always present
         InstantiateInScene(GridPrefabPath, scene, "Grid");
         InstantiateInScene(EssentialLoaderPrefabPath, scene, "EssentialObjectsLoader");
@@ -67,6 +70,20 @@ public static class CreateSceneTool
 
     static void CreateSceneTrigger(Scene scene, SceneTypeEnum sceneType)
     {
+        var gameplayScene = GetGameplayScene();
+        if (!gameplayScene.IsValid())
+            return;
+            
+        if (!gameplayScene.isLoaded)
+        {
+            EditorUtility.DisplayDialog(
+                "Gameplay Scene Not Loaded",
+                "Please open the Gameplay scene before creating new scenes.",
+                "OK"
+            );
+            return;
+        }
+
         var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(SceneTriggerPrefabPath);
         if (prefab == null)
         {
@@ -74,21 +91,24 @@ public static class CreateSceneTool
             return;
         }
 
-        var trigger = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
-        trigger.name = scene.name;
+        var triggerGO = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+        triggerGO.name = scene.name;
 
-        trigger.transform.position =
+        // 🔑 MOVE TO GAMEPLAY SCENE
+        SceneManager.MoveGameObjectToScene(triggerGO, gameplayScene);
+
+        triggerGO.transform.position =
             SceneView.lastActiveSceneView?.pivot ?? Vector3.zero;
 
-        var triggerComponent = trigger.GetComponent<SceneTrigger>();
+        var triggerComponent = triggerGO.GetComponent<SceneTrigger>();
         SerializedObject so = new SerializedObject(triggerComponent);
 
         so.FindProperty("sceneName").stringValue = scene.name;
         so.FindProperty("sceneType").enumValueIndex = (int)sceneType;
-
         so.ApplyModifiedProperties();
 
-        Selection.activeGameObject = trigger;
+        EditorSceneManager.MarkSceneDirty(gameplayScene);
+        Selection.activeGameObject = triggerGO;
     }
 
     static void InstantiateInScene(string prefabPath, Scene scene, string nameOverride)
@@ -100,6 +120,30 @@ public static class CreateSceneTool
         var go = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
         go.name = nameOverride;
         SceneManager.MoveGameObjectToScene(go, scene);
+    }
+
+    static void AddSceneToBuildSettingsIfMissing(string scenePath)
+    {
+        var scenes = EditorBuildSettings.scenes.ToList();
+
+        if (scenes.Any(s => s.path == scenePath))
+            return;
+
+        scenes.Add(new EditorBuildSettingsScene(scenePath, true));
+        EditorBuildSettings.scenes = scenes.ToArray();
+    }
+
+    static Scene GetGameplayScene()
+    {
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            Scene s = SceneManager.GetSceneAt(i);
+            if (s.name == "Gameplay")
+                return s;
+        }
+
+        Debug.LogError("Gameplay scene must be loaded to create SceneTrigger.");
+        return default;
     }
 
 }

@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
-
 #if UNITY_EDITOR
 using UnityEditor.SceneManagement;
+using UnityEditor;
 #endif
 
 public class SceneDetails : MonoBehaviour
@@ -118,6 +118,64 @@ public class SceneDetails : MonoBehaviour
         if (scene.isLoaded)
         {
             EditorSceneManager.CloseScene(scene, true);
+        }
+    }
+
+    public static List<SceneDetails> FindAllMapScenes()
+    {
+        var results = new List<SceneDetails>();
+
+        var guids = AssetDatabase.FindAssets("t:Scene");
+        foreach (var guid in guids)
+        {
+            var path = AssetDatabase.GUIDToAssetPath(guid);
+
+            // 1️⃣ Exclude package scenes
+            if (!path.StartsWith("Assets/Scenes/"))
+                continue;
+
+            if (path.Contains("MainMenu"))
+                continue;
+
+            // 2️⃣ Open additively (editor-only)
+            var scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
+
+            // 3️⃣ Find SceneDetails
+            foreach (var root in scene.GetRootGameObjects())
+            {
+                var details = root.GetComponentInChildren<SceneDetails>(true);
+                if (details == null)
+                    continue;
+
+                // 4️⃣ Exclude persistent / non-map scenes
+                // Heuristic: must have a SceneTrigger or bounds
+                var trigger = details.GetComponentInParent<SceneTrigger>();
+                if (trigger == null)
+                    continue;
+
+                results.Add(details);
+            }
+        }
+
+        return results;
+    }
+
+    void OnValidate()
+    {
+        var scene = gameObject.scene;
+        if (!scene.IsValid() || scene.name == "Gameplay")
+            return;
+
+        var all = FindObjectsByType<SceneDetails>(FindObjectsSortMode.None)
+            .Where(s => s.gameObject.scene == scene)
+            .ToList();
+
+        if (all.Count > 1)
+        {
+            Debug.LogError(
+                $"Scene '{scene.name}' has multiple SceneDetails components.",
+                this
+            );
         }
     }
 #endif

@@ -160,7 +160,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.32, y: 0.32}
+    oldSize: {x: 2, y: 2}
     newSize: {x: 1, y: 2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -180,6 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f505e87649532bb181e53302198aeb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canPassLedges: 0
   moveSpeed: 5
 --- !u!114 &9017314352404999837
 MonoBehaviour:
@@ -232,5 +233,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WildPokemonController
   wanderDelay: 1.5
   maxDistanceFromSpawner: 5
-  behaviorType: 0
-  pursuitProfile: {fileID: 0}

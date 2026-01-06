@@ -32,3 +32,20 @@ Bait player into weather traps
 Save ace Pokémon for last
 
 Trigger forced evolution intelligently
+
+
+SceneDetails and LocationPortals rules:
+
+If a LocationPortal points to a scene, that target scene must be reachable via SceneDetails.connectedScenes from the source scene at runtime.
+
+However:
+
+This rule does not apply to world↔world adjacency
+
+It does apply to any portal-based transition, including:
+
+World → Interior
+
+Interior → World
+
+Interior → Interior (if you ever add that)
