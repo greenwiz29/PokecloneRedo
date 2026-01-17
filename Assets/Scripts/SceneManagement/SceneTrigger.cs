@@ -18,6 +18,19 @@ public class SceneTrigger : MonoBehaviour
     public SceneDetails SceneDetails => sceneDetails;
     public Bounds WorldBounds => bounds.bounds;
 
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            if (GameController.I.CurrentScene == sceneDetails)
+                return;
+
+            Debug.Log($"Entered SceneDetails trigger: {name}");
+
+            GameController.I.TransitionToScene(sceneDetails);
+        }
+    }
+
 #if UNITY_EDITOR
     void OnValidate()
     {

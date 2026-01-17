@@ -1,10 +1,14 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 using static SceneTrigger;
 
+// TODO: Location of new scene is not where the mouse click was.
+// TODO: tilemap layers are created with an offset from the Grid prefab.
 public static class CreateSceneTool
 {
     const string SceneTriggerPrefabPath = "Assets/Game/Resources/SceneManagement/SceneTrigger.prefab";
@@ -12,17 +16,39 @@ public static class CreateSceneTool
     const string EssentialLoaderPrefabPath = "Assets/Game/Resources/Main/EssentialObjectsLoader.prefab";
     const string CameraBoundsPrefabPath = "Assets/Game/Resources/Main/CameraBounds.prefab";
 
-    static Scene CreateBaseScene(string path)
-    {
-        Scene scene = EditorSceneManager.NewScene(
-            NewSceneSetup.EmptyScene,
-            NewSceneMode.Additive
-        );
+    #region Gameplay Tilemap Layer Definitions
 
-        EditorSceneManager.SaveScene(scene, path);
-        EditorSceneManager.SetActiveScene(scene);
-        return scene;
+    struct GameplayTilemapLayer
+    {
+        public string name;
+        public string unityLayer;
     }
+
+    // Always present
+    static readonly GameplayTilemapLayer[] MandatoryGameplayLayers =
+    {
+        new() {
+            name = "SolidObjects",
+            unityLayer = "SolidObjects"
+        }
+    };
+
+    // Optional
+    static readonly GameplayTilemapLayer[] OptionalGameplayLayers =
+    {
+        new() {
+            name = "LongGrass",
+            unityLayer = "LongGrass"
+        },
+        new() {
+            name = "Water",
+            unityLayer = "Water"
+        }
+    };
+
+    #endregion
+
+    #region Menu Items
 
     [MenuItem("GameObject/Scenes/Create Overworld Scene Here")]
     public static void CreateOverworldSceneHere()
@@ -35,6 +61,10 @@ public static class CreateSceneTool
     {
         CreateSceneInternal(SceneTypeEnum.Interior);
     }
+
+    #endregion
+
+    #region Core Flow
 
     static void CreateSceneInternal(SceneTypeEnum sceneType)
     {
@@ -49,12 +79,17 @@ public static class CreateSceneTool
             return;
 
         Scene scene = CreateBaseScene(path);
-
         AddSceneToBuildSettingsIfMissing(scene.path);
 
+        // Prompt for optional gameplay layers
+        var optionalLayers = PromptForOptionalGameplayLayers();
+
         // Always present
-        InstantiateInScene(GridPrefabPath, scene, "Grid");
+        var grid = InstantiateInScene(GridPrefabPath, scene, "Grid");
         InstantiateInScene(EssentialLoaderPrefabPath, scene, "EssentialObjectsLoader");
+
+        // Add gameplay tilemaps under Grid
+        SetupGameplayTilemaps(grid, optionalLayers);
 
         // Interior extras
         if (sceneType == SceneTypeEnum.Interior)
@@ -62,18 +97,95 @@ public static class CreateSceneTool
             InstantiateInScene(CameraBoundsPrefabPath, scene, "CameraBounds");
         }
 
-        // SceneTrigger lives in the layout/world scene
+        // SceneTrigger lives in Gameplay scene
         CreateSceneTrigger(scene, sceneType);
 
         Debug.Log($"{sceneType} scene '{scene.name}' created.");
     }
+
+    static Scene CreateBaseScene(string path)
+    {
+        Scene scene = EditorSceneManager.NewScene(
+            NewSceneSetup.EmptyScene,
+            NewSceneMode.Additive
+        );
+
+        EditorSceneManager.SaveScene(scene, path);
+        EditorSceneManager.SetActiveScene(scene);
+        return scene;
+    }
+
+    #endregion
+
+    #region Gameplay Tilemap Setup
+
+    static List<GameplayTilemapLayer> PromptForOptionalGameplayLayers()
+    {
+        var selected = new List<GameplayTilemapLayer>();
+
+        foreach (var layer in OptionalGameplayLayers)
+        {
+            if (EditorUtility.DisplayDialog(
+                "Optional Gameplay Layers",
+                $"Include '{layer.name}' tilemap?",
+                "Include",
+                "Skip"
+            ))
+            {
+                selected.Add(layer);
+            }
+        }
+
+        return selected;
+    }
+
+    static void SetupGameplayTilemaps(
+        GameObject gridRoot,
+        IEnumerable<GameplayTilemapLayer> optionalLayers
+    )
+    {
+        foreach (var layer in MandatoryGameplayLayers)
+            CreateGameplayTilemap(gridRoot.transform, layer);
+
+        foreach (var layer in optionalLayers)
+            CreateGameplayTilemap(gridRoot.transform, layer);
+    }
+
+    static void CreateGameplayTilemap(
+        Transform gridRoot,
+        GameplayTilemapLayer layer
+    )
+    {
+        var go = new GameObject(layer.name);
+        go.transform.SetParent(gridRoot);
+        go.transform.localPosition = Vector3.zero;
+
+        go.AddComponent<Tilemap>();
+
+        var renderer = go.AddComponent<TilemapRenderer>();
+        renderer.sortingLayerName = "Foreground";
+
+        int unityLayer = LayerMask.NameToLayer(layer.unityLayer);
+        if (unityLayer == -1)
+        {
+            Debug.LogError($"Unity layer '{layer.unityLayer}' does not exist.");
+        }
+        else
+        {
+            go.layer = unityLayer;
+        }
+    }
+
+    #endregion
+
+    #region SceneTrigger Creation
 
     static void CreateSceneTrigger(Scene scene, SceneTypeEnum sceneType)
     {
         var gameplayScene = GetGameplayScene();
         if (!gameplayScene.IsValid())
             return;
-            
+
         if (!gameplayScene.isLoaded)
         {
             EditorUtility.DisplayDialog(
@@ -94,14 +206,13 @@ public static class CreateSceneTool
         var triggerGO = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
         triggerGO.name = scene.name;
 
-        // 🔑 MOVE TO GAMEPLAY SCENE
         SceneManager.MoveGameObjectToScene(triggerGO, gameplayScene);
 
         triggerGO.transform.position =
             SceneView.lastActiveSceneView?.pivot ?? Vector3.zero;
 
         var triggerComponent = triggerGO.GetComponent<SceneTrigger>();
-        SerializedObject so = new SerializedObject(triggerComponent);
+        SerializedObject so = new(triggerComponent);
 
         so.FindProperty("sceneName").stringValue = scene.name;
         so.FindProperty("sceneType").enumValueIndex = (int)sceneType;
@@ -111,15 +222,20 @@ public static class CreateSceneTool
         Selection.activeGameObject = triggerGO;
     }
 
-    static void InstantiateInScene(string prefabPath, Scene scene, string nameOverride)
+    #endregion
+
+    #region Utilities
+
+    static GameObject InstantiateInScene(string prefabPath, Scene scene, string nameOverride)
     {
         var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
         if (prefab == null)
-            return;
+            return null;
 
         var go = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
         go.name = nameOverride;
         SceneManager.MoveGameObjectToScene(go, scene);
+        return go;
     }
 
     static void AddSceneToBuildSettingsIfMissing(string scenePath)
@@ -146,4 +262,5 @@ public static class CreateSceneTool
         return default;
     }
 
+    #endregion
 }

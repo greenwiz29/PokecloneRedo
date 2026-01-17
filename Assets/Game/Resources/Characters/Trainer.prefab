@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 1898861581556339008}
   - component: {fileID: 9154046531521133101}
   - component: {fileID: -2546320837388267172}
+  - component: {fileID: 5495399463307613781}
   m_Layer: 10
   m_Name: Trainer
   m_TagString: Untagged
@@ -61,6 +62,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -82,6 +85,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 882407097
   m_SortingLayer: 3
   m_SortingOrder: 0
@@ -181,6 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f505e87649532bb181e53302198aeb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canPassLedges: 1
   moveSpeed: 5
 --- !u!114 &2701208972399282612
 MonoBehaviour:
@@ -214,6 +219,10 @@ MonoBehaviour:
   - {fileID: -9111473675286820144, guid: d5a8794d69e1d8dd09d9abe69c768e14, type: 3}
   - {fileID: -5627484699997550656, guid: d5a8794d69e1d8dd09d9abe69c768e14, type: 3}
   - {fileID: -5051899674784280284, guid: d5a8794d69e1d8dd09d9abe69c768e14, type: 3}
+  surfDownSprites: []
+  surfUpSprites: []
+  surfLeftSprites: []
+  surfRightSprites: []
   defaultDirection: 0
 --- !u!114 &1898861581556339008
 MonoBehaviour:
@@ -238,6 +247,10 @@ MonoBehaviour:
     lines:
     - You have what it takes to survive out there.
     - Stay vigilant! Glory to Pallet Town!
+  battleLostDialog:
+    lines: []
+  aiProfile: {fileID: 0}
+  battleProfile: {fileID: 0}
 --- !u!114 &9154046531521133101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,8 +266,10 @@ MonoBehaviour:
   party:
   - _base: {fileID: 11400000, guid: 91b504117fe63ee7d843920729763021, type: 2}
     level: 8
+    gender: 0
   - _base: {fileID: 11400000, guid: c177616e5aca466f1ba788b88f6c9756, type: 2}
     level: 9
+    gender: 0
 --- !u!114 &-2546320837388267172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,7 +282,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4881f89f8b930e34489bbb86116ccd4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueId: 
+  uniqueId: d4643bfa-b15f-4c5e-9c1b-f3701dfed01d
+--- !u!114 &5495399463307613781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717836754039699661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f91c3fecd6c687c88365a76aa49fcfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::YSortSprite
 --- !u!1 &2996327092323367956
 GameObject:
   m_ObjectHideFlags: 0
@@ -320,6 +347,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -341,6 +370,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 817227589
   m_SortingLayer: 2
   m_SortingOrder: 1

@@ -44,11 +44,14 @@ TagManager:
   - name: Background
     uniqueID: 3239777453
     locked: 0
-  - name: Foreground
+  - name: GroundDeco
     uniqueID: 817227589
     locked: 0
-  - name: Objects
+  - name: Characters
     uniqueID: 882407097
+    locked: 0
+  - name: Foreground
+    uniqueID: 3023874773
     locked: 0
   - name: Battle
     uniqueID: 3408417495

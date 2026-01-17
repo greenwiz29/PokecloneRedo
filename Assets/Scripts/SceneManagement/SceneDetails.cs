@@ -14,6 +14,24 @@ public class SceneDetails : MonoBehaviour
     [SerializeField] List<SceneDetails> connectedScenes;
     [SerializeField] TileBase backgroundTile;
 
+    Tilemap ledgeTilemap;
+    Tilemap solidTilemap;
+    Tilemap waterTilemap;
+
+    public void BindTilemaps(Tilemap ledges, Tilemap solids, Tilemap water)
+    {
+        ledgeTilemap = ledges;
+        solidTilemap = solids;
+        waterTilemap = water;
+    }
+
+    public void UnbindTilemaps()
+    {
+        ledgeTilemap = null;
+        solidTilemap = null;
+        waterTilemap = null;
+    }
+
     public string SceneName => gameObject.name;
     public bool IsLoaded { get; private set; }
     List<SavableEntity> savableEntities;
@@ -25,40 +43,6 @@ public class SceneDetails : MonoBehaviour
         MapArea = GetComponentInParent<MapArea>();
         if (MapArea == null)
             Debug.LogWarning($"SceneDetails on {name} has no MapArea.");
-    }
-
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            Debug.Log($"Entered SceneDetails trigger: {name}");
-
-            LoadScene();
-            GameController.I.SetCurrentScene(this);
-
-            // Load all connected scenes
-            foreach (var scene in connectedScenes)
-            {
-                scene.LoadScene();
-            }
-
-            // Unload any unconnected scenes
-            var prevScene = GameController.I.PreviousScene;
-            if (prevScene != null)
-            {
-                var previouslyLoadedScenes = prevScene.connectedScenes;
-                foreach (var scene in previouslyLoadedScenes)
-                {
-                    if (!connectedScenes.Contains(scene) && scene != this)
-                    {
-                        scene.UnloadScene();
-                    }
-                }
-
-                if (!connectedScenes.Contains(prevScene))
-                    prevScene.UnloadScene();
-            }
-        }
     }
 
     public SceneEntryPoint GetEntryPoint(string id)
@@ -217,4 +201,30 @@ public class SceneDetails : MonoBehaviour
         }
     }
 
+    public LedgeTile GetLedgeAtWorldPos(Vector3 worldPos)
+    {
+        if (ledgeTilemap == null)
+            return null;
+
+        var cell = ledgeTilemap.WorldToCell(worldPos);
+        return ledgeTilemap.GetTile<LedgeTile>(cell);
+    }
+
+    public bool GetWaterAtWorldPos(Vector3 worldPos)
+    {
+        if (waterTilemap == null)
+            return false;
+
+        var cell = waterTilemap.WorldToCell(worldPos);
+        return waterTilemap.HasTile(cell);
+    }
+
+    public bool IsSolidAtWorldPos(Vector3 worldPos)
+    {
+        if (solidTilemap == null)
+            return false;
+
+        var cell = solidTilemap.WorldToCell(worldPos);
+        return solidTilemap.HasTile(cell);
+    }
 }

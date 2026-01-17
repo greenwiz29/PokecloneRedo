@@ -99,19 +99,22 @@ public class GameController : MonoBehaviour
         stateMachine.Execute();
     }
 
-    public void SetCurrentScene(SceneDetails currScene)
-    {
-        PreviousScene = CurrentScene;
-        CurrentScene = currScene;
-    }
-    
+    bool isTransitioning;
     public void TransitionToScene(SceneDetails newScene)
     {
+        if (isTransitioning)
+            return;
+
+        if (CurrentScene == newScene)
+            return;
+
+        isTransitioning = true;
+
+        newScene.LoadScene();
+
         var prevScene = CurrentScene;
         PreviousScene = prevScene;
         CurrentScene = newScene;
-
-        newScene.LoadScene();
 
         foreach (var scene in newScene.ConnectedScenes)
             scene.LoadScene();
@@ -120,13 +123,15 @@ public class GameController : MonoBehaviour
         {
             foreach (var scene in prevScene.ConnectedScenes)
             {
-                if (!newScene.ConnectedScenes.Contains(scene))
+                if (!newScene.ConnectedScenes.Contains(scene) && scene != newScene)
                     scene.UnloadScene();
             }
 
             if (!newScene.ConnectedScenes.Contains(prevScene))
                 prevScene.UnloadScene();
         }
+
+        isTransitioning = false;
     }
 
     public IEnumerator MoveCamera(Vector2 offset, bool waitForFadeOut = false)

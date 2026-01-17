@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 1825992091159375773}
   - component: {fileID: 1956304820156301287}
   - component: {fileID: 8508127062330322392}
+  - component: {fileID: 6429559842616592514}
   m_Layer: 10
   m_Name: NPC
   m_TagString: Untagged
@@ -59,6 +60,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -80,6 +83,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 882407097
   m_SortingLayer: 3
   m_SortingOrder: 0
@@ -197,6 +201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f505e87649532bb181e53302198aeb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canPassLedges: 1
   moveSpeed: 5
 --- !u!114 &1825992091159375773
 MonoBehaviour:
@@ -230,6 +235,10 @@ MonoBehaviour:
   - {fileID: -9111473675286820144, guid: d5a8794d69e1d8dd09d9abe69c768e14, type: 3}
   - {fileID: -5627484699997550656, guid: d5a8794d69e1d8dd09d9abe69c768e14, type: 3}
   - {fileID: -5051899674784280284, guid: d5a8794d69e1d8dd09d9abe69c768e14, type: 3}
+  surfDownSprites: []
+  surfUpSprites: []
+  surfLeftSprites: []
+  surfRightSprites: []
   defaultDirection: 3
 --- !u!114 &1956304820156301287
 MonoBehaviour:
@@ -259,4 +268,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4881f89f8b930e34489bbb86116ccd4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueId: 
+  uniqueId: 3d8fdfec-16a1-40d1-aa33-e0f1160967bf
+--- !u!114 &6429559842616592514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9143244670098082821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f91c3fecd6c687c88365a76aa49fcfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::YSortSprite

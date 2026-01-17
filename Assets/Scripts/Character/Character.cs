@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 public class Character : MonoBehaviour
@@ -12,7 +13,6 @@ public class Character : MonoBehaviour
     public Vector2 PreviousTile { get; private set; }
 
     CharacterAnimator animator;
-
 
     void Awake()
     {
@@ -30,33 +30,41 @@ public class Character : MonoBehaviour
         var targetPos = transform.position;
         targetPos.x += moveVector.x;
         targetPos.y += moveVector.y;
-        
-        var ledge = CheckForLedge(targetPos);
-        if (ledge != null && canPassLedges)
+
+        var scene = GameController.I.CurrentScene;
+        if (scene != null)
         {
-            if (ledge.TryToJump(this, moveVector))
+            var ledge = scene.GetLedgeAtWorldPos(targetPos);
+            if (ledge != null)
             {
-                yield break;
+                if (canPassLedges && moveVector == (Vector2)ledge.allowedEntryDir)
+                {
+                    StartCoroutine(Jump(ledge.allowedEntryDir, ledge.jumpDistance));
+                    yield break;
+                }
+
+                yield break; // blocked
             }
+
+            if (checkCollisions && !IsPathClear(targetPos))
+                yield break;
+
+            if (animator.IsSurfing && !scene.GetWaterAtWorldPos(targetPos))
+            {
+                animator.IsSurfing = false;
+            }
+
+            IsMoving = true;
+            while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+                yield return null;
+            }
+            SetPositionAndSnapToTile(targetPos);
+            IsMoving = false;
+
+            OnMoveOver?.Invoke();
         }
-
-        if (checkCollisions && !IsPathClear(targetPos)) yield break;
-
-        if(animator.IsSurfing && Physics2D.OverlapCircle(targetPos, 0.3f, GlobalSettings.I.WaterLayer) == null)
-        {
-            animator.IsSurfing = false;
-        }
-
-        IsMoving = true;
-        while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
-            yield return null;
-        }
-        SetPositionAndSnapToTile(targetPos);
-        IsMoving = false;
-
-        OnMoveOver?.Invoke();
     }
 
     public void HandleUpdate()
@@ -66,10 +74,13 @@ public class Character : MonoBehaviour
 
     bool IsPathClear(Vector3 targetPos)
     {
+        if (GameController.I.CurrentScene.IsSolidAtWorldPos(targetPos))
+            return false;
+
         var diff = targetPos - transform.position;
         var dir = diff.normalized;
 
-        var layers = GlobalSettings.I.SolidObjectsLayer | GlobalSettings.I.InteractablesLayer | GlobalSettings.I.PlayerLayer;
+        var layers = GlobalSettings.I.InteractablesLayer | GlobalSettings.I.PlayerLayer;
         if (!animator.IsSurfing)
         {
             layers |= GlobalSettings.I.WaterLayer;
@@ -81,12 +92,6 @@ public class Character : MonoBehaviour
         }
 
         return true;
-    }
-
-    Ledge CheckForLedge(Vector3 targetPos)
-    {
-        var collider = Physics2D.OverlapCircle(targetPos, 0.15f, GlobalSettings.I.LedgesLayer);
-        return collider?.GetComponent<Ledge>();
     }
 
     public void LookTowards(Vector3 targetPos)
@@ -110,4 +115,21 @@ public class Character : MonoBehaviour
         transform.position = pos;
     }
 
+    private IEnumerator Jump(Vector2 dir, int distance)
+    {
+        if (this == GameController.I.Player.Character)
+            GameController.I.PauseGame(true);
+
+        animator.IsJumping = true;
+
+        var jumpDest = transform.position + (Vector3)(dir * distance);
+        yield return transform
+            .DOJump(jumpDest, 0.3f, 1, 0.5f)
+            .WaitForCompletion();
+
+        animator.IsJumping = false;
+
+        if (this == GameController.I.Player.Character)
+            GameController.I.PauseGame(false);
+    }
 }
