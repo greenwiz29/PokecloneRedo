@@ -43,6 +43,11 @@ public static class CreateSceneTool
         new() {
             name = "Water",
             unityLayer = "Water"
+        },
+        new()
+        {
+            name = "Ledges",
+            unityLayer = "Ledges"
         }
     };
 
@@ -121,22 +126,29 @@ public static class CreateSceneTool
 
     static List<GameplayTilemapLayer> PromptForOptionalGameplayLayers()
     {
-        var selected = new List<GameplayTilemapLayer>();
+        string[] names = OptionalGameplayLayers
+            .Select(l => l.name)
+            .ToArray();
 
-        foreach (var layer in OptionalGameplayLayers)
+        if (!OptionalGameplayLayersWindow.Show(
+            "Optional Gameplay Layers",
+            "Select which optional gameplay tilemaps should be created.",
+            names,
+            out bool[] selected
+        ))
         {
-            if (EditorUtility.DisplayDialog(
-                "Optional Gameplay Layers",
-                $"Include '{layer.name}' tilemap?",
-                "Include",
-                "Skip"
-            ))
-            {
-                selected.Add(layer);
-            }
+            return new List<GameplayTilemapLayer>();
         }
 
-        return selected;
+        var result = new List<GameplayTilemapLayer>();
+
+        for (int i = 0; i < selected.Length; i++)
+        {
+            if (selected[i])
+                result.Add(OptionalGameplayLayers[i]);
+        }
+
+        return result;
     }
 
     static void SetupGameplayTilemaps(
@@ -163,7 +175,7 @@ public static class CreateSceneTool
         go.AddComponent<Tilemap>();
 
         var renderer = go.AddComponent<TilemapRenderer>();
-        renderer.sortingLayerName = "Foreground";
+        renderer.sortingLayerName = "GroundDeco";
 
         int unityLayer = LayerMask.NameToLayer(layer.unityLayer);
         if (unityLayer == -1)
