@@ -11,6 +11,7 @@ public class WildPokemonController : OverworldEntity
     [Header("Movement")]
     [SerializeField] float wanderDelay = 1.5f;
     [SerializeField] float maxDistanceFromSpawner = 5f;
+    [SerializeField] SpriteRenderer sprite;
 
     WildPursuitProfile pursuitProfile;
 
@@ -22,7 +23,7 @@ public class WildPokemonController : OverworldEntity
     public WildPursuitProfile Profile => pursuitProfile;
 
     Vector3 spawnPoint;
-    IWildPokemonBehavior behavior;
+    WildPokemonBehavior behavior;
     Coroutine behaviorRoutine;
     Territory territory;
 
@@ -31,6 +32,7 @@ public class WildPokemonController : OverworldEntity
     public enum WildMode { Neutral, Aggro, Fleeing }
 
     public WildMode CurrentMode { get; private set; } = WildMode.Neutral;
+    VisualAltitudeController verticalPresence = null;
 
 
     protected override void Awake()
@@ -41,11 +43,19 @@ public class WildPokemonController : OverworldEntity
 
     protected override IEnumerator OnInteract(Transform initiator)
     {
-        var player = initiator.GetComponent<PlayerController>();
+        if (!AllowsInteraction())
+            yield break;
 
-        // No facing required
+        var player = initiator.GetComponent<PlayerController>();
+        if (player == null)
+            yield break;
+
         GameController.I.StartOverworldPokemonBattle(this);
-        yield break;
+    }
+
+    public bool AllowsInteraction()
+    {
+        return verticalPresence?.AllowsInteraction() ?? true;
     }
 
     public void SetMode(WildMode mode)
@@ -104,9 +114,25 @@ public class WildPokemonController : OverworldEntity
         character.Animator.SetWalkingLeftSprites(WildPokemon.WalkLeftAnim);
         character.Animator.SetWalkingRightSprites(WildPokemon.WalkRightAnim);
 
+        var profile = WildPokemon.Base.VerticalPresence;
+        if (profile != null)
+        {
+            verticalPresence = new VisualAltitudeController(this, sprite, profile);
+            if (!profile.usesGroundFooting)
+            {
+                character.OffsetY = 0f;
+            }
+            else
+            {
+                character.OffsetY = 0.3f;
+            }
+
+        }
+
         this.spawnPoint = spawnPoint;
         this.territory = territory;
         this.territory?.Register(this);
+        character.SetPositionAndSnapToTile(spawnPoint);
 
         var behavior = WildBehaviorResolver.Resolve(WildPokemon, mapArea, territory);
         pursuitProfile = WildPokemon.Base.DefaultPursuitProfile;
@@ -114,7 +140,13 @@ public class WildPokemonController : OverworldEntity
         InitializeBehavior(behavior);
     }
 
-    public void InitializeBehavior(IWildPokemonBehavior newBehavior)
+    protected override void Update()
+    {
+        base.Update();
+        verticalPresence?.Tick();
+    }
+
+    public void InitializeBehavior(WildPokemonBehavior newBehavior)
     {
         behavior = newBehavior;
 
@@ -124,7 +156,7 @@ public class WildPokemonController : OverworldEntity
         behaviorRoutine = StartCoroutine(behavior.Run(this));
     }
 
-    public void SwitchBehavior(IWildPokemonBehavior newBehavior)
+    public void SwitchBehavior(WildPokemonBehavior newBehavior)
     {
         if (behavior == newBehavior)
             return;
@@ -161,15 +193,26 @@ public class WildPokemonController : OverworldEntity
         LastMeasuredPlayerDistance = float.MaxValue;
     }
 
-    public void RecordAggroStart()
+    public void EnterAggro()
     {
         ResetChaseMetrics();
+        CurrentMode = WildMode.Aggro;
+        verticalPresence?.SetInteractionPlaneBias(InteractionPlaneBias.Converge);
     }
 
-    public void RecordAggroEnd()
+    public void EnterFlee()
+    {
+        ResetChaseMetrics();
+        CurrentMode = WildMode.Fleeing;
+        verticalPresence?.SetInteractionPlaneBias(InteractionPlaneBias.Diverge);
+    }
+
+    public void ExitReactiveMode()
     {
         lastAggroTime = Time.time;
         ResetChaseMetrics();
+        CurrentMode = WildMode.Neutral;
+        verticalPresence?.SetInteractionPlaneBias(InteractionPlaneBias.Neutral);
     }
 
     public void OnBattleOver()
@@ -258,27 +301,32 @@ public enum WildPersonality { Passive, Timid, Aggressive, Territorial }
 
 public static class WildBehaviorResolver
 {
-    public static IWildPokemonBehavior Resolve(
-        Pokemon pokemon,
-        MapArea mapArea,
-        Territory territory
-    )
+    public static WildPokemonBehavior Resolve(Pokemon pokemon, MapArea mapArea, Territory territory)
     {
         var personality = ResolvePersonality(pokemon, mapArea);
 
-        return personality switch
+        var behaviors = pokemon.Base.PossibleBehaviors;
+
+        var behavior = behaviors
+            .Find(b => b.Personality == personality);
+
+        if (behavior == null)
         {
-            WildPersonality.Timid => new TimidBehavior(),
-            WildPersonality.Aggressive => new AggressiveBehavior(),
-            _ => new PassiveBehavior()
-        };
+            Debug.LogWarning(
+                $"No behavior for {personality} on {pokemon.Base.name}, falling back to Passive"
+            );
+            behavior = behaviors
+                .Find(b => b.Personality == WildPersonality.Passive);
+        }
+
+        return behavior;
     }
 
     static WildPersonality ResolvePersonality(Pokemon pokemon, MapArea mapArea)
     {
         // Placeholder logic
-        // if (pokemon.Base.HasBehaviorType(WildPersonality.Timid))
-        //     return WildPersonality.Timid;
+        if (pokemon.Base.HasBehaviorType(WildPersonality.Timid))
+            return WildPersonality.Timid;
 
         // if (mapArea.IsDangerous)
         //     return WildPersonality.Aggressive;

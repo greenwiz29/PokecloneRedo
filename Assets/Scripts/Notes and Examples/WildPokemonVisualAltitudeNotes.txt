@@ -1,0 +1,5 @@
+Resulting behavior
+Species	    Root position	    Visual offset	Shadow	    Interaction
+Grounded	Snapped w/ OffsetY	0	            On tile	    Normal
+Flying	    Snapped w/o OffsetY	> 0	            On tile	    Forced descend
+Burrowing	Snapped w/o OffsetY	< 0	            On tile	    Forced surface

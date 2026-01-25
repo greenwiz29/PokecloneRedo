@@ -1,10 +1,11 @@
 using System.Collections;
 using UnityEngine;
 
-public class PassiveBehavior : IWildPokemonBehavior
+[CreateAssetMenu(menuName = "Pokemon/Wild Behavior/Passive", fileName = "PassiveBehavior")]
+public class PassiveBehavior : WildPokemonBehavior
 {
-    public WildPersonality Personality {get;} = WildPersonality.Passive;
-    public IEnumerator Run(WildPokemonController c)
+    public override WildPersonality Personality {get;} = WildPersonality.Passive;
+    public override IEnumerator Run(WildPokemonController c)
     {
         while (true)
         {

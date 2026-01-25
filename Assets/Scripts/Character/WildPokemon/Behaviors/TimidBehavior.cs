@@ -1,10 +1,13 @@
 using System.Collections;
 using UnityEngine;
-public class TimidBehavior : IWildPokemonBehavior
-{
-    public WildPersonality Personality => WildPersonality.Timid;
 
-    public IEnumerator Run(WildPokemonController c)
+[CreateAssetMenu(menuName = "Pokemon/Wild Behavior/Timid", fileName = "TimidBehavior")]
+public class TimidBehavior : WildPokemonBehavior
+{
+    public override WildPersonality Personality => WildPersonality.Timid;
+
+
+    public override IEnumerator Run(WildPokemonController c)
     {
         while (true)
         {
@@ -15,7 +18,7 @@ public class TimidBehavior : IWildPokemonBehavior
                 continue;
             }
 
-            c.RecordAggroStart(); // reuse metric reset
+            c.EnterFlee(); // reuse metric reset
             yield return Flee(c, player);
         }
     }
@@ -26,12 +29,8 @@ public class TimidBehavior : IWildPokemonBehavior
         if (player == null)
             return null;
 
-        return Vector3.Distance(
-            c.transform.position,
-            player.transform.position
-        ) <= c.Profile.detectionRadius
-            ? player.transform
-            : null;
+        return Vector3.Distance(c.transform.position, player.transform.position)
+            <= c.Profile.detectionRadius ? player.transform : null;
     }
 
     IEnumerator Flee(WildPokemonController c, Transform player)
@@ -41,9 +40,7 @@ public class TimidBehavior : IWildPokemonBehavior
         while (true)
         {
             // Stop if safe
-            float safeDist = c.Profile.safeDistance > 0f
-                ? c.Profile.safeDistance
-                : c.Profile.detectionRadius * 1.5f;
+            float safeDist = c.Profile.safeDistance > 0f ? c.Profile.safeDistance : c.Profile.detectionRadius * 1.5f;
 
             if (Vector3.Distance(c.transform.position, player.position) >= safeDist)
                 yield break;
@@ -54,15 +51,11 @@ public class TimidBehavior : IWildPokemonBehavior
             if (!c.CanChaseTo(nextPos))
                 break;
 
-            yield return c.Move(
-                DirectionFromPositions(c.transform.position, nextPos)
-            );
+            yield return c.Move(DirectionFromPositions(c.transform.position, nextPos));
 
             bool gainingDistance = !c.IsClosingDistanceTo(player);
 
-            stuckTimer = gainingDistance
-                ? 0f
-                : stuckTimer + c.Profile.chaseMoveDelay;
+            stuckTimer = gainingDistance ? 0f : stuckTimer + c.Profile.chaseMoveDelay;
 
             if (stuckTimer > c.Profile.giveUpTime)
                 break;
@@ -70,7 +63,7 @@ public class TimidBehavior : IWildPokemonBehavior
             yield return new WaitForSeconds(c.Profile.chaseMoveDelay);
         }
 
-        c.RecordAggroEnd();
+        c.ExitReactiveMode();
     }
 
     Vector2 DirectionFromPositions(Vector3 from, Vector3 to)

@@ -26,7 +26,7 @@ public class CharacterAnimator : MonoBehaviour
 
     void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         walkDownAnim = new SpriteAnimator(walkDownSprites, spriteRenderer);
         walkUpAnim = new SpriteAnimator(walkUpSprites, spriteRenderer);
         walkLeftAnim = new SpriteAnimator(walkLeftSprites, spriteRenderer);

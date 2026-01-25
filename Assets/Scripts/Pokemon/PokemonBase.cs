@@ -59,13 +59,17 @@ public class PokemonBase : ScriptableObject
     [SerializeField] List<Evolution> evolutions;
 
     [Header("Overworld Behavior")]
-    public List<IWildPokemonBehavior> possibleBehaviors;
-    public WildPursuitProfile defaultPursuitProfile;
-
+    [SerializeField] List<WildPokemonBehavior> possibleBehaviors;
+    [SerializeField] WildPursuitProfile defaultPursuitProfile;
+    // [Tooltip("Describes the flying/burrowing behavior of the species. Set to null for species that can do neither.")]
+    [SerializeField] VerticalPresenceProfile verticalPresence = null;
+    
     public string Name => name;
     public string Desc => description;
     public PokemonGenderRatio GenderRatio { get { return genderRatio; } }
+    public List<WildPokemonBehavior> PossibleBehaviors => possibleBehaviors;
     public WildPursuitProfile DefaultPursuitProfile => defaultPursuitProfile;
+    public VerticalPresenceProfile VerticalPresence => verticalPresence;
     public Sprite FrontSprite => frontSprite;
     public Sprite BackSprite => backSprite;
     public Sprite FrontSpriteFemale => frontSpriteFemale;
@@ -181,4 +185,25 @@ public enum PokemonGenderRatio
 public enum PokemonGender
 {
     NotSet, Female, Male, Genderless, Ditto
+}
+
+[Serializable]
+public class VerticalPresenceProfile
+{
+    public bool canHover;
+    public bool canFly;
+    public bool canBurrow;
+    public bool usesGroundFooting = true;
+
+    [Tooltip("Visual offset range in Unity units")]
+    public Vector2 offsetRange; // e.g. (-0.4, 0.8)
+
+    [Tooltip("Player can interact only if abs(offset) <= this")]
+    public float interactionTolerance = 0.2f;
+
+    [Tooltip("Seconds between altitude changes")]
+    public Vector2 changeIntervalRange = new(1.5f, 3.5f);
+
+    [Tooltip("Indicates the preferred direction to escape")]
+    public DivergencePreference divergencePreference;
 }

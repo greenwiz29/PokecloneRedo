@@ -64,4 +64,14 @@ MonoBehaviour:
   learnableMoves: []
   learnableByItems: []
   evolutions: []
+  possibleBehaviors:
+  - {fileID: 11400000, guid: a545c0ba32e10fe4086e4a518fe9afe3, type: 2}
   defaultPursuitProfile: {fileID: 11400000, guid: 616b881560bfaebf2a69b4d720af4b2b, type: 2}
+  verticalPresence:
+    canHover: 0
+    canFly: 0
+    canBurrow: 0
+    offsetRange: {x: 0, y: 0}
+    interactionTolerance: 0.2
+    changeIntervalRange: {x: 1.5, y: 3.5}
+    divergencePreference: 0

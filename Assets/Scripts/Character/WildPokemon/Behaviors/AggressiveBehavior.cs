@@ -1,11 +1,12 @@
 using System.Collections;
 using UnityEngine;
 
-public class AggressiveBehavior : IWildPokemonBehavior
+[CreateAssetMenu(menuName = "Pokemon/Wild Behavior/Aggressive", fileName = "AggressiveBehavior")]
+public class AggressiveBehavior : WildPokemonBehavior
 {
-    public WildPersonality Personality => WildPersonality.Aggressive;
+    public override WildPersonality Personality => WildPersonality.Aggressive;
 
-    public IEnumerator Run(WildPokemonController c)
+    public override IEnumerator Run(WildPokemonController c)
     {
         while (true)
         {
@@ -18,7 +19,7 @@ public class AggressiveBehavior : IWildPokemonBehavior
             Transform player = DetectPlayer(c);
             if (player != null)
             {
-                c.RecordAggroStart();
+                c.EnterAggro();
                 yield return Chase(c, player);
             }
             else
@@ -81,7 +82,7 @@ public class AggressiveBehavior : IWildPokemonBehavior
             yield return new WaitForSeconds(c.Profile.chaseMoveDelay);
         }
 
-        c.RecordAggroEnd();
+        c.ExitReactiveMode();
     }
 
     Vector3 NextStepTowards(Vector3 from, Vector3 to)
