@@ -6,10 +6,12 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     [SerializeField] bool canPassLedges = true;
+    [SerializeField] float footAnchorOffset = 0.3f;
+
     public float moveSpeed;
     public bool IsMoving { get; private set; }
     public CharacterAnimator Animator => animator;
-    public float OffsetY { get; set; } = 0.3f;
+    public float OffsetY { get => footAnchorOffset; set => footAnchorOffset = value; }
     public Vector2 PreviousTile { get; private set; }
 
     CharacterAnimator animator;
@@ -20,7 +22,7 @@ public class Character : MonoBehaviour
         SetPositionAndSnapToTile(transform.position);
     }
 
-    public IEnumerator Move(Vector2 moveVector, Action OnMoveOver = null, bool checkCollisions = true)
+    public IEnumerator Move(Vector2 moveVector, Action OnMoveOver = null, bool checkCollisions = true, Action<float> onProgress = null)
     {
         PreviousTile = moveVector * new Vector2(-1, -1);
 
@@ -55,11 +57,22 @@ public class Character : MonoBehaviour
             }
 
             IsMoving = true;
+
+            float totalDist = Vector3.Distance(transform.position, targetPos);
+            float traveled = 0f;
+            Vector3 lastPos = transform.position;
+
             while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
             {
                 transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+
+                traveled += Vector3.Distance(transform.position, lastPos);
+                lastPos = transform.position;
+
+                onProgress?.Invoke(Mathf.Clamp01(traveled / totalDist));
                 yield return null;
             }
+
             SetPositionAndSnapToTile(targetPos);
             IsMoving = false;
 
@@ -109,10 +122,10 @@ public class Character : MonoBehaviour
 
     public void SetPositionAndSnapToTile(Vector2 pos)
     {
-        pos.x = Mathf.Floor(pos.x) + 0.5f;
-        pos.y = Mathf.Floor(pos.y) + 0.5f + OffsetY;
+        int tileX = Mathf.FloorToInt(pos.x);
+        int tileY = Mathf.FloorToInt(pos.y - footAnchorOffset);
 
-        transform.position = pos;
+        transform.position = new Vector2(tileX + 0.5f, tileY + 0.5f + footAnchorOffset);
     }
 
     private IEnumerator Jump(Vector2 dir, int distance)

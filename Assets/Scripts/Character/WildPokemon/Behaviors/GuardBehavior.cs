@@ -1,10 +1,18 @@
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Pokemon/Wild Behavior/Guard", fileName = "GuardBehavior")]
 public class GuardBehavior : PassiveBehavior, ITerritoryReactive
 {
+    [SerializeField] AggressiveBehavior aggressiveBehavior;
+
     public void OnTerritoryThreat(WildPokemonController c, Transform threat)
     {
-        c.SwitchBehavior(new AggressiveBehavior());
-        c.EnterAggro();
+        if (c.CurrentMode != WildPokemonController.WildMode.Neutral)
+            return;
+
+        if (!c.CanSeeThreat(threat))
+            return;
+
+        c.StartReactiveBehavior(aggressiveBehavior);
     }
 }

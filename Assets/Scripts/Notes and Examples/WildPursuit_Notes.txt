@@ -1,0 +1,25 @@
+
+| Archetype               | Detection Radius | View Angle | Omnidirectional? | Reaction Delay | Max Chase Dist (Spawn) | Max Chase Dist (Territory) | Give Up Time | Safe Distance | Max Flee Dist | Flee Exhaustion | Flee Accel | Chase Move Delay | Notes                                                                                     |
+| ----------------------- | ---------------- | ---------- | ---------------- | -------------- | ---------------------- | -------------------------- | ------------ | ------------- | ------------- | --------------- | ---------- | ---------------- | ----------------------------------------------------------------------------------------- |
+| **Timid / Nervous**     | 4                | 90°        | ❌                | 0.2s           | 6                      | 0                          | 3s           | 5             | 6             | 2s              | 0.75s      | 0.25s            | Hesitates briefly, flees quickly, exhausted if far. Good for butterflies, small critters. |
+| **Aggressive / Chaser** | 6                | 180°       | ✅                | 0.1s           | 8                      | 0                          | 6s           | 0             | 0             | 0               | 0          | 0.2s             | Detects easily, chases relentlessly, never flees. Great for big predators.                |
+| **Territorial / Guard** | 5                | 120°       | ✅                | 0.2s           | 0                      | 4                          | 4s           | 4             | 3             | 3s              | 0.5s       | 0.25s            | Focuses on territory. Chases intruder, may flee slightly if cornered.                     |
+| **Passive / Wanderer**  | 3                | 180°       | ✅                | 0.5s           | 4                      | 0                          | 2s           | 3             | 2             | 5s              | 1s         | 0.3s             | Rarely reacts, moves slowly, flees only if cornered. Good for background fauna.           |
+
+---
+
+### ✅ Quick Notes on Each Column:
+
+* **Detection Radius:** How close the player must be to trigger reaction.
+* **View Angle:** Cone of vision (0–360°). Small for timid animals, wide for predators.
+* **Omnidirectional?:** Ignores facing, can see in all directions.
+* **Reaction Delay:** Time before starting flee or chase; works with the “!” alert.
+* **Max Chase Dist:** Leash distances; territorial Pokémon often have spawn=0, territory>0.
+* **Give Up Time:** How long without progress before stopping chase/flee.
+* **Safe Distance:** Target distance from threat to stop fleeing.
+* **Max Flee Dist:** Maximum distance Pokémon will flee before exhaustion.
+* **Flee Exhaustion:** Cooldown before Pokémon can flee again.
+* **Flee Accel:** Time to ramp from slow start to full flee speed.
+* **Chase Move Delay:** Base delay per step; affects overall movement speed.
+
+---

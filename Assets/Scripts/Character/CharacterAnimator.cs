@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum FacingDirection { Left, Right, Up, Down }
+
 public class CharacterAnimator : MonoBehaviour
 {
     [SerializeField] List<Sprite> walkDownSprites, walkUpSprites, walkLeftSprites, walkRightSprites;
@@ -123,5 +124,10 @@ public class CharacterAnimator : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public Vector2 GetFacingDirection()
+    {
+        return new Vector2(MoveX, MoveY);
     }
 }

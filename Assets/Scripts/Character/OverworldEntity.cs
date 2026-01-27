@@ -20,7 +20,7 @@ public abstract class OverworldEntity : MonoBehaviour, IInteractable
 
     public IEnumerator Interact(Transform initiator)
     {
-        if (state != NPCState.Idle)
+        if (state != NPCState.Idle || GameController.I.stateMachine.CurrentState != FreeRoamState.I)
             yield break;
 
         state = NPCState.Dialog;

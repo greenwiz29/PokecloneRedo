@@ -63,7 +63,7 @@ public class PokemonBase : ScriptableObject
     [SerializeField] WildPursuitProfile defaultPursuitProfile;
     // [Tooltip("Describes the flying/burrowing behavior of the species. Set to null for species that can do neither.")]
     [SerializeField] VerticalPresenceProfile verticalPresence = null;
-    
+
     public string Name => name;
     public string Desc => description;
     public PokemonGenderRatio GenderRatio { get { return genderRatio; } }
@@ -198,6 +198,14 @@ public class VerticalPresenceProfile
     [Tooltip("Visual offset range in Unity units")]
     public Vector2 offsetRange; // e.g. (-0.4, 0.8)
 
+    public NeutralAltitudeMode neutralMode = NeutralAltitudeMode.Continuous;
+
+    // For Continuous
+    public float neutralBobSpeed = 2.0f;
+
+    // For PerMoveCycle
+    public AnimationCurve perMoveCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
     [Tooltip("Player can interact only if abs(offset) <= this")]
     public float interactionTolerance = 0.2f;
 
@@ -206,4 +214,10 @@ public class VerticalPresenceProfile
 
     [Tooltip("Indicates the preferred direction to escape")]
     public DivergencePreference divergencePreference;
+}
+
+public enum NeutralAltitudeMode
+{
+    Continuous,   // butterflies, birds
+    PerMoveCycle  // hopping, bobbing per tile
 }

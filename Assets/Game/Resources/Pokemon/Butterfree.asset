@@ -69,14 +69,41 @@ MonoBehaviour:
   learnableByItems: []
   evolutions: []
   possibleBehaviors:
+  - {fileID: 11400000, guid: 7f6da6ca3d706ebe9abd9a1e9e52f2ca, type: 2}
   - {fileID: 11400000, guid: a545c0ba32e10fe4086e4a518fe9afe3, type: 2}
-  defaultPursuitProfile: {fileID: 11400000, guid: 616b881560bfaebf2a69b4d720af4b2b, type: 2}
+  defaultPursuitProfile: {fileID: 11400000, guid: 4db5146fcf75d8d45adb0cd8d5e090c3, type: 2}
   verticalPresence:
     canHover: 1
     canFly: 1
     canBurrow: 0
     usesGroundFooting: 0
-    offsetRange: {x: 0, y: 2}
+    offsetRange: {x: 0, y: 3}
+    neutralMode: 0
+    neutralBobSpeed: 1.8
+    perMoveCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
     interactionTolerance: 0.2
     changeIntervalRange: {x: 1.5, y: 3.5}
     divergencePreference: 0

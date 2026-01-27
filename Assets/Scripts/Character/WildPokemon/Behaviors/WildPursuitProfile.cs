@@ -4,8 +4,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Pokemon/WildPursuitProfile")]
 public class WildPursuitProfile : ScriptableObject
 {
-    [Header("Detection")]
-    public float detectionRadius = 4f;
+    [Header("Perception")]
+    public float detectionRadius = 5f;
+    public float viewAngle = 120f;      // degrees
+    public bool hasOmnidirectionalVision;
+    public float reactionDelay = 0.4f;
 
     [Header("Leash")]
     public float maxChaseDistanceFromSpawn = 6f; // 0 = ignore spawn-point leash
@@ -17,6 +20,14 @@ public class WildPursuitProfile : ScriptableObject
 
     [Header("Timid")]
     public float safeDistance = 5f; // distance at which fleeing stops
+    public float maxFleeDistance = 6f; // how far it will flee before exhaustion
+    public float fleeExhaustionCooldown = 2f; // time to recover before it can flee again
+
+    [Tooltip("Delay after detection before fleeing starts")]
+    public float timidReactionDelay = 0.2f;
+
+    [Tooltip("Time it takes to ramp from slow flee to full flee speed")]
+    public float fleeAccelerationTime = 0.75f;
 
     [Header("Movement")]
     public float chaseMoveDelay = 0.25f;

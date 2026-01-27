@@ -8,25 +8,18 @@ public class AggressiveBehavior : WildPokemonBehavior
 
     public override IEnumerator Run(WildPokemonController c)
     {
-        while (true)
-        {
-            if (!CanAggro(c))
-            {
-                yield return null;
-                continue;
-            }
+        if (!CanAggro(c))
+            yield break;
 
-            Transform player = DetectPlayer(c);
-            if (player != null)
-            {
-                c.EnterAggro();
-                yield return Chase(c, player);
-            }
-            else
-            {
-                yield return null;
-            }
-        }
+        Transform player = c.CurrentThreat;
+        if (player == null)
+            yield break;
+
+        if (!c.CanSeeThreat(player))
+            yield break;
+
+        c.EnterAggro();
+        yield return Chase(c, player);
     }
 
     bool CanAggro(WildPokemonController c)
@@ -34,21 +27,7 @@ public class AggressiveBehavior : WildPokemonBehavior
         return Time.time - c.LastAggroTime >= c.Profile.reAggroCooldown;
     }
 
-    Transform DetectPlayer(WildPokemonController c)
-    {
-        var player = GameObject.FindWithTag("Player");
-        if (player == null)
-            return null;
 
-        bool playerDetected = Vector3.Distance(c.transform.position, player.transform.position) <= c.Profile.detectionRadius;
-        if (playerDetected)
-        {
-            c.Territory?.BroadcastThreat(player.transform);
-            return player.transform;
-        }
-
-        return null;
-    }
 
     IEnumerator Chase(WildPokemonController c, Transform player)
     {
@@ -65,6 +44,7 @@ public class AggressiveBehavior : WildPokemonBehavior
                 break;
 
             yield return c.Move(DirectionFromPositions(c.transform.position, nextPos));
+            c.VerticalPresence?.StartTransition(0f, 0.25f);
 
             giveUpTimer = PlayerDistanceDecreasing(c, player)
                 ? 0f

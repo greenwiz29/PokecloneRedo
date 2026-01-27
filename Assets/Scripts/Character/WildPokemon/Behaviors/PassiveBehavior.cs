@@ -9,7 +9,7 @@ public class PassiveBehavior : WildPokemonBehavior
     {
         while (true)
         {
-            if (c.StateNotIdle)
+            if (c.CurrentMode != WildPokemonController.WildMode.Neutral)
             {
                 yield return null;
                 continue;

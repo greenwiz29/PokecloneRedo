@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d06b11e112c5d26997acf8229860733, type: 3}
-  m_Name: defaultPassive
+  m_Name: territorialProfile
   m_EditorClassIdentifier: Assembly-CSharp::WildPursuitProfile
-  detectionRadius: 3
-  viewAngle: 180
+  detectionRadius: 5
+  viewAngle: 120
   hasOmnidirectionalVision: 1
-  reactionDelay: 0.5
-  maxChaseDistanceFromSpawn: 4
-  maxChaseDistanceFromTerritory: 0
-  giveUpTime: 2
-  reAggroCooldown: 3
-  safeDistance: 3
-  maxFleeDistance: 2
-  fleeExhaustionCooldown: 5
-  timidReactionDelay: 0.3
-  fleeAccelerationTime: 1
-  chaseMoveDelay: 0.3
+  reactionDelay: 0.2
+  maxChaseDistanceFromSpawn: 0
+  maxChaseDistanceFromTerritory: 4
+  giveUpTime: 4
+  reAggroCooldown: 2
+  safeDistance: 4
+  maxFleeDistance: 3
+  fleeExhaustionCooldown: 3
+  timidReactionDelay: 0.15
+  fleeAccelerationTime: 0.5
+  chaseMoveDelay: 0.25
