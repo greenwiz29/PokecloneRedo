@@ -17,7 +17,7 @@ public class SceneMapAreaRegistry : MonoBehaviour
 
     private void RegisterMapAreas()
     {
-        foreach (var trigger in FindObjectsByType<SceneDetails>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        foreach (var trigger in FindObjectsByType<SceneDetails>(FindObjectsInactive.Include))
         {
             if (!string.IsNullOrEmpty(trigger.SceneName) && trigger.MapArea != null)
             {

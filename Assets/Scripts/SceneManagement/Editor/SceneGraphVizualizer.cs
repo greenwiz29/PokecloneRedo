@@ -21,7 +21,7 @@ public class SceneGraphVisualizer : EditorWindow
 
     void OnEnable()
     {
-        triggers = FindObjectsByType<SceneTrigger>(FindObjectsSortMode.None);
+        triggers = FindObjectsByType<SceneTrigger>();
 
         // center graph initially
         pan = position.size / 2f;
@@ -391,7 +391,7 @@ public class SceneGraphVisualizer : EditorWindow
             var scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
 
             // Gather all portal info
-            var portals = Object.FindObjectsByType<LocationPortal>(FindObjectsSortMode.None);
+            var portals = Object.FindObjectsByType<LocationPortal>();
             var portalInfos = new List<PortalInfo>();
 
             foreach (var portal in portals)

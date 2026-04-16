@@ -26,7 +26,7 @@ public class LocationPortal : MonoBehaviour, IPlayerTriggerable
     public PortalDirection Direction => direction;
     public PortalLock LockCondition => lockCondition;
     public SceneDetails TargetScene =>
-        FindObjectsByType<SceneDetails>(FindObjectsSortMode.None)
+        FindObjectsByType<SceneDetails>()
             .FirstOrDefault(s => s.SceneName == targetSceneName);
 #if UNITY_EDITOR
     public void SetEditorValues(string sceneName, string entryId)

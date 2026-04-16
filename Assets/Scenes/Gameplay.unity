@@ -238,7 +238,7 @@ PrefabInstance:
     - target: {fileID: 246576170840947137, guid: b122500589cc8711fab8f196ef780041, type: 3}
       propertyPath: backgroundTile
       value: 
-      objectReference: {fileID: 11400000, guid: 19fac07105815f4e397a5d845e885f34, type: 2}
+      objectReference: {fileID: 11400000, guid: 7dce60838cbe1f535b3e0d2013d44e50, type: 2}
     - target: {fileID: 246576170840947137, guid: b122500589cc8711fab8f196ef780041, type: 3}
       propertyPath: connectedScenes.Array.size
       value: 2
@@ -598,6 +598,22 @@ PrefabInstance:
     - target: {fileID: 2412965814253058188, guid: b122500589cc8711fab8f196ef780041, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938492721077518469, guid: b122500589cc8711fab8f196ef780041, type: 3}
+      propertyPath: m_Size.x
+      value: 22.165287
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938492721077518469, guid: b122500589cc8711fab8f196ef780041, type: 3}
+      propertyPath: m_Size.y
+      value: 17.807804
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938492721077518469, guid: b122500589cc8711fab8f196ef780041, type: 3}
+      propertyPath: m_Offset.x
+      value: 24.68448
+      objectReference: {fileID: 0}
+    - target: {fileID: 3938492721077518469, guid: b122500589cc8711fab8f196ef780041, type: 3}
+      propertyPath: m_Offset.y
+      value: 2.6278296
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2330,10 +2346,10 @@ MonoBehaviour:
     encounterRate: 40
   - pokemon: {fileID: 11400000, guid: c8beb122e19a711a18e5a4f7038dab8f, type: 2}
     levelRange: {x: 7, y: 10}
-    encounterRate: 40
+    encounterRate: 30
   - pokemon: {fileID: 11400000, guid: 7309f5f8365944c75b33b92e50db89d1, type: 2}
     levelRange: {x: 7, y: 10}
-    encounterRate: 20
+    encounterRate: 30
   wildPoolInWater: []
   weather: 0
   totalChance: 100

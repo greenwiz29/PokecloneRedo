@@ -9,7 +9,7 @@ public class SceneAutoConnector : MonoBehaviour
     [ContextMenu("Auto Connect Scenes")]
     void AutoConnect()
     {
-        var anchors = FindObjectsByType<SceneTrigger>(FindObjectsSortMode.None);
+        var anchors = FindObjectsByType<SceneTrigger>();
 
         foreach (var a in anchors)
         {

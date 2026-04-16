@@ -36,7 +36,7 @@ public class GridRuntimeBindings : MonoBehaviour
 
     SceneDetails FindSceneDetailsForScene(Scene scene)
     {
-        return FindObjectsByType<SceneDetails>(FindObjectsSortMode.None)
+        return FindObjectsByType<SceneDetails>()
             .FirstOrDefault(d => d.SceneName == scene.name);
     }
 }

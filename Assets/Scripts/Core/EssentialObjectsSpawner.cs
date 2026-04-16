@@ -6,7 +6,7 @@ public class EssentialObjectsSpawner : MonoBehaviour
 
     void Awake()
     {
-        var existingObjects = FindObjectsByType<EssentialObjects>(FindObjectsSortMode.None);
+        var existingObjects = FindObjectsByType<EssentialObjects>();
         if (existingObjects.Length == 0)
         {
             // if there's a grid, spawn at its center

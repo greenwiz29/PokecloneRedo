@@ -38,7 +38,7 @@ public class Portal : MonoBehaviour, IPlayerTriggerable
         // Switch scene
         yield return SceneManager.LoadSceneAsync(sceneToLoad);
 
-        var destPortal = FindObjectsByType<Portal>(FindObjectsSortMode.None).First(x => x != this && x.destinationPortal == destinationPortal);
+        var destPortal = FindObjectsByType<Portal>().First(x => x != this && x.destinationPortal == destinationPortal);
         player.Character.SetPositionAndSnapToTile(destPortal.SpawnPoint.position);
 
         yield return fader.FadeOut(0.5f);

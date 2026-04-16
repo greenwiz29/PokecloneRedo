@@ -47,7 +47,7 @@ public class SceneDetails : MonoBehaviour
 
     public SceneEntryPoint GetEntryPoint(string id)
     {
-        return FindObjectsByType<SceneEntryPoint>(FindObjectsSortMode.None)
+        return FindObjectsByType<SceneEntryPoint>()
             .FirstOrDefault(e =>
                 e.EntryId == id &&
                 e.gameObject.scene.name == SceneName
@@ -150,7 +150,7 @@ public class SceneDetails : MonoBehaviour
         if (!scene.IsValid() || scene.name == "Gameplay")
             return;
 
-        var all = FindObjectsByType<SceneDetails>(FindObjectsSortMode.None)
+        var all = FindObjectsByType<SceneDetails>()
             .Where(s => s.gameObject.scene == scene)
             .ToList();
 
@@ -167,7 +167,7 @@ public class SceneDetails : MonoBehaviour
     List<SavableEntity> GetSavableEntitiesInScene()
     {
         var currScene = SceneManager.GetSceneByName(gameObject.name);
-        var savableEntities = FindObjectsByType<SavableEntity>(FindObjectsSortMode.None).Where(x => x.gameObject.scene == currScene).ToList();
+        var savableEntities = FindObjectsByType<SavableEntity>().Where(x => x.gameObject.scene == currScene).ToList();
         return savableEntities;
     }
 

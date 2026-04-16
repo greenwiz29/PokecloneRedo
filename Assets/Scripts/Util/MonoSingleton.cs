@@ -162,7 +162,7 @@ public class MonoSingleton<T> : MonoBehaviour
     /// ********************************************************************
     private static T FindExistingInstance()
     {
-        var mExistingInstances = FindObjectsByType<T>(FindObjectsSortMode.None);
+        var mExistingInstances = FindObjectsByType<T>();
 
         if (mExistingInstances == null || mExistingInstances.Length == 0)
         {
