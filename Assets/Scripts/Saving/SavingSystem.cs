@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using Newtonsoft.Json;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class SavingSystem : MonoBehaviour
 {
@@ -13,6 +10,13 @@ public class SavingSystem : MonoBehaviour
     {
         i = this;
     }
+
+    static JsonSerializerSettings jsonSettings = new JsonSerializerSettings()
+        {
+            TypeNameHandling = TypeNameHandling.Auto,
+            Formatting = Formatting.Indented,
+            Converters = { new Newtonsoft.Json.Converters.StringEnumConverter()}
+        };
 
     Dictionary<string, object> gameState = new Dictionary<string, object>();
 
@@ -68,7 +72,7 @@ public class SavingSystem : MonoBehaviour
     // Used to capture states of all savable objects in the game
     private void CaptureState(Dictionary<string, object> state)
     {
-        foreach (SavableEntity savable in FindObjectsByType<SavableEntity>(FindObjectsSortMode.None))
+        foreach (SavableEntity savable in FindObjectsByType<SavableEntity>())
         {
             state[savable.UniqueId] = savable.CaptureState();
         }
@@ -77,7 +81,7 @@ public class SavingSystem : MonoBehaviour
     // Used to restore states of all savable objects in the game
     private void RestoreState(Dictionary<string, object> state)
     {
-        foreach (SavableEntity savable in FindObjectsByType<SavableEntity>(FindObjectsSortMode.None))
+        foreach (SavableEntity savable in FindObjectsByType<SavableEntity>())
         {
             string id = savable.UniqueId;
             if (state.ContainsKey(id))
@@ -90,12 +94,8 @@ public class SavingSystem : MonoBehaviour
         string path = GetPath(saveFile);
         print($"saving to {path}");
 
-        using (FileStream fs = File.Open(path, FileMode.Create))
-        {
-            // Serialize our object
-            BinaryFormatter binaryFormatter = new BinaryFormatter();
-            binaryFormatter.Serialize(fs, state);
-        }
+        string json = JsonConvert.SerializeObject(state, jsonSettings);
+        File.WriteAllText(path, json);
     }
 
     Dictionary<string, object> LoadFile(string saveFile)
@@ -104,12 +104,8 @@ public class SavingSystem : MonoBehaviour
         if (!File.Exists(path))
             return new Dictionary<string, object>();
 
-        using (FileStream fs = File.Open(path, FileMode.Open))
-        {
-            // Deserialize our object
-            BinaryFormatter binaryFormatter = new BinaryFormatter();
-            return (Dictionary<string, object>)binaryFormatter.Deserialize(fs);
-        }
+        string json = File.ReadAllText(path);
+        return JsonConvert.DeserializeObject<Dictionary<string, object>>(json, jsonSettings);
     }
 
     private string GetPath(string saveFile)

@@ -838,20 +838,18 @@ public class Pokemon
 
     public float ModifyAtk(float atk, Pokemon defender, Move move)
     {
-        if (Ability?.OnModifyAtk != null)
-        {
-            return Ability.OnModifyAtk(atk, this, defender, move);
-        }
-        return atk;
+        if(defender == null || move == null || Ability?.OnModifyAtk == null)
+            return atk;
+
+        return Ability.OnModifyAtk(atk, this, defender, move);
     }
 
     public float ModifySpAtk(float spAtk, Pokemon defender, Move move)
     {
-        if (Ability?.OnModifySpAtk != null)
-        {
-            return Ability.OnModifySpAtk(spAtk, this, defender, move);
-        }
-        return spAtk;
+        if(defender == null || move == null || Ability?.OnModifySpAtk == null)
+            return spAtk;
+
+        return Ability.OnModifySpAtk(spAtk, this, defender, move);
     }
 
     public float ModifyDef(float def, Pokemon attacker, Move move)
@@ -865,14 +863,10 @@ public class Pokemon
 
     public float ModifyMoveBasePower(Move move, Pokemon defender)
     {
-        if (Ability?.OnModifyMoveBasePower != null)
-        {
-            return Ability.OnModifyMoveBasePower.Invoke(move.Base.Power, this, defender, move);
-        }
-        else
-        {
+        if(defender == null || Ability?.OnModifyMoveBasePower == null)
             return move.Base.Power;
-        }
+
+        return Ability.OnModifyMoveBasePower.Invoke(move.Base.Power, this, defender, move);
     }
 
     public float ModifySpDef(float spDef, Pokemon attacker, Move move)
@@ -886,20 +880,18 @@ public class Pokemon
 
     public float ModifySpd(float spd, Pokemon defender, Move move)
     {
-        if (Ability?.OnModifySpd != null)
-        {
-            return Ability.OnModifySpd(spd, this, defender, move);
-        }
-        return spd;
+        if(defender == null || move == null || Ability?.OnModifySpd == null)
+            return spd;
+
+        return Ability.OnModifySpd(spd, this, defender, move);        
     }
 
     public float ModifyAcc(float acc, Pokemon defender, Move move)
     {
-        if (Ability?.OnModifyAcc != null)
-        {
-            return Ability.OnModifyAcc(acc, this, defender, move);
-        }
-        return acc;
+        if(defender == null || move == null || Ability?.OnModifyAcc == null)
+            return acc;
+
+        return Ability.OnModifyAcc(acc, this, defender, move);
     }
 
 }
