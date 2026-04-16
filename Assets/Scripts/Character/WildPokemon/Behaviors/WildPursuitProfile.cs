@@ -6,13 +6,16 @@ public class WildPursuitProfile : ScriptableObject
 {
     [Header("Perception")]
     public float detectionRadius = 5f;
+    [Range(30.0f, 330.0f)]
     public float viewAngle = 120f;      // degrees
     public bool hasOmnidirectionalVision;
     public float reactionDelay = 0.4f;
 
     [Header("Leash")]
-    public float maxChaseDistanceFromSpawn = 6f; // 0 = ignore spawn-point leash
-    public float maxChaseDistanceFromTerritory = 0f; // 0 = ignore territory
+    [Tooltip("Max tiles from spawn point. Set to 0 to ignore the check.")]
+    public float maxChaseDistanceFromSpawn = 6f;
+    [Tooltip("Max tiles from territory. Set to 0 to ignore the check.")]
+    public float maxChaseDistanceFromTerritory = 0f;
 
     [Header("Persistence")]
     public float giveUpTime = 3f; // seconds without progress
@@ -31,6 +34,26 @@ public class WildPursuitProfile : ScriptableObject
 
     [Header("Movement")]
     public float chaseMoveDelay = 0.25f;
+
+    [Header("Resting")]
+    public float restingMinDuration = 2.5f;
+    public float restingMaxDuration = 5f;
+
+    [Tooltip("Multiplier applied to detection radius while resting")]
+    [Range(0.0f, 1.0f)]
+    public float restingDetectionMultiplier = 0.4f;
+
+    [Tooltip("Multiplier applied to view angle while resting")]
+    [Range(0.0f, 1.0f)]
+    public float restingViewAngleMultiplier = 0.5f;
+
+    [Tooltip("Chance per second to attempt resting while neutral (0–1)")]
+    [Range(0.0f, 1.0f)]
+    public float restingAttemptRate = 0.15f;
+
+    [Tooltip("Seconds after fleeing before resting becomes possible")]
+    public float postFleeRestDelay = 1.5f;
+
 }
 
 public class Territory

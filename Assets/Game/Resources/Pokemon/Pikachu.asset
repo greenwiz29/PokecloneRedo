@@ -73,7 +73,7 @@ MonoBehaviour:
     canFly: 0
     canBurrow: 0
     usesGroundFooting: 1
-    offsetRange: {x: 0, y: 0.5}
+    offsetRange: {x: 0, y: 0.2}
     neutralMode: 1
     neutralBobSpeed: 2
     perMoveCurve:
@@ -112,3 +112,6 @@ MonoBehaviour:
     interactionTolerance: 0.2
     changeIntervalRange: {x: 1.5, y: 3.5}
     divergencePreference: 0
+    canFlyAway: 0
+    flyAwayAltitudeTolerance: 0.1
+    flyAwayHoldTime: 1.5

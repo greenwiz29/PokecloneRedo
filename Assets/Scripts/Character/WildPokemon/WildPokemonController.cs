@@ -16,6 +16,13 @@ public class WildPokemonController : OverworldEntity
     [Header("Reactions")]
     [SerializeField] GameObject alertIndicator; // "!" sprite/anim, disabled by default
 
+    [Header("Lifecycle")]
+    [Tooltip("Seconds after spawn before despawning (0 = never)")]
+    [SerializeField] float despawnAfterSeconds = 30f;
+
+    [Tooltip("Minimum time after reacting before despawn is allowed")]
+    [SerializeField] float postReactionGracePeriod = 3f;
+
     WildPursuitProfile pursuitProfile;
 
     public Pokemon WildPokemon { get; private set; }
@@ -33,16 +40,21 @@ public class WildPokemonController : OverworldEntity
 
     Coroutine baselineBehaviorRoutine;
     Coroutine reactiveRoutine;
+    Coroutine restingRoutine;
 
     Territory territory;
 
     float lastAggroTime;
     float fleeAccumulatedDistance;
     float lastFleeEndTime;
+    bool alertPlaying;
+    float spawnTime;
+    bool isInBattle;
 
     VisualAltitudeController verticalPresence = null;
 
-    public enum WildMode { Neutral, Aggro, Fleeing }
+    public enum WildMode { Neutral, Aggro, Fleeing, Resting }
+    public bool IsReacting { get; private set; }
     public Transform CurrentThreat { get; private set; }
     public WildMode CurrentMode { get; private set; } = WildMode.Neutral;
     public float FleeAccumulatedDistance { get => fleeAccumulatedDistance; set => fleeAccumulatedDistance = value; }
@@ -54,18 +66,6 @@ public class WildPokemonController : OverworldEntity
     {
         base.Awake();
         spawnPoint = transform.position;
-    }
-
-    protected override IEnumerator OnInteract(Transform initiator)
-    {
-        if (!AllowsInteraction())
-            yield break;
-
-        var player = initiator.GetComponent<PlayerController>();
-        if (player == null)
-            yield break;
-
-        GameController.I.StartOverworldPokemonBattle(this);
     }
 
     public void Init(MapArea mapArea, Vector3 spawnPoint, BattleTrigger trigger = BattleTrigger.LongGrass, Territory territory = null)
@@ -89,11 +89,11 @@ public class WildPokemonController : OverworldEntity
         if (profile != null)
         {
             verticalPresence = new VisualAltitudeController(this, sprite, profile);
-            if (!profile.usesGroundFooting)
-            {
-                character.OffsetY = 0f;
-            }
-            else
+            // if (!profile.usesGroundFooting)
+            // {
+            //     character.OffsetY = 0f;
+            // }
+            // else
             {
                 character.OffsetY = 0.5f;
             }
@@ -108,9 +108,24 @@ public class WildPokemonController : OverworldEntity
         var behavior = WildBehaviorResolver.Resolve(WildPokemon, mapArea, territory);
         pursuitProfile = WildPokemon.Base.DefaultPursuitProfile;
 
+        spawnTime = Time.time;
+
         InitBehaviors(WildPokemon);
 
         InitializeBehavior(behavior);
+    }
+
+    protected override IEnumerator OnInteract(Transform initiator)
+    {
+        if (!AllowsInteraction())
+            yield break;
+
+        var player = initiator.GetComponent<PlayerController>();
+        if (player == null)
+            yield break;
+
+        isInBattle = true;
+        GameController.I.StartOverworldPokemonBattle(this);
     }
 
     public bool AllowsInteraction()
@@ -156,6 +171,7 @@ public class WildPokemonController : OverworldEntity
         }
         finally
         {
+            SnapToGrid();
             verticalPresence.ReanchorBaseHeight();
             verticalPresence.IsMoving = false;
             state = NPCState.Idle;
@@ -170,6 +186,11 @@ public class WildPokemonController : OverworldEntity
                 }
             }
         }
+    }
+
+    void SnapToGrid()
+    {
+        character.SetPositionAndSnapToTile(transform.position);
     }
 
     private void InitBehaviors(Pokemon pokemon)
@@ -189,11 +210,18 @@ public class WildPokemonController : OverworldEntity
         verticalPresence?.Tick();
 
         TryTriggerReactions();
+
+        TryFlyAway();
+
+        if (CurrentMode == WildMode.Neutral)
+            TryEnterResting();
+
+        TryDespawn();
     }
 
     void TryTriggerReactions()
     {
-        if (CurrentMode != WildMode.Neutral)
+        if (CurrentMode != WildMode.Neutral || IsReacting)
             return;
 
         CurrentThreat = DetectPlayer();
@@ -219,12 +247,64 @@ public class WildPokemonController : OverworldEntity
         }
     }
 
+    void TryDespawn()
+    {
+        if (Profile == null)
+            return;
+
+        if (despawnAfterSeconds <= 0f)
+            return;
+
+        if (isInBattle)
+            return;
+
+        // Don’t despawn while reacting or moving
+        if (IsReacting || CurrentMode != WildMode.Neutral || StateNotIdle)
+            return;
+
+        // Grace period after last reaction
+        float lastActivityTime = Mathf.Max(
+            spawnTime,
+            LastAggroTime,
+            LastFleeEndTime
+        );
+
+        if (Time.time - lastActivityTime < postReactionGracePeriod)
+            return;
+
+        if (Time.time - spawnTime >= despawnAfterSeconds)
+        {
+            Despawn();
+        }
+    }
+
+    void TryFlyAway()
+    {
+        if (verticalPresence == null)
+            return;
+
+        if (!verticalPresence.ReadyToFlyAway)
+            return;
+
+        if (isInBattle)
+            return;
+
+        // Don't vanish mid-tile or mid-reaction
+        if (IsReacting || StateNotIdle)
+            return;
+
+        Despawn();
+    }
+
     void InitializeBehavior(WildPokemonBehavior newBehavior)
     {
         baselineBehavior = newBehavior;
 
         if (baselineBehaviorRoutine != null)
+        {
             StopCoroutine(baselineBehaviorRoutine);
+            SnapToGrid();
+        }
 
         baselineBehaviorRoutine = StartCoroutine(baselineBehavior.Run(this));
     }
@@ -235,30 +315,36 @@ public class WildPokemonController : OverworldEntity
         if (player == null)
             return null;
 
-        bool playerDetected = Vector3.Distance(transform.position, player.transform.position) <= Profile.detectionRadius;
-        if (playerDetected)
-        {
-            Territory?.BroadcastThreat(player.transform);
-            return player.transform;
-        }
+        if (!CanSeeThreat(player.transform))
+            return null;
 
-        return null;
+        Territory?.BroadcastThreat(player.transform);
+        return player.transform;
     }
 
     public bool CanSeeThreat(Transform threat)
     {
         Vector2 toThreat = threat.position - transform.position;
 
-        if (toThreat.sqrMagnitude > Profile.detectionRadius * Profile.detectionRadius)
+        float radius = Profile.detectionRadius;
+        float viewAngle = Profile.viewAngle;
+
+        if (CurrentMode == WildMode.Resting)
+        {
+            radius *= Profile.restingDetectionMultiplier;
+            viewAngle *= Profile.restingViewAngleMultiplier;
+        }
+
+        if (toThreat.sqrMagnitude > radius * radius)
             return false;
 
         if (Profile.hasOmnidirectionalVision)
             return true;
 
-        Vector2 forward = character.Animator.GetFacingDirection(); // normalized grid or move direction
+        Vector2 forward = character.Animator.GetFacingDirection();
         float angle = Vector2.Angle(forward, toThreat);
 
-        return angle <= Profile.viewAngle * 0.5f;
+        return angle <= viewAngle * 0.5f;
     }
 
     public void OnTerritoryThreat(Transform threat)
@@ -275,8 +361,20 @@ public class WildPokemonController : OverworldEntity
 
     public void StartReactiveBehavior(WildPokemonBehavior reactive)
     {
+        if (IsReacting)
+            return;
+
         if (reactiveRoutine != null)
+        {
             StopCoroutine(reactiveRoutine);
+            SnapToGrid();
+        }
+
+        IsReacting = true;
+        if (CurrentMode == WildMode.Resting)
+        {
+            ExitResting();
+        }
 
         reactiveRoutine = StartCoroutine(RunReactive(reactive));
     }
@@ -285,17 +383,21 @@ public class WildPokemonController : OverworldEntity
     {
         yield return reactive.Run(this);
         reactiveRoutine = null;
+        IsReacting = false;
     }
+
     public void PlayAlert()
     {
         if (alertIndicator == null)
             return;
 
-        StartCoroutine(PlayAlertRoutine());
+        if (!alertPlaying)
+            StartCoroutine(PlayAlertRoutine());
     }
 
     IEnumerator PlayAlertRoutine()
     {
+        alertPlaying = true;
         alertIndicator.SetActive(true);
 
         // If it's animated, let the animation play
@@ -304,6 +406,7 @@ public class WildPokemonController : OverworldEntity
         yield return new WaitForSeconds(alertDuration);
 
         alertIndicator.SetActive(false);
+        alertPlaying = false;
     }
 
     public bool IsClosingDistanceTo(Transform target)
@@ -323,6 +426,7 @@ public class WildPokemonController : OverworldEntity
 
     public void EnterAggro()
     {
+        CancelResting();
         ResetChaseMetrics();
         CurrentMode = WildMode.Aggro;
         verticalPresence?.SetInteractionPlaneBias(InteractionPlaneBias.Converge);
@@ -330,6 +434,7 @@ public class WildPokemonController : OverworldEntity
 
     public void EnterFlee()
     {
+        CancelResting();
         ResetChaseMetrics();
         CurrentMode = WildMode.Fleeing;
         verticalPresence?.SetInteractionPlaneBias(InteractionPlaneBias.Diverge);
@@ -342,11 +447,87 @@ public class WildPokemonController : OverworldEntity
         CurrentMode = WildMode.Neutral;
         CurrentThreat = null;
         verticalPresence?.SetInteractionPlaneBias(InteractionPlaneBias.Neutral);
+        verticalPresence?.StartTransition(0f, 0.15f); // guarantee descent
+    }
+
+    public void EnterResting()
+    {
+        CurrentMode = WildMode.Resting;
+        CurrentThreat = null;
+
+        verticalPresence?.SetInteractionPlaneBias(InteractionPlaneBias.Converge);
+        verticalPresence?.StartTransition(0f, 0.2f); // land
+    }
+
+    public void ExitResting()
+    {
+        CurrentMode = WildMode.Neutral;
+        verticalPresence?.SetInteractionPlaneBias(InteractionPlaneBias.Neutral);
+    }
+
+    public void CancelResting()
+    {
+        if (restingRoutine != null)
+        {
+            StopCoroutine(restingRoutine);
+            SnapToGrid();
+            restingRoutine = null;
+            ExitResting();
+        }
+    }
+
+    void TryEnterResting()
+    {
+        if (restingRoutine != null)
+            return;
+
+        if (CurrentMode != WildMode.Neutral)
+            return;
+
+        if (IsReacting || StateNotIdle)
+            return;
+
+        if (Time.time - lastFleeEndTime < Profile.postFleeRestDelay)
+            return;
+
+        // Randomized attempt rate
+        if (UnityEngine.Random.value > Profile.restingAttemptRate * Time.deltaTime)
+            return;
+
+        restingRoutine = StartCoroutine(RestingRoutine());
+    }
+
+    IEnumerator RestingRoutine()
+    {
+        EnterResting();
+
+        float duration = UnityEngine.Random.Range(Profile.restingMinDuration, Profile.restingMaxDuration);
+
+        float t = 0f;
+        while (t < duration)
+        {
+            // Wake immediately if threatened
+            if (DetectPlayer() != null)
+                break;
+
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        ExitResting();
+        restingRoutine = null;
     }
 
     public void OnBattleOver()
     {
-        Destroy(gameObject); // Removed only AFTER battle
+        Despawn();
+    }
+
+    void Despawn()
+    {
+        CancelResting();
+        territory?.Unregister(this);
+        Destroy(gameObject);
     }
 
     void OnDestroy()

@@ -5,7 +5,7 @@ public class HerdTimidBehavior : TimidBehavior, ITerritoryReactive
 {
     public void OnTerritoryThreat(WildPokemonController c, Transform threat)
     {
-        if (c.CurrentMode != WildPokemonController.WildMode.Neutral)
+        if (c.CurrentMode != WildPokemonController.WildMode.Neutral || c.IsReacting)
             return;
 
         if (!c.CanSeeThreat(threat))

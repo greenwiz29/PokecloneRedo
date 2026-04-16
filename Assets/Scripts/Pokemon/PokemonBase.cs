@@ -214,6 +214,16 @@ public class VerticalPresenceProfile
 
     [Tooltip("Indicates the preferred direction to escape")]
     public DivergencePreference divergencePreference;
+
+    [Header("Fly Away")]
+    public bool canFlyAway = false;
+
+    [Tooltip("How close to max altitude counts as 'at ceiling'")]
+    public float flyAwayAltitudeTolerance = 0.1f;
+
+    [Tooltip("How long the Pokémon must remain at max altitude to fly away")]
+    public float flyAwayHoldTime = 1.5f;
+
 }
 
 public enum NeutralAltitudeMode

@@ -13,16 +13,22 @@ MonoBehaviour:
   m_Name: defaultPassive
   m_EditorClassIdentifier: Assembly-CSharp::WildPursuitProfile
   detectionRadius: 3
-  viewAngle: 180
+  viewAngle: 120
   hasOmnidirectionalVision: 1
   reactionDelay: 0.5
   maxChaseDistanceFromSpawn: 4
   maxChaseDistanceFromTerritory: 0
   giveUpTime: 2
   reAggroCooldown: 3
-  safeDistance: 3
-  maxFleeDistance: 2
+  safeDistance: 4
+  maxFleeDistance: 5
   fleeExhaustionCooldown: 5
   timidReactionDelay: 0.3
   fleeAccelerationTime: 1
   chaseMoveDelay: 0.3
+  restingMinDuration: 4
+  restingMaxDuration: 7
+  restingDetectionMultiplier: 0.4
+  restingViewAngleMultiplier: 0.5
+  restingAttemptRate: 0.25
+  postFleeRestDelay: 1.5

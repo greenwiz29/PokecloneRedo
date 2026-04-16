@@ -139,6 +139,8 @@ public class Character : MonoBehaviour
         yield return transform
             .DOJump(jumpDest, 0.3f, 1, 0.5f)
             .WaitForCompletion();
+        
+        SetPositionAndSnapToTile(jumpDest);
 
         animator.IsJumping = false;
 

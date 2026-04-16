@@ -104,6 +104,9 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    interactionTolerance: 0.2
+    interactionTolerance: 0.5
     changeIntervalRange: {x: 1.5, y: 3.5}
     divergencePreference: 0
+    canFlyAway: 1
+    flyAwayAltitudeTolerance: 0.1
+    flyAwayHoldTime: 1.5
