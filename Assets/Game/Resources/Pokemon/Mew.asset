@@ -1,0 +1,117 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15ddb0b24272b6109ad97542dc7ba963, type: 3}
+  m_Name: Mew
+  m_EditorClassIdentifier: Assembly-CSharp::PokemonSpecies
+  identity:
+    name: Mew
+    dexNumber: 151
+    description: "Mew is said to possess the genes of all Pok\xE9mon. It is capable
+      of making itself invisible at will, so it entirely avoids notice even if it
+      approaches people."
+  battle:
+    type1: 11
+    type2: 0
+    baseStats:
+      maxHP: 100
+      attack: 100
+      defense: 100
+      spAttack: 100
+      spDefense: 100
+      speed: 100
+    ability: 12
+    hiddenAbility: 0
+    normalAbilityPercent: 70
+    expYield: 270
+    catchRate: 45
+    genderRatio: 7
+  learnset:
+    levelUpMoves: []
+    itemMoves: []
+  evolution:
+    evolutions: []
+  visuals:
+    battle:
+      front: {fileID: 21300000, guid: 91390b5bbac9610d6ba9e908a20c6b61, type: 3}
+      back: {fileID: 21300000, guid: f69398f278d7cd45db071121c4fc166e, type: 3}
+      frontFemale: {fileID: 0}
+      backFemale: {fileID: 0}
+      frontShiny: {fileID: 21300000, guid: 3b0ac21dd76733e059f17aaf9c51f26d, type: 3}
+      backShiny: {fileID: 21300000, guid: 67f0c56562b5b95a78c1319b476d7d27, type: 3}
+      frontFemaleShiny: {fileID: 0}
+      backFemaleShiny: {fileID: 0}
+    overworld:
+      walkDown:
+      - {fileID: 21300000, guid: 9881de060b80a9ceeaebceeaab3f1c96, type: 3}
+      - {fileID: 21300000, guid: 61a61a5bb7b712defb023e0b2a7519a5, type: 3}
+      walkUp:
+      - {fileID: 21300000, guid: ba774681feafe31eab5c2f31fac00d6b, type: 3}
+      - {fileID: 21300000, guid: aa8683e25a1558d719bde1f122243e51, type: 3}
+      walkLeft:
+      - {fileID: 21300000, guid: 2362a0da3e392781b9fb16d1b17dae7b, type: 3}
+      - {fileID: 21300000, guid: ac57fa9278b62f947a32553b3e73ef3a, type: 3}
+      walkRight:
+      - {fileID: 21300000, guid: 685668bfae4fbcb67ae63f1a9afe6ac0, type: 3}
+      - {fileID: 21300000, guid: 6de2902e0215d63939fbc419aa8c1e19, type: 3}
+      walkDownShiny:
+      - {fileID: 21300000, guid: e1c9d32e3d0ec68ccb1fb1036ba7087b, type: 3}
+      - {fileID: 21300000, guid: 4cfa7a8cdc3c4be81a081f0a34058cdb, type: 3}
+      walkUpShiny:
+      - {fileID: 21300000, guid: 532033b4c9a958ed18171980b339f11b, type: 3}
+      - {fileID: 21300000, guid: 8e1a9d45ca4f23b8abcaacaf9b8b6b69, type: 3}
+      walkLeftShiny:
+      - {fileID: 21300000, guid: c9fcffe01a32e54919f5a2a3f32a6376, type: 3}
+      - {fileID: 21300000, guid: ce920ac2ccfc1ef61be49afcaa9306df, type: 3}
+      walkRightShiny:
+      - {fileID: 21300000, guid: 1f4ceedce5f95989493d01f0eb511737, type: 3}
+      - {fileID: 21300000, guid: 731a19686084e5d3d94143858ff84c39, type: 3}
+  overworld:
+    possibleBehaviors: []
+    defaultPursuitProfile: {fileID: 0}
+    verticalPresence:
+      canHover: 0
+      canFly: 0
+      canBurrow: 0
+      usesGroundFooting: 1
+      offsetRange: {x: 0, y: 0}
+      neutralMode: 0
+      neutralBobSpeed: 2
+      perMoveCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      interactionTolerance: 0.2
+      changeIntervalRange: {x: 1.5, y: 3.5}
+      divergencePreference: 0
+      canFlyAway: 0
+      flyAwayAltitudeTolerance: 0.1
+      flyAwayHoldTime: 1.5

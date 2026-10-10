@@ -77,7 +77,7 @@ public class WildPokemonController : OverworldEntity
             Destroy(gameObject);
             return;
         }
-        WildPokemon = new Pokemon(wild.Base, wild.Level);
+        WildPokemon = new Pokemon(wild.Species, wild.Level);
 
         // Set character sprites
         character.Animator.SetWalkingDownSprites(WildPokemon.WalkDownAnim);
@@ -85,19 +85,12 @@ public class WildPokemonController : OverworldEntity
         character.Animator.SetWalkingLeftSprites(WildPokemon.WalkLeftAnim);
         character.Animator.SetWalkingRightSprites(WildPokemon.WalkRightAnim);
 
-        var profile = WildPokemon.Base.VerticalPresence;
+        var profile = WildPokemon.Species.VerticalPresence;
         if (profile != null)
         {
             verticalPresence = new VisualAltitudeController(this, sprite, profile);
-            // if (!profile.usesGroundFooting)
-            // {
-            //     character.OffsetY = 0f;
-            // }
-            // else
-            {
-                character.OffsetY = 0.5f;
-            }
-
+            
+            character.OffsetY = 0.5f;
         }
 
         this.spawnPoint = spawnPoint;
@@ -106,7 +99,7 @@ public class WildPokemonController : OverworldEntity
         character.SetPositionAndSnapToTile(spawnPoint);
 
         var behavior = WildBehaviorResolver.Resolve(WildPokemon, mapArea, territory);
-        pursuitProfile = WildPokemon.Base.DefaultPursuitProfile;
+        pursuitProfile = WildPokemon.Species.DefaultPursuitProfile;
 
         spawnTime = Time.time;
 
@@ -195,7 +188,7 @@ public class WildPokemonController : OverworldEntity
 
     private void InitBehaviors(Pokemon pokemon)
     {
-        var behaviors = pokemon.Base.PossibleBehaviors;
+        var behaviors = pokemon.Species.PossibleBehaviors;
 
         timidBehavior = behaviors
             .Find(b => b is TimidBehavior) as TimidBehavior;
@@ -206,8 +199,8 @@ public class WildPokemonController : OverworldEntity
 
     protected override void Update()
     {
-        base.Update();
         verticalPresence?.Tick();
+        base.Update();
 
         TryTriggerReactions();
 
@@ -613,7 +606,7 @@ public static class WildBehaviorResolver
     {
         var personality = ResolveBaselineBehavior(pokemon);
 
-        var behaviors = pokemon.Base.PossibleBehaviors;
+        var behaviors = pokemon.Species.PossibleBehaviors;
 
         var behavior = behaviors
             .Find(b => b.Personality == personality);
@@ -621,7 +614,7 @@ public static class WildBehaviorResolver
         if (behavior == null)
         {
             Debug.LogWarning(
-                $"No behavior for {personality} on {pokemon.Base.name}, falling back to Passive"
+                $"No behavior for {personality} on {pokemon.Species.name}, falling back to Passive"
             );
             behavior = behaviors
                 .Find(b => b.Personality == WildPersonality.Passive);
@@ -633,7 +626,7 @@ public static class WildBehaviorResolver
     static WildPersonality ResolveBaselineBehavior(Pokemon pokemon)
     {
         // What it does when calm
-        if (pokemon.Base.HasBehaviorType(WildPersonality.Territorial))
+        if (pokemon.Species.HasBehaviorType(WildPersonality.Territorial))
             return WildPersonality.Territorial;
 
         return WildPersonality.Passive;

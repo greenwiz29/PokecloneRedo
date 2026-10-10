@@ -304,7 +304,7 @@ public class BattleSystem : MonoBehaviour
         }
 
         Debug.Log(
-            $"[AI] {enemy.Pokemon.Base.Name} chose {bestAction.SelectedMove.Base.Name} → {bestAction.Target.Pokemon.Base.Name} (score {bestScore})"
+            $"[AI] {enemy.Pokemon.Name} chose {bestAction.SelectedMove.Base.Name} → {bestAction.Target.Pokemon.Name} (score {bestScore})"
         );
 
         return bestAction;
@@ -393,7 +393,7 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator ApplyExpGain(BattleUnit sourceUnit, BattleUnit targetUnit, bool targetFainted, DamageDetails damageDetails = null, bool shareExp = true)
     {
         // Exp gain
-        int expYield = targetUnit.Pokemon.Base.ExpYield;
+        int expYield = targetUnit.Pokemon.Species.ExpYield;
         int enemyLevel = targetUnit.Pokemon.Level;
         float trainerBonus = IsTrainerBattle ? 1.5f : 1f;
 
@@ -691,7 +691,7 @@ public class BattleSystem : MonoBehaviour
     {
         float a =
             (3 * pokemon.MaxHP - 2 * pokemon.HP)
-            * pokemon.Base.CatchRate
+            * pokemon.Species.CatchRate
             * pokeball.CatchRateModifier
             * StatusConditionsDB.GetStatusBonus(pokemon.Status)
             / (3 * pokemon.MaxHP);

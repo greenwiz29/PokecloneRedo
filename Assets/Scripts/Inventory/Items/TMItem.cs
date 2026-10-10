@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Items/Create new TM or HM")]
@@ -19,6 +20,6 @@ public class TMItem : ItemBase
 
 	public bool CanBeTaught(Pokemon pokemon)
 	{
-		return pokemon.Base.LearnableByItems.Contains(move);
+		return pokemon.Species.LearnableByItems.Contains(move);
 	}
 }

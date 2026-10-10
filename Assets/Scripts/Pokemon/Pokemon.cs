@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class Pokemon
 {
-    [SerializeField] PokemonBase _base;
+    [SerializeField] PokemonSpecies species;
 
     [SerializeField] int level;
     [SerializeField] PokemonGender gender;
@@ -14,12 +14,12 @@ public class Pokemon
     private AbilityID abilityID;
     bool useHiddenAbility = false;
 
-    public PokemonBase Base => _base;
+    public PokemonSpecies Species => species;
     public int Level => level;
     int exp;
     public static int maxMoves = 4;
 
-    public string Name => _base.name;
+    public string Name => species.Name;
     public PokemonGender Gender { get { return gender; } }
 
     public int Attack => GetStat(Stat.Attack);
@@ -71,9 +71,9 @@ public class Pokemon
     /// </summary>
     /// <param name="pBase">The species of the Pokemon to generate.</param>
     /// <param name="pLevel">The level of the Pokemon to generate.</param>
-    public Pokemon(PokemonBase pBase, int pLevel)
+    public Pokemon(PokemonSpecies pBase, int pLevel)
     {
-        _base = pBase;
+        species = pBase;
         level = pLevel;
 
         Init();
@@ -85,7 +85,7 @@ public class Pokemon
     /// <param name="saveData">The saved data of the Pokemon to generate.</param>
     public Pokemon(PokemonSaveData saveData)
     {
-        _base = PokemonDB.GetObjectByName(saveData.name);
+        species = PokemonDB.GetObjectByName(saveData.name);
         HP = saveData.hp;
         level = saveData.level;
         exp = saveData.exp;
@@ -122,7 +122,7 @@ public class Pokemon
 
         // Generate Moves
         Moves = new List<Move>();
-        foreach (var move in Base.LearnableMoves)
+        foreach (var move in Species.LearnableMoves)
         {
             if (move.LevelLearned <= Level)
             {
@@ -138,13 +138,13 @@ public class Pokemon
 
         // Set ability at random from Base's normal or hidden
         int random = UnityEngine.Random.Range(0, 101);
-        if (random < Base.NormalAbilityPercent)
+        if (random < Species.NormalAbilityPercent)
         {
-            abilityID = Base.AbilityID;
+            abilityID = Species.AbilityID;
         }
         else
         {
-            abilityID = Base.HiddenAbilityID;
+            abilityID = Species.HiddenAbilityID;
             useHiddenAbility = true;
         }
 
@@ -204,7 +204,7 @@ public class Pokemon
         if (gender != PokemonGender.NotSet) return;
 
         int ran = UnityEngine.Random.Range(1, 8);
-        switch (Base.GenderRatio)
+        switch (Species.GenderRatio)
         {
             case PokemonGenderRatio.OneInTwoFemale:
                 if (ran <= 4)
@@ -253,48 +253,49 @@ public class Pokemon
 
     public void SetSprites(bool isShiny, PokemonGender gender)
     {
-        switch (gender)
+        var battle = Species.BattleSprites;
+        var overworld = Species.OverworldSprites;
+
+        if (gender == PokemonGender.Female)
         {
-            case PokemonGender.Female:
-                if (isShiny)
-                {
-                    FrontSprite = Base.FrontSpriteFemaleShiny;
-                    BackSprite = Base.BackSpriteFemaleShiny;
-                    WalkDownAnim = Base.WalkDownAnimShiny;
-                    WalkUpAnim = Base.WalkUpAnimShiny;
-                    WalkLeftAnim = Base.WalkLeftAnimShiny;
-                    WalkRightAnim = Base.WalkRightAnimShiny;
-                }
-                else
-                {
-                    FrontSprite = Base.FrontSpriteFemale;
-                    BackSprite = Base.BackSpriteFemale;
-                    WalkDownAnim = Base.WalkDownAnim;
-                    WalkUpAnim = Base.WalkUpAnim;
-                    WalkLeftAnim = Base.WalkLeftAnim;
-                    WalkRightAnim = Base.WalkRightAnim;
-                }
-                break;
-            default:
-                if (isShiny)
-                {
-                    FrontSprite = Base.FrontSpriteShiny;
-                    BackSprite = Base.BackSpriteShiny;
-                    WalkDownAnim = Base.WalkDownAnimShiny;
-                    WalkUpAnim = Base.WalkUpAnimShiny;
-                    WalkLeftAnim = Base.WalkLeftAnimShiny;
-                    WalkRightAnim = Base.WalkRightAnimShiny;
-                }
-                else
-                {
-                    FrontSprite = Base.FrontSprite;
-                    BackSprite = Base.BackSprite;
-                    WalkDownAnim = Base.WalkDownAnim;
-                    WalkUpAnim = Base.WalkUpAnim;
-                    WalkLeftAnim = Base.WalkLeftAnim;
-                    WalkRightAnim = Base.WalkRightAnim;
-                }
-                break;
+            if (isShiny)
+            {
+                FrontSprite = battle.FrontFemaleShiny;
+                BackSprite = battle.BackFemaleShiny;
+            }
+            else
+            {
+                FrontSprite = battle.FrontFemale;
+                BackSprite = battle.BackFemale;
+            }
+        }
+        else
+        {
+            if (isShiny)
+            {
+                FrontSprite = battle.FrontShiny;
+                BackSprite = battle.BackShiny;
+            }
+            else
+            {
+                FrontSprite = battle.Front;
+                BackSprite = battle.Back;
+            }
+        }
+
+        if (isShiny)
+        {
+            WalkDownAnim = overworld.WalkDownShiny;
+            WalkUpAnim = overworld.WalkUpShiny;
+            WalkLeftAnim = overworld.WalkLeftShiny;
+            WalkRightAnim = overworld.WalkRightShiny;
+        }
+        else
+        {
+            WalkDownAnim = overworld.WalkDown;
+            WalkUpAnim = overworld.WalkUp;
+            WalkLeftAnim = overworld.WalkLeft;
+            WalkRightAnim = overworld.WalkRight;
         }
     }
 
@@ -400,7 +401,7 @@ public class Pokemon
 
     public float GetNormalizedHp()
     {
-        return (float)HP/MaxHP;
+        return (float)HP / MaxHP;
     }
 
     /// <summary>
@@ -430,7 +431,7 @@ public class Pokemon
 
     public Evolution CheckForEvolution()
     {
-        return Base.Evolutions.FirstOrDefault(e => e.RequiredLevel != -1 && e.RequiredLevel <= level);
+        return Species.Evolutions.FirstOrDefault(e => e.RequiredLevel != -1 && e.RequiredLevel <= level);
     }
 
     /// <summary>
@@ -438,7 +439,7 @@ public class Pokemon
     /// </summary>
     public Evolution CheckForEvolution(ItemBase item)
     {
-        return Base.Evolutions.FirstOrDefault(e => e.RequiredItem == item);
+        return Species.Evolutions.FirstOrDefault(e => e.RequiredItem == item);
     }
 
     /// <summary>
@@ -447,12 +448,12 @@ public class Pokemon
     /// </summary>
     public StatChanges Evolve(Evolution evolution)
     {
-        _base = evolution.EvolvesInto;
+        species = evolution.EvolvesInto;
         var statChanges = CalculateStats();
         SetSprites(IsShiny, gender);
         // An evolution might not have the same ability options, 
         // but normal/hidden should be preserved.
-        abilityID = useHiddenAbility ? Base.HiddenAbilityID : Base.AbilityID;
+        abilityID = useHiddenAbility ? Species.HiddenAbilityID : Species.AbilityID;
         Ability = AbilityDB.Abilities[abilityID];
 
         // TODO: Handle any other updates 
@@ -462,7 +463,7 @@ public class Pokemon
         // Forcefully override status condition
         VolatileStatus = StatusConditionsDB.Conditions[StatusConditionID.evoboost];
         VolatileStatus?.OnStart?.Invoke(this);
-        AddStatusEvent($"{Base.Name} {VolatileStatus.StartMessage}");
+        AddStatusEvent($"{Species.Name} {VolatileStatus.StartMessage}");
         OnStatusChanged?.Invoke();
 
         return statChanges;
@@ -487,7 +488,7 @@ public class Pokemon
 
     private LearnableMove GetLearnableMoveForLevel()
     {
-        return Base.LearnableMoves.Where(m => m.LevelLearned == level).FirstOrDefault();
+        return Species.LearnableMoves.Where(m => m.LevelLearned == level).FirstOrDefault();
     }
 
     public Move GetRandomMove()
@@ -520,14 +521,14 @@ public class Pokemon
         }
         Stats = new Dictionary<Stat, int>
         {
-            { Stat.Attack, Mathf.FloorToInt((2 * Base.Attack + StatIVs[Stat.Attack]) * Level / 150f) + 5 },
-            { Stat.Defense, Mathf.FloorToInt((2 * Base.Defense + StatIVs[Stat.Defense]) * Level / 150f) + 5 },
-            { Stat.SpAttack, Mathf.FloorToInt((2 * Base.SpAttack + StatIVs[Stat.SpAttack]) * Level / 150f) + 5 },
-            { Stat.SpDefense, Mathf.FloorToInt((2 * Base.SpDef + StatIVs[Stat.SpDefense]) * Level / 150f) + 5 },
-            { Stat.Speed, Mathf.FloorToInt((2 * Base.Speed + StatIVs[Stat.Speed]) * Level / 150f) + 5 }
+            { Stat.Attack, Mathf.FloorToInt((2 * Species.Attack + StatIVs[Stat.Attack]) * Level / 150f) + 5 },
+            { Stat.Defense, Mathf.FloorToInt((2 * Species.Defense + StatIVs[Stat.Defense]) * Level / 150f) + 5 },
+            { Stat.SpAttack, Mathf.FloorToInt((2 * Species.SpAttack + StatIVs[Stat.SpAttack]) * Level / 150f) + 5 },
+            { Stat.SpDefense, Mathf.FloorToInt((2 * Species.SpDef + StatIVs[Stat.SpDefense]) * Level / 150f) + 5 },
+            { Stat.Speed, Mathf.FloorToInt((2 * Species.Speed + StatIVs[Stat.Speed]) * Level / 150f) + 5 }
         };
 
-        MaxHP = Mathf.FloorToInt((2 * Base.MaxHP + StatIVs[Stat.HP]) * Level / 150f) + 10 + Level;
+        MaxHP = Mathf.FloorToInt((2 * Species.MaxHP + StatIVs[Stat.HP]) * Level / 150f) + 10 + Level;
 
         if (oldStatsExist)
         {
@@ -611,7 +612,7 @@ public class Pokemon
             if ((changeIsPositive && boost == 6) || (!changeIsPositive && boost == -6))
             {
                 string riseOrFall = changeIsPositive ? "higher" : "lower";
-                AddStatusEvent(StatusEventType.Text, $"{Base.Name}'s {stat} won't go any {riseOrFall}!", hideMessages);
+                AddStatusEvent(StatusEventType.Text, $"{Species.Name}'s {stat} won't go any {riseOrFall}!", hideMessages);
             }
             else
             {
@@ -619,7 +620,7 @@ public class Pokemon
 
                 string riseOrFall = changeIsPositive ? "rose" : boost < 0 ? "fell" : "did not change";
                 string bigChange = (Mathf.Abs(boost) >= 3) ? " severly " : (Mathf.Abs(boost) == 2) ? " harsly " : " ";
-                AddStatusEvent(StatusEventType.Text, $"{Base.Name}'s {stat}{bigChange}{riseOrFall}!", hideMessages);
+                AddStatusEvent(StatusEventType.Text, $"{Species.Name}'s {stat}{bigChange}{riseOrFall}!", hideMessages);
             }
         }
     }
@@ -638,7 +639,7 @@ public class Pokemon
 
         Status = StatusConditionsDB.Conditions[conditionID];
         Status?.OnStart?.Invoke(this);
-        AddStatusEvent($"{Base.Name} {Status.StartMessage}");
+        AddStatusEvent($"{Species.Name} {Status.StartMessage}");
         OnStatusChanged?.Invoke();
     }
 
@@ -656,7 +657,7 @@ public class Pokemon
 
         VolatileStatus = StatusConditionsDB.Conditions[conditionID];
         VolatileStatus?.OnStart?.Invoke(this);
-        AddStatusEvent($"{Base.Name} {VolatileStatus.StartMessage}");
+        AddStatusEvent($"{Species.Name} {VolatileStatus.StartMessage}");
     }
 
     public void CureStatus()
@@ -801,18 +802,18 @@ public class Pokemon
         if (damage < 1)
             damage = 1;
         ReduceHP(damage, true);
-        AddStatusEvent(StatusEventType.Text, $"{Base.Name} was damaged by the recoil!");
+        AddStatusEvent(StatusEventType.Text, $"{Species.Name} was damaged by the recoil!");
     }
 
     public float GetTypeEffectiveness(PokemonType type)
     {
-        return TypeChart.GetEffectiveness(type, Base.Type1)
-            * TypeChart.GetEffectiveness(type, Base.Type2);
+        return TypeChart.GetEffectiveness(type, Species.Type1)
+            * TypeChart.GetEffectiveness(type, Species.Type2);
     }
 
     public bool IsOfType(PokemonType type)
     {
-        return type == Base.Type1 || type == Base.Type2;
+        return type == Species.Type1 || type == Species.Type2;
     }
 
     public void ReduceHP(int damage, bool callUpdateEvent = false)
@@ -838,7 +839,7 @@ public class Pokemon
 
     public float ModifyAtk(float atk, Pokemon defender, Move move)
     {
-        if(defender == null || move == null || Ability?.OnModifyAtk == null)
+        if (defender == null || move == null || Ability?.OnModifyAtk == null)
             return atk;
 
         return Ability.OnModifyAtk(atk, this, defender, move);
@@ -846,7 +847,7 @@ public class Pokemon
 
     public float ModifySpAtk(float spAtk, Pokemon defender, Move move)
     {
-        if(defender == null || move == null || Ability?.OnModifySpAtk == null)
+        if (defender == null || move == null || Ability?.OnModifySpAtk == null)
             return spAtk;
 
         return Ability.OnModifySpAtk(spAtk, this, defender, move);
@@ -863,7 +864,7 @@ public class Pokemon
 
     public float ModifyMoveBasePower(Move move, Pokemon defender)
     {
-        if(defender == null || Ability?.OnModifyMoveBasePower == null)
+        if (defender == null || Ability?.OnModifyMoveBasePower == null)
             return move.Base.Power;
 
         return Ability.OnModifyMoveBasePower.Invoke(move.Base.Power, this, defender, move);
@@ -880,15 +881,15 @@ public class Pokemon
 
     public float ModifySpd(float spd, Pokemon defender, Move move)
     {
-        if(defender == null || move == null || Ability?.OnModifySpd == null)
+        if (defender == null || move == null || Ability?.OnModifySpd == null)
             return spd;
 
-        return Ability.OnModifySpd(spd, this, defender, move);        
+        return Ability.OnModifySpd(spd, this, defender, move);
     }
 
     public float ModifyAcc(float acc, Pokemon defender, Move move)
     {
-        if(defender == null || move == null || Ability?.OnModifyAcc == null)
+        if (defender == null || move == null || Ability?.OnModifyAcc == null)
             return acc;
 
         return Ability.OnModifyAcc(acc, this, defender, move);

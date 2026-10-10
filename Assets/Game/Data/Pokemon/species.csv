@@ -1,0 +1,5 @@
+dexNumber,name,description,type1,type2,hp,attack,defense,spAttack,spDefense,speed,ability,hiddenAbility,normalAbilityPercent,expYield,catchRate,genderRatio
+1,Bulbasaur,"A strange seed was planted on its back at birth.",Grass,Poison,45,49,49,65,65,45,Overgrow,None,70,64,45,OneInTwoFemale
+2,Ivysaur,"When the bulb on its back grows large.",Grass,Poison,60,62,63,80,80,60,Overgrow,None,70,142,45,OneInTwoFemale
+51,Dugtrio,"Extremely powerful, they can dig through even the hardest ground to a depth of over 60 miles.",Ground,None,35,100,50,50,70,120,None,None,70,153,50,OneInTwoFemale
+151,Mew,"Mew is said to possess the genes of all Pokémon. It is capable of making itself invisible at will, so it entirely avoids notice even if it approaches people.",Psychic,None,100,100,100,100,100,100,ClearBody,None,70,270,45,Genderless

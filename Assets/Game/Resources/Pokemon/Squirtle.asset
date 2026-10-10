@@ -12,78 +12,104 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15ddb0b24272b6109ad97542dc7ba963, type: 3}
   m_Name: Squirtle
   m_EditorClassIdentifier: 
-  name: Squirtle
-  dexNumber: 7
-  description: a squirtle
-  frontSprite: {fileID: 21300000, guid: 39e761212a05f5db4bea74bb8f343384, type: 3}
-  backSprite: {fileID: 21300000, guid: 18fc6e8e3f72b154fba88f358748be28, type: 3}
-  frontSpriteFemale: {fileID: 21300000, guid: 39e761212a05f5db4bea74bb8f343384, type: 3}
-  backSpriteFemale: {fileID: 21300000, guid: 18fc6e8e3f72b154fba88f358748be28, type: 3}
-  walkDownSprites:
-  - {fileID: 21300000, guid: 31300c652d9ef5fcda3e7ccc550ea57c, type: 3}
-  - {fileID: 21300000, guid: 41b185806c0dcf29095e479d3bac807c, type: 3}
-  walkUpSprites:
-  - {fileID: 21300000, guid: 417de40a9483ceaebbf051267c6b9421, type: 3}
-  - {fileID: 21300000, guid: 435a75dee2481dc1e99e5bad36e5dd02, type: 3}
-  walkLeftSprites:
-  - {fileID: 21300000, guid: fef5801b77d3ac29cbdfc64f7478be66, type: 3}
-  - {fileID: 21300000, guid: a393720141998d792adf78e0444d2844, type: 3}
-  walkRightSprites:
-  - {fileID: 21300000, guid: 2df5f0d3871442007af2907d5d1fab44, type: 3}
-  - {fileID: 21300000, guid: 4280b530519850f84a1bd710c1fa999b, type: 3}
-  frontSpriteShiny: {fileID: 21300000, guid: ede4f05a3f65dbba5ad75b9ba50c3074, type: 3}
-  backSpriteShiny: {fileID: 21300000, guid: 050b04d4062668730bf546d191997242, type: 3}
-  frontSpriteFemaleShiny: {fileID: 21300000, guid: ede4f05a3f65dbba5ad75b9ba50c3074, type: 3}
-  backSpriteFemaleShiny: {fileID: 21300000, guid: 050b04d4062668730bf546d191997242, type: 3}
-  walkDownSpritesShiny:
-  - {fileID: 21300000, guid: 67f6ee2a5192f1ce594c0067d5021745, type: 3}
-  - {fileID: 21300000, guid: f1276edf48b1fa431ba47fe761f6441a, type: 3}
-  walkUpSpritesShiny:
-  - {fileID: 21300000, guid: 4537b457812f580f590286d243f496bc, type: 3}
-  - {fileID: 21300000, guid: 34f940c66ae5ba0edb98df260da10437, type: 3}
-  walkLeftSpritesShiny:
-  - {fileID: 21300000, guid: 84a39b1c098ddb657869636d0b961d65, type: 3}
-  - {fileID: 21300000, guid: 4b1c032a5187ca654b85afdabfa2b4fc, type: 3}
-  walkRightSpritesShiny:
-  - {fileID: 21300000, guid: b71eb0c3ea5664f7a81dcb68262eb861, type: 3}
-  - {fileID: 21300000, guid: 4f0e8b2cc626774b0a9ffdfa7b2551fd, type: 3}
-  ability: 3
-  hiddenAbility: 6
-  normalAbilityPercent: 70
-  type1: 3
-  type2: 0
-  maxHP: 44
-  attack: 48
-  defense: 65
-  spAttack: 50
-  spDefense: 64
-  speed: 43
-  expYield: 65
-  catchRate: 255
-  genderRatio: 0
-  learnableMoves:
-  - moveBase: {fileID: 11400000, guid: d6d7f5d17e381c7de85d5e218f6edf93, type: 2}
-    levelLearned: 1
-  - moveBase: {fileID: 11400000, guid: d017063ff934bbe3ca502cc5d1bec0a9, type: 2}
-    levelLearned: 4
-  - moveBase: {fileID: 11400000, guid: ece86ee67b22d4da283dde8f9dd68593, type: 2}
-    levelLearned: 7
-  - moveBase: {fileID: 11400000, guid: 03d6873cdf51079b683a5d056ad16f0f, type: 2}
-    levelLearned: 10
-  learnableByItems:
-  - {fileID: 11400000, guid: 63920f4d270908829bef4e14b5d5d0f4, type: 2}
-  evolutions:
-  - evolvesInto: {fileID: 11400000, guid: bb48e502b596613ca8a126dfafede198, type: 2}
-    requiredLevel: 16
-    requiredItem: {fileID: 0}
-  possibleBehaviors:
-  - {fileID: 11400000, guid: a545c0ba32e10fe4086e4a518fe9afe3, type: 2}
-  defaultPursuitProfile: {fileID: 11400000, guid: 616b881560bfaebf2a69b4d720af4b2b, type: 2}
-  verticalPresence:
-    canHover: 0
-    canFly: 0
-    canBurrow: 0
-    offsetRange: {x: 0, y: 0}
-    interactionTolerance: 0.2
-    changeIntervalRange: {x: 1.5, y: 3.5}
-    divergencePreference: 0
+  identity:
+    name: 
+    dexNumber: 7
+    description: 
+  battle:
+    type1: 0
+    type2: 0
+    baseStats:
+      maxHP: 0
+      attack: 0
+      defense: 0
+      spAttack: 0
+      spDefense: 0
+      speed: 0
+    ability: 0
+    hiddenAbility: 0
+    normalAbilityPercent: 70
+    expYield: 0
+    catchRate: 255
+    genderRatio: 0
+  learnset:
+    levelUpMoves: []
+    itemMoves: []
+  evolution:
+    evolutions: []
+  visuals:
+    battle:
+      front: {fileID: 21300000, guid: 39e761212a05f5db4bea74bb8f343384, type: 3}
+      back: {fileID: 21300000, guid: 18fc6e8e3f72b154fba88f358748be28, type: 3}
+      frontFemale: {fileID: 0}
+      backFemale: {fileID: 0}
+      frontShiny: {fileID: 21300000, guid: ede4f05a3f65dbba5ad75b9ba50c3074, type: 3}
+      backShiny: {fileID: 21300000, guid: 050b04d4062668730bf546d191997242, type: 3}
+      frontFemaleShiny: {fileID: 0}
+      backFemaleShiny: {fileID: 0}
+    overworld:
+      walkDown:
+      - {fileID: 21300000, guid: 31300c652d9ef5fcda3e7ccc550ea57c, type: 3}
+      - {fileID: 21300000, guid: 41b185806c0dcf29095e479d3bac807c, type: 3}
+      walkUp:
+      - {fileID: 21300000, guid: 417de40a9483ceaebbf051267c6b9421, type: 3}
+      - {fileID: 21300000, guid: 435a75dee2481dc1e99e5bad36e5dd02, type: 3}
+      walkLeft:
+      - {fileID: 21300000, guid: fef5801b77d3ac29cbdfc64f7478be66, type: 3}
+      - {fileID: 21300000, guid: a393720141998d792adf78e0444d2844, type: 3}
+      walkRight:
+      - {fileID: 21300000, guid: 2df5f0d3871442007af2907d5d1fab44, type: 3}
+      - {fileID: 21300000, guid: 4280b530519850f84a1bd710c1fa999b, type: 3}
+      walkDownShiny:
+      - {fileID: 21300000, guid: 67f6ee2a5192f1ce594c0067d5021745, type: 3}
+      - {fileID: 21300000, guid: f1276edf48b1fa431ba47fe761f6441a, type: 3}
+      walkUpShiny:
+      - {fileID: 21300000, guid: 4537b457812f580f590286d243f496bc, type: 3}
+      - {fileID: 21300000, guid: 34f940c66ae5ba0edb98df260da10437, type: 3}
+      walkLeftShiny:
+      - {fileID: 21300000, guid: 84a39b1c098ddb657869636d0b961d65, type: 3}
+      - {fileID: 21300000, guid: 4b1c032a5187ca654b85afdabfa2b4fc, type: 3}
+      walkRightShiny:
+      - {fileID: 21300000, guid: b71eb0c3ea5664f7a81dcb68262eb861, type: 3}
+      - {fileID: 21300000, guid: 4f0e8b2cc626774b0a9ffdfa7b2551fd, type: 3}
+  overworld:
+    possibleBehaviors: []
+    defaultPursuitProfile: {fileID: 0}
+    verticalPresence:
+      canHover: 0
+      canFly: 0
+      canBurrow: 0
+      usesGroundFooting: 1
+      offsetRange: {x: 0, y: 0}
+      neutralMode: 0
+      neutralBobSpeed: 2
+      perMoveCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      interactionTolerance: 0.2
+      changeIntervalRange: {x: 1.5, y: 3.5}
+      divergencePreference: 0
+      canFlyAway: 0
+      flyAwayAltitudeTolerance: 0.1
+      flyAwayHoldTime: 1.5

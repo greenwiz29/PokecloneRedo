@@ -12,54 +12,88 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15ddb0b24272b6109ad97542dc7ba963, type: 3}
   m_Name: ExpBall
   m_EditorClassIdentifier: 
-  name: ExpBall
-  dexNumber: 0
-  description: A weak ball full of wisdom for whoever breaks it
-  frontSprite: {fileID: -6134421028427622431, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
-  backSprite: {fileID: -6134421028427622431, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
-  frontSpriteFemale: {fileID: 300353140021029200, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
-  backSpriteFemale: {fileID: 300353140021029200, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
-  walkDownSprites: []
-  walkUpSprites: []
-  walkLeftSprites: []
-  walkRightSprites: []
-  frontSpriteShiny: {fileID: 2023522969545607760, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
-  backSpriteShiny: {fileID: 2023522969545607760, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
-  frontSpriteFemaleShiny: {fileID: -5579777447416819038, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
-  backSpriteFemaleShiny: {fileID: -5579777447416819038, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
-  walkDownSpritesShiny: []
-  walkUpSpritesShiny: []
-  walkLeftSpritesShiny: []
-  walkRightSpritesShiny: []
-  ability: 12
-  hiddenAbility: 5
-  normalAbilityPercent: 70
-  type1: 10
-  type2: 9
-  maxHP: 1
-  attack: 1
-  defense: 1
-  spAttack: 1
-  spDefense: 1
-  speed: 1
-  expYield: 1023
-  catchRate: 0
-  genderRatio: 0
-  learnableMoves:
-  - moveBase: {fileID: 11400000, guid: d6d7f5d17e381c7de85d5e218f6edf93, type: 2}
-    levelLearned: 1
-  - moveBase: {fileID: 11400000, guid: a85be218eee16db62a797e38fca89547, type: 2}
-    levelLearned: 1
-  learnableByItems: []
-  evolutions: []
-  possibleBehaviors:
-  - {fileID: 11400000, guid: a545c0ba32e10fe4086e4a518fe9afe3, type: 2}
-  defaultPursuitProfile: {fileID: 11400000, guid: 616b881560bfaebf2a69b4d720af4b2b, type: 2}
-  verticalPresence:
-    canHover: 0
-    canFly: 0
-    canBurrow: 0
-    offsetRange: {x: 0, y: 0}
-    interactionTolerance: 0.2
-    changeIntervalRange: {x: 1.5, y: 3.5}
-    divergencePreference: 0
+  identity:
+    name: 
+    dexNumber: 999
+    description: 
+  battle:
+    type1: 0
+    type2: 0
+    baseStats:
+      maxHP: 0
+      attack: 0
+      defense: 0
+      spAttack: 0
+      spDefense: 0
+      speed: 0
+    ability: 0
+    hiddenAbility: 0
+    normalAbilityPercent: 70
+    expYield: 0
+    catchRate: 255
+    genderRatio: 0
+  learnset:
+    levelUpMoves: []
+    itemMoves: []
+  evolution:
+    evolutions: []
+  visuals:
+    battle:
+      front: {fileID: 0}
+      back: {fileID: 0}
+      frontFemale: {fileID: 0}
+      backFemale: {fileID: 0}
+      frontShiny: {fileID: 0}
+      backShiny: {fileID: 0}
+      frontFemaleShiny: {fileID: 0}
+      backFemaleShiny: {fileID: 0}
+    overworld:
+      walkDown: []
+      walkUp: []
+      walkLeft: []
+      walkRight: []
+      walkDownShiny: []
+      walkUpShiny: []
+      walkLeftShiny: []
+      walkRightShiny: []
+  overworld:
+    possibleBehaviors: []
+    defaultPursuitProfile: {fileID: 0}
+    verticalPresence:
+      canHover: 0
+      canFly: 0
+      canBurrow: 0
+      usesGroundFooting: 1
+      offsetRange: {x: 0, y: 0}
+      neutralMode: 0
+      neutralBobSpeed: 2
+      perMoveCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      interactionTolerance: 0.2
+      changeIntervalRange: {x: 1.5, y: 3.5}
+      divergencePreference: 0
+      canFlyAway: 0
+      flyAwayAltitudeTolerance: 0.1
+      flyAwayHoldTime: 1.5

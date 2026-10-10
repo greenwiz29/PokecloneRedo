@@ -31,7 +31,7 @@ public class MainMenuController : SelectionUI<TextSlot>
 
     private Sprite GetRandomPokemonSprite()
     {
-        return PokemonDB.GetRandomObject().FrontSprite;
+        return PokemonDB.GetRandomObject().BattleSprites.Front;
     }
 
     private void OnItemSelected(int obj)

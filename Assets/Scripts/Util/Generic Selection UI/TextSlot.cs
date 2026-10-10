@@ -24,4 +24,14 @@ public class TextSlot : MonoBehaviour, ISelectableItem
     {
         this.text.text = text;
     }
+
+    public void SetColor(Color color)
+    {
+        this.text.color = color;
+    }
+
+    public Color GetColor()
+    {
+        return this.text.color;
+    }
 }

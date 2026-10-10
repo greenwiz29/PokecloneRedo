@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ScriptableObjectsDB<T> where T : ScriptableObject
 {
-	static Dictionary<string, T> objects;
+	protected static Dictionary<string, T> objects;
 
 	public static void Init()
 	{

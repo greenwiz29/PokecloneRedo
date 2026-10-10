@@ -102,12 +102,12 @@ public class PartyState : State<GameController>
                         }
                         if (battleState.BattleSystem.PlayerUnits.Any(u => u.Pokemon == SelectedPokemon))
                         {
-                            partyScreen.SetMessageText($"{SelectedPokemon.Base.Name} is already out.");
+                            partyScreen.SetMessageText($"{SelectedPokemon.Species.Name} is already out.");
                             yield break;
                         }
                         if (battleState.BattleSystem.UnitCount > 1 && battleState.BattleSystem.IsPokemonSelectedToShift(SelectedPokemon))
                         {
-                            partyScreen.SetMessageText($"You can't send {SelectedPokemon.Base.Name} out twice!");
+                            partyScreen.SetMessageText($"You can't send {SelectedPokemon.Species.Name} out twice!");
                             yield break;
                         }
 

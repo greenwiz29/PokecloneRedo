@@ -1,4 +1,4 @@
-public class PokemonDB : ScriptableObjectsDB<PokemonBase>
+public class PokemonDB : ScriptableObjectsDB<PokemonSpecies>
 {
 	
 }

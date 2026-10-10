@@ -54,7 +54,7 @@ public class BattleState : State<GameController>
                 gc.stateMachine.Pop();
                 return;
             }
-            var wildCopy = new Pokemon(wildPokemon.Base, wildPokemon.Level);
+            var wildCopy = new Pokemon(wildPokemon.Species, wildPokemon.Level);
             context.Type = BattleType.Wild;
             context.WildPokemon = wildCopy;
             context.StartingWeather = mapArea == null ? WeatherConditionID.none : mapArea.Weather;

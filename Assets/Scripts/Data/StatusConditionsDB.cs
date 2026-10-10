@@ -27,7 +27,7 @@ public class StatusConditionsDB
                 OnAfterTurn = (target, user) =>
                 {
                     target?.ReduceHP((int)(target?.MaxHP / 8));
-                    target?.AddStatusEvent(StatusEventType.Damage, $"{target?.Base.Name} is hurt by poison!");
+                    target?.AddStatusEvent(StatusEventType.Damage, $"{target?.Species.Name} is hurt by poison!");
                 }
             }
         },
@@ -41,7 +41,7 @@ public class StatusConditionsDB
                 OnAfterTurn = (target, user) =>
                 {
                     target?.ReduceHP((int)(target?.MaxHP / 16));
-                    target?.AddStatusEvent(StatusEventType.Damage, $"{target?.Base.Name} is hurt by its burn!");
+                    target?.AddStatusEvent(StatusEventType.Damage, $"{target?.Species.Name} is hurt by its burn!");
                 }
             }
         },
@@ -56,7 +56,7 @@ public class StatusConditionsDB
                 {
                     if (Random.Range(1, 5) == 1)
                     {
-                        p.AddStatusEvent($"{p.Base.Name} is paralyzed and can't move.");
+                        p.AddStatusEvent($"{p.Species.Name} is paralyzed and can't move.");
                         return false;
                     }
                     return true;
@@ -74,7 +74,7 @@ public class StatusConditionsDB
                 {
                     if (Random.Range(1, 5) == 1)
                     {
-                        p.AddStatusEvent($"{p.Base.Name} is no longer frozen.");
+                        p.AddStatusEvent($"{p.Species.Name} is no longer frozen.");
                         p.CureStatus();
                         return true;
                     }
@@ -100,11 +100,11 @@ public class StatusConditionsDB
                     if (p.StatusTime <= 0)
                     {
                         p.CureStatus();
-                        p.AddStatusEvent($"{p.Base.Name} woke up!");
+                        p.AddStatusEvent($"{p.Species.Name} woke up!");
                         return true;
                     }
                     p.StatusTime--;
-                    p.AddStatusEvent($"{p.Base.Name} is sleeping.");
+                    p.AddStatusEvent($"{p.Species.Name} is sleeping.");
                     return false;
                 }
             }
@@ -129,7 +129,7 @@ public class StatusConditionsDB
                     if (p.VolatileStatusTime <= 0)
                     {
                         p.CureVolatileStatus();
-                        p.AddStatusEvent($"{p.Base.Name} came to its senses!");
+                        p.AddStatusEvent($"{p.Species.Name} came to its senses!");
                         return true;
                     }
                     p.VolatileStatusTime--;
@@ -141,7 +141,7 @@ public class StatusConditionsDB
                     }
 
                     // Hurt by confusion
-                    p.AddStatusEvent($"{p.Base.Name} is confused.");
+                    p.AddStatusEvent($"{p.Species.Name} is confused.");
                     p.ReduceHP(p.MaxHP / 8);
                     p.AddStatusEvent(StatusEventType.Damage, $"It hurt itself in its confusion.");
                     return false;
@@ -218,7 +218,7 @@ public class StatusConditionsDB
                     if (p.VolatileStatusTime <= 0)
                     {
                         p.CureVolatileStatus();
-                        p.AddStatusEvent($"{p.Base.Name}'s excess energy has all faded.");
+                        p.AddStatusEvent($"{p.Species.Name}'s excess energy has all faded.");
                         return true;
                     }
                     p.VolatileStatusTime--;

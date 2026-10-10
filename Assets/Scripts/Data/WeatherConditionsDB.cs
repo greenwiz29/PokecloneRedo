@@ -30,7 +30,7 @@ public class WeatherConditionsDB
                     if(p.IsOfType(PokemonType.Ground) || p.IsOfType(PokemonType.Rock))
                         return;
                     p.ReduceHP(Mathf.CeilToInt(p.MaxHP / 16 * p.GetTypeEffectiveness(PokemonType.Ground)));
-                    p.AddStatusEvent(StatusEventType.Damage, $"{p.Base.Name} is buffeted by the sandstorm!");
+                    p.AddStatusEvent(StatusEventType.Damage, $"{p.Species.Name} is buffeted by the sandstorm!");
                 }
             }
         },
@@ -48,7 +48,7 @@ public class WeatherConditionsDB
                         return;
 
                     p.ReduceHP(Mathf.CeilToInt(p.MaxHP / 16 * p.GetTypeEffectiveness(PokemonType.Ice)));
-                    p.AddStatusEvent(StatusEventType.Damage, $"{p.Base.Name} is buffeted by the hail!");
+                    p.AddStatusEvent(StatusEventType.Damage, $"{p.Species.Name} is buffeted by the hail!");
                 }
             }
         },

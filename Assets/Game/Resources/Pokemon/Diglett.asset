@@ -1,0 +1,115 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15ddb0b24272b6109ad97542dc7ba963, type: 3}
+  m_Name: Diglett
+  m_EditorClassIdentifier: Assembly-CSharp::PokemonBase
+  identity:
+    name: 
+    dexNumber: 50
+    description: 
+  battle:
+    type1: 0
+    type2: 0
+    baseStats:
+      maxHP: 0
+      attack: 0
+      defense: 0
+      spAttack: 0
+      spDefense: 0
+      speed: 0
+    ability: 0
+    hiddenAbility: 0
+    normalAbilityPercent: 70
+    expYield: 0
+    catchRate: 255
+    genderRatio: 0
+  learnset:
+    levelUpMoves: []
+    itemMoves: []
+  evolution:
+    evolutions: []
+  visuals:
+    battle:
+      front: {fileID: 21300000, guid: 061649d6ad2a8d4a08dc05e327df33f7, type: 3}
+      back: {fileID: 21300000, guid: e9de7e516d846f45ca6a132d83e18cf9, type: 3}
+      frontFemale: {fileID: 0}
+      backFemale: {fileID: 0}
+      frontShiny: {fileID: 21300000, guid: b963937001740b50f92c58c0ccf788a9, type: 3}
+      backShiny: {fileID: 21300000, guid: 0bd7b3db985ddfdfaa8775e2b1c9e6a6, type: 3}
+      frontFemaleShiny: {fileID: 0}
+      backFemaleShiny: {fileID: 0}
+    overworld:
+      walkDown:
+      - {fileID: 21300000, guid: 50b0da4aff4ee844cad36296aedbc957, type: 3}
+      - {fileID: 21300000, guid: 0f58df4e87ead0faa96b133da53e65fc, type: 3}
+      walkUp:
+      - {fileID: 21300000, guid: 86a53881d291a0ae9b3851df4c3aff5a, type: 3}
+      - {fileID: 21300000, guid: a17c98656094418f5befd4eb670f5d2f, type: 3}
+      walkLeft:
+      - {fileID: 21300000, guid: 9822965dd39bb9de6805c750a1fb6012, type: 3}
+      - {fileID: 21300000, guid: bdc7f5790a94e824386e79f2c6b5c557, type: 3}
+      walkRight:
+      - {fileID: 21300000, guid: 51814ed4948a72cdda5c8643b5cd68f9, type: 3}
+      - {fileID: 21300000, guid: 151db4016cc40fecb947ac2b17f33e25, type: 3}
+      walkDownShiny:
+      - {fileID: 21300000, guid: 812aefc5ed8e18953b0d78bd7e1fd4c1, type: 3}
+      - {fileID: 21300000, guid: 481edc256ef70a6dc998bb5199b8525b, type: 3}
+      walkUpShiny:
+      - {fileID: 21300000, guid: 9bafe7fc315910325af3f1d16292cf7f, type: 3}
+      - {fileID: 21300000, guid: 7aeee5bbdca7183069f49ac4bfa892e8, type: 3}
+      walkLeftShiny:
+      - {fileID: 21300000, guid: 14b91232f80c0a56ea3a8ef7b158fa56, type: 3}
+      - {fileID: 21300000, guid: 9cddc941a2458bb7982e48f2db25f619, type: 3}
+      walkRightShiny:
+      - {fileID: 21300000, guid: a92c3f38c9f79cb058ab4d9b51159f44, type: 3}
+      - {fileID: 21300000, guid: 8297f448f7682299ab41193b180a5229, type: 3}
+  overworld:
+    possibleBehaviors: []
+    defaultPursuitProfile: {fileID: 0}
+    verticalPresence:
+      canHover: 0
+      canFly: 0
+      canBurrow: 0
+      usesGroundFooting: 1
+      offsetRange: {x: 0, y: 0}
+      neutralMode: 0
+      neutralBobSpeed: 2
+      perMoveCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      interactionTolerance: 0.2
+      changeIntervalRange: {x: 1.5, y: 3.5}
+      divergencePreference: 0
+      canFlyAway: 0
+      flyAwayAltitudeTolerance: 0.1
+      flyAwayHoldTime: 1.5

@@ -16,7 +16,7 @@ public class BattleHUD : MonoBehaviour
         ClearData();
 
         _pokemon = pokemon;
-        nameText.text = pokemon.Base.Name;
+        nameText.text = pokemon.Species.Name;
         SetLevel();
         SetGenderText();
         hpBar.SetStat((float)pokemon.HP / pokemon.MaxHP);

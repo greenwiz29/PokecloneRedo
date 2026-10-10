@@ -191,7 +191,7 @@ public class AbilityDB
                     if(boosts.ContainsKey(Stat.Accuracy) && boosts[Stat.Accuracy] < 0)
                     {
                         boosts.Remove(Stat.Accuracy);
-                        target.AddStatusEvent(StatusEventType.Text, $"{target.Base.Name}'s accuracy can't be lowered thanks to its keen eyes.");
+                        target.AddStatusEvent(StatusEventType.Text, $"{target.Species.Name}'s accuracy can't be lowered thanks to its keen eyes.");
                     }
                 }
             }
@@ -211,7 +211,7 @@ public class AbilityDB
                     if(boosts.ContainsKey(Stat.Attack) && boosts[Stat.Attack] < 0)
                     {
                         boosts.Remove(Stat.Attack);
-                        target.AddStatusEvent(StatusEventType.Text, $"{target.Base.Name}'s attact can't be lowered.");
+                        target.AddStatusEvent(StatusEventType.Text, $"{target.Species.Name}'s attact can't be lowered.");
                     }
                 }
             }
@@ -231,7 +231,7 @@ public class AbilityDB
                     if(boosts.ContainsKey(Stat.Defense) && boosts[Stat.Defense] < 0)
                     {
                         boosts.Remove(Stat.Defense);
-                        target.AddStatusEvent(StatusEventType.Text, $"{target.Base.Name}'s defense can't be lowered.");
+                        target.AddStatusEvent(StatusEventType.Text, $"{target.Species.Name}'s defense can't be lowered.");
                     }
                 }
             }
@@ -259,7 +259,7 @@ public class AbilityDB
                     }
                     if (boostRemoved)
                     {
-                        target.AddStatusEvent(StatusEventType.Text, $"{target.Base.Name}'s clear body prevents stat loss.");
+                        target.AddStatusEvent(StatusEventType.Text, $"{target.Species.Name}'s clear body prevents stat loss.");
                     }
                 }
             }
@@ -287,7 +287,7 @@ public class AbilityDB
                     }
                     if (boostRemoved)
                     {
-                        target.AddStatusEvent(StatusEventType.Text, $"{target.Base.Name}'s white smoke prevents stat loss.");
+                        target.AddStatusEvent(StatusEventType.Text, $"{target.Species.Name}'s white smoke prevents stat loss.");
                     }
                 }
             }

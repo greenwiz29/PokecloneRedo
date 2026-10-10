@@ -12,77 +12,110 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15ddb0b24272b6109ad97542dc7ba963, type: 3}
   m_Name: Bulbasaur
   m_EditorClassIdentifier: 
-  name: Bulbasaur
-  dexNumber: 1
-  description: A bulbasaur
-  frontSprite: {fileID: 21300000, guid: ebfdba9b053aca1a282b016896c43bba, type: 3}
-  backSprite: {fileID: 21300000, guid: aacaae602a38f884ab9e02e43de3736d, type: 3}
-  frontSpriteFemale: {fileID: 21300000, guid: ebfdba9b053aca1a282b016896c43bba, type: 3}
-  backSpriteFemale: {fileID: 21300000, guid: aacaae602a38f884ab9e02e43de3736d, type: 3}
-  walkDownSprites:
-  - {fileID: 21300000, guid: 09ff0d33025b7ce6d93e94eb996d51cb, type: 3}
-  - {fileID: 21300000, guid: 224580d6573ee163290e04d2cc7b6fa8, type: 3}
-  walkUpSprites:
-  - {fileID: 21300000, guid: 791dd21d54214b5e99a21846b6f75499, type: 3}
-  - {fileID: 21300000, guid: 81e4a782cc20ee5a6967ac91fca4db16, type: 3}
-  walkLeftSprites:
-  - {fileID: 21300000, guid: 063ead7bff266846b83f3fdb1149b4f1, type: 3}
-  - {fileID: 21300000, guid: 6e57cbc7a9e05bf578c814fc5f4c6023, type: 3}
-  walkRightSprites:
-  - {fileID: 21300000, guid: b2f8ff0babf490526a37edd07b57b9e9, type: 3}
-  - {fileID: 21300000, guid: cb301e2bc189d0cb0a37be9524226428, type: 3}
-  frontSpriteShiny: {fileID: 21300000, guid: a9de61b31425cc3648e58887b45e71e3, type: 3}
-  backSpriteShiny: {fileID: 21300000, guid: 0e370be5abcedf8f9b25c1f3ee4ebc12, type: 3}
-  frontSpriteFemaleShiny: {fileID: 21300000, guid: a9de61b31425cc3648e58887b45e71e3, type: 3}
-  backSpriteFemaleShiny: {fileID: 21300000, guid: 0e370be5abcedf8f9b25c1f3ee4ebc12, type: 3}
-  walkDownSpritesShiny:
-  - {fileID: 21300000, guid: 9defce36e469c645f922d63156475a04, type: 3}
-  - {fileID: 21300000, guid: 837a76f68bfc9bb638ce9774682afb6b, type: 3}
-  walkUpSpritesShiny:
-  - {fileID: 21300000, guid: c17d7f09a21f4a0519ca113a0bc2a4f6, type: 3}
-  - {fileID: 21300000, guid: 12400ae3507ffb5898c919d14592f0ec, type: 3}
-  walkLeftSpritesShiny:
-  - {fileID: 21300000, guid: 8dd17b3d57355add38c5a3969abc5141, type: 3}
-  - {fileID: 21300000, guid: a003b462b42b9b7afae13c2eab7466c2, type: 3}
-  walkRightSpritesShiny:
-  - {fileID: 21300000, guid: b23a495b306cf85149d63e6759f7688f, type: 3}
-  - {fileID: 21300000, guid: dc17aa38a511d6813af8e1e7c9d1ada3, type: 3}
-  ability: 2
-  hiddenAbility: 5
-  normalAbilityPercent: 70
-  type1: 4
-  type2: 7
-  maxHP: 45
-  attack: 49
-  defense: 49
-  spAttack: 65
-  spDefense: 65
-  speed: 45
-  expYield: 65
-  catchRate: 255
-  genderRatio: 0
-  learnableMoves:
-  - moveBase: {fileID: 11400000, guid: d6d7f5d17e381c7de85d5e218f6edf93, type: 2}
-    levelLearned: 1
-  - moveBase: {fileID: 11400000, guid: d017063ff934bbe3ca502cc5d1bec0a9, type: 2}
-    levelLearned: 4
-  - moveBase: {fileID: 11400000, guid: dea694b551dc00c45b931cb61d4bb095, type: 2}
-    levelLearned: 7
-  - moveBase: {fileID: 11400000, guid: ff360aa1c384a3dfea5f2fc373ce0fa3, type: 2}
-    levelLearned: 10
-  learnableByItems: []
-  evolutions:
-  - evolvesInto: {fileID: 11400000, guid: c8beb122e19a711a18e5a4f7038dab8f, type: 2}
-    requiredLevel: 16
-    requiredItem: {fileID: 0}
-  possibleBehaviors:
-  - {fileID: 11400000, guid: a545c0ba32e10fe4086e4a518fe9afe3, type: 2}
-  defaultPursuitProfile: {fileID: 11400000, guid: 616b881560bfaebf2a69b4d720af4b2b, type: 2}
-  verticalPresence:
-    canHover: 0
-    canFly: 0
-    canBurrow: 0
-    offsetRange: {x: 0, y: 0}
-    interactionTolerance: 0.2
-    changeIntervalRange: {x: 1.5, y: 3.5}
-    divergencePreference: 0
+  identity:
+    name: Bulbasaur
+    dexNumber: 1
+    description: A strange seed was planted on its back at birth.
+  battle:
+    type1: 4
+    type2: 7
+    baseStats:
+      maxHP: 45
+      attack: 49
+      defense: 49
+      spAttack: 65
+      spDefense: 65
+      speed: 45
+    ability: 2
+    hiddenAbility: 0
+    normalAbilityPercent: 70
+    expYield: 64
+    catchRate: 45
+    genderRatio: 0
+  learnset:
+    levelUpMoves:
+    - moveBase: {fileID: 11400000, guid: d017063ff934bbe3ca502cc5d1bec0a9, type: 2}
+      levelLearned: 1
+    - moveBase: {fileID: 11400000, guid: d6d7f5d17e381c7de85d5e218f6edf93, type: 2}
+      levelLearned: 3
+    - moveBase: {fileID: 11400000, guid: dea694b551dc00c45b931cb61d4bb095, type: 2}
+      levelLearned: 7
+    itemMoves: []
+  evolution:
+    evolutions: []
+  visuals:
+    battle:
+      front: {fileID: 21300000, guid: ebfdba9b053aca1a282b016896c43bba, type: 3}
+      back: {fileID: 21300000, guid: aacaae602a38f884ab9e02e43de3736d, type: 3}
+      frontFemale: {fileID: 0}
+      backFemale: {fileID: 0}
+      frontShiny: {fileID: 21300000, guid: a9de61b31425cc3648e58887b45e71e3, type: 3}
+      backShiny: {fileID: 21300000, guid: 0e370be5abcedf8f9b25c1f3ee4ebc12, type: 3}
+      frontFemaleShiny: {fileID: 0}
+      backFemaleShiny: {fileID: 0}
+    overworld:
+      walkDown:
+      - {fileID: 21300000, guid: 09ff0d33025b7ce6d93e94eb996d51cb, type: 3}
+      - {fileID: 21300000, guid: 224580d6573ee163290e04d2cc7b6fa8, type: 3}
+      walkUp:
+      - {fileID: 21300000, guid: 791dd21d54214b5e99a21846b6f75499, type: 3}
+      - {fileID: 21300000, guid: 81e4a782cc20ee5a6967ac91fca4db16, type: 3}
+      walkLeft:
+      - {fileID: 21300000, guid: 063ead7bff266846b83f3fdb1149b4f1, type: 3}
+      - {fileID: 21300000, guid: 6e57cbc7a9e05bf578c814fc5f4c6023, type: 3}
+      walkRight:
+      - {fileID: 21300000, guid: b2f8ff0babf490526a37edd07b57b9e9, type: 3}
+      - {fileID: 21300000, guid: cb301e2bc189d0cb0a37be9524226428, type: 3}
+      walkDownShiny:
+      - {fileID: 21300000, guid: 9defce36e469c645f922d63156475a04, type: 3}
+      - {fileID: 21300000, guid: 837a76f68bfc9bb638ce9774682afb6b, type: 3}
+      walkUpShiny:
+      - {fileID: 21300000, guid: c17d7f09a21f4a0519ca113a0bc2a4f6, type: 3}
+      - {fileID: 21300000, guid: 12400ae3507ffb5898c919d14592f0ec, type: 3}
+      walkLeftShiny:
+      - {fileID: 21300000, guid: 8dd17b3d57355add38c5a3969abc5141, type: 3}
+      - {fileID: 21300000, guid: a003b462b42b9b7afae13c2eab7466c2, type: 3}
+      walkRightShiny:
+      - {fileID: 21300000, guid: b23a495b306cf85149d63e6759f7688f, type: 3}
+      - {fileID: 21300000, guid: dc17aa38a511d6813af8e1e7c9d1ada3, type: 3}
+  overworld:
+    possibleBehaviors: []
+    defaultPursuitProfile: {fileID: 0}
+    verticalPresence:
+      canHover: 0
+      canFly: 0
+      canBurrow: 0
+      usesGroundFooting: 1
+      offsetRange: {x: 0, y: 0}
+      neutralMode: 0
+      neutralBobSpeed: 2
+      perMoveCurve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      interactionTolerance: 0.2
+      changeIntervalRange: {x: 1.5, y: 3.5}
+      divergencePreference: 0
+      canFlyAway: 0
+      flyAwayAltitudeTolerance: 0.1
+      flyAwayHoldTime: 1.5

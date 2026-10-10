@@ -70,7 +70,7 @@ public class MapArea : MonoBehaviour
 [Serializable]
 public class PokemonEncounterRecord
 {
-    public PokemonBase pokemon;
+    public PokemonSpecies pokemon;
     /// <summary>
     /// Represents a range of valid levels for the encountered Pokemon, both ends inclusive.
     /// <para>If the second value is 0, the level will always be the first value.</para>
