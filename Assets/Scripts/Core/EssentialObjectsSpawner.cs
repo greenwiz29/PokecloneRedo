@@ -11,7 +11,7 @@ public class EssentialObjectsSpawner : MonoBehaviour
         {
             // if there's a grid, spawn at its center
             var spawnPos = new Vector3(0, 0, 0);
-            var grid = FindFirstObjectByType<Grid>();
+            var grid = FindAnyObjectByType<Grid>();
             if (grid != null)
             {
                 spawnPos = grid.transform.position;

@@ -54,8 +54,15 @@ public class RunTurnState : State<BattleSystem>
             switch (action.Type)
             {
                 case BattleActionType.Move:
-                    action.User.Pokemon.CurrentMove = action.SelectedMove;
-                    yield return RunMove(action.User, action.Targets, action.SelectedMove);
+                    if (action.IsComboAction && action.ResolvedCombo != null)
+                    {
+                        yield return RunComboMove(action, action.ResolvedCombo);
+                    }
+                    else
+                    {
+                        action.User.Pokemon.CurrentMove = action.SelectedMove;
+                        yield return RunMove(action.User, action.Targets, action.SelectedMove);
+                    }
                     yield return RunAfterTurn(action.User, action.Target);
                     break;
 
@@ -94,6 +101,38 @@ public class RunTurnState : State<BattleSystem>
         if (!bs.IsBattleOver)
         {
             bs.StateMachine.ChangeState(ActionSelectionState.I);
+        }
+    }
+
+    private IEnumerator RunComboMove(BattleAction action, ComboMoveBase combo)
+    {
+        var userA = action.User;
+        var userB = action.ComboPartnerAction.User;
+        var resultMove = new Move(combo.ResultMove);
+
+        // Both users "used" it — show dialog for the combo
+        yield return dialogBox.TypeDialog(
+            $"{userA.Pokemon.Name} and {userB.Pokemon.Name} used {combo.Name}!"
+        );
+
+        // Play attack animations for both
+        userA.PlayAttackAnimation();
+        userB.PlayAttackAnimation();
+        yield return new WaitForSeconds(0.75f);
+
+        // Resolve targets from the result move's targeting rules.
+        // Re-use TargetSelectionState's GetValidTargets, treating userA as the "user".
+        var targets = TargetSelectionState.I.GetValidTargets(resultMove, userA, bs);
+        if (targets.Count == 0) yield break;
+
+        // Deduct PP from both source moves
+        action.SelectedMove.PP--;
+        action.ComboPartnerAction.SelectedMove.PP--;
+
+        // Execute using the result move (inherits all existing damage/effect logic)
+        foreach (var target in targets)
+        {
+            yield return ExecuteMove(userA, resultMove, target, combo.ComboMultiplier);
         }
     }
 
@@ -139,7 +178,7 @@ public class RunTurnState : State<BattleSystem>
 
     }
 
-    private IEnumerator ExecuteMove(BattleUnit source, Move move, BattleUnit target)
+    private IEnumerator ExecuteMove(BattleUnit source, Move move, BattleUnit target, float baseModifierMultiplier = 1f)
     {
         if (!CheckIfMoveHits(move, source.Pokemon, target.Pokemon))
         {
@@ -161,15 +200,13 @@ public class RunTurnState : State<BattleSystem>
                 }
                 else
                 {
-                    float modifierMultiplier = 1f;
-
                     foreach (var mod in bs.ActiveModifiers)
                     {
-                        mod.OnBeforeDamage(bs, source, target, move, ref modifierMultiplier, bs.Context);
+                        mod.OnBeforeDamage(bs, source, target, move, ref baseModifierMultiplier, bs.Context);
                     }
 
                     float weatherModifier = bs.Field.Weather?.OnDamageModify?.Invoke(move) ?? 1f;
-                    float finalMultiplier = weatherModifier * modifierMultiplier;
+                    float finalMultiplier = weatherModifier * baseModifierMultiplier;
 
                     damageDetails = target.Pokemon.ApplyDamage(
                         move, source.Pokemon, finalMultiplier, hitCount

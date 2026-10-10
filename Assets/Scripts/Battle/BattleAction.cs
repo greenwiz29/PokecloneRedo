@@ -20,4 +20,11 @@ public class BattleAction
     public int Priority => Type == BattleActionType.Move ? SelectedMove?.Base.Priority ?? 0 : 99;
 
     public bool IsInvalid { get; set; }
+
+    // Set if this action is part of a combo
+    public bool IsComboAction { get; set; }
+    public BattleAction ComboPartnerAction { get; set; }
+
+    // The resolved combo (set by BattleSystem after both actions are collected)
+    public ComboMoveBase ResolvedCombo { get; set; }
 }

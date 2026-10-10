@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using GDEUtils.StateMachine;
 using UnityEngine;
 
@@ -29,7 +30,27 @@ public class MoveSelectionState : State<BattleSystem>
     {
         bs = owner;
 
-        selectionUI.SetMoves(Moves);
+        // Find the move already chosen by the other player unit, if any
+        MoveBase alreadyChosenMove = bs.BattleActions
+            .FirstOrDefault(a =>
+                a.Type == BattleActionType.Move &&
+                a.User.IsPlayerUnit &&
+                a.User != bs.SelectedUnit &&
+                a.SelectedMove != null)
+            ?.SelectedMove.Base;
+
+        // Build a set of indices into Moves that would trigger a combo
+        var comboIndices = new HashSet<int>();
+        if (alreadyChosenMove != null)
+        {
+            for (int i = 0; i < Moves.Count; i++)
+            {
+                if (ComboMoveDB.FindCombo(alreadyChosenMove, Moves[i].Base) != null)
+                    comboIndices.Add(i);
+            }
+        }
+
+        selectionUI.SetMoves(Moves, comboIndices);
         selectionUI.gameObject.SetActive(true);
         moveDetailsUI.SetActive(true);
         selectionUI.OnSelected += OnMoveSelected;

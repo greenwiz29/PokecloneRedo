@@ -61,6 +61,7 @@ public class BattleSystem : MonoBehaviour
     public BattleField Field { get; private set; }
     List<BattleModifier> activeModifiers = new();
     public IReadOnlyList<BattleModifier> ActiveModifiers => activeModifiers;
+    public IReadOnlyList<BattleAction> BattleActions => battleActions;
     Queue<BattleEvent> eventQueue = new();
     public bool HasPendingEvents => eventQueue.Count > 0;
 
@@ -244,6 +245,49 @@ public class BattleSystem : MonoBehaviour
 
         if (battleActions.Count >= ActivePlayerUnitsCount)
         {
+            // === COMBO DETECTION ===
+            var moveActions = battleActions
+                .Where(a => a.Type == BattleActionType.Move
+                         && a.User.IsPlayerUnit
+                         && a.SelectedMove != null)
+                .ToList();
+
+            for (int i = 0; i < moveActions.Count; i++)
+            {
+                for (int j = i + 1; j < moveActions.Count; j++)
+                {
+                    var combo = ComboMoveDB.FindCombo(
+                        moveActions[i].SelectedMove.Base,
+                        moveActions[j].SelectedMove.Base
+                    );
+                    if (combo != null)
+                    {
+                        bool targetsMatch;
+                        if (combo.ResultMove.Target == MoveTarget.Area)
+                        {
+                            // Both must also be Area moves targeting the same set
+                            targetsMatch = moveActions[i].MoveTargetType == MoveTarget.Area
+                                        && moveActions[j].MoveTargetType == MoveTarget.Area;
+                        }
+                        else
+                        {
+                            // Single-target: must point at the exact same unit
+                            targetsMatch = moveActions[i].Target == moveActions[j].Target;
+                        }
+
+                        if (targetsMatch)
+                        {
+                            moveActions[i].IsComboAction = true;
+                            moveActions[i].ResolvedCombo = combo;
+                            moveActions[i].ComboPartnerAction = moveActions[j];
+                            moveActions[j].IsInvalid = true;
+                        }
+                        // If targets don't match: no combo, both moves fire independently as normal
+                    }
+                }
+            }
+            // === END COMBO DETECTION ===
+
             // Add enemy actions
             foreach (var enemy in enemyUnits)
             {

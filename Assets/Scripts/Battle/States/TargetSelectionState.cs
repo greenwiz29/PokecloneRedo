@@ -105,6 +105,16 @@ public class TargetSelectionState : State<BattleSystem>
                 targets.Remove(user);
                 return targets;
 
+            case MoveTarget.AllFoes:
+                targets = new List<BattleUnit>();
+                targets.AddRange(bs.EnemyUnits);
+                return targets;
+
+            case MoveTarget.AllAllies:
+                targets = new List<BattleUnit>();
+                targets.AddRange(bs.PlayerUnits);
+                return targets;
+
             default:
                 return new List<BattleUnit>();
         }
