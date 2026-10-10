@@ -114,7 +114,7 @@ public class StatBoost
     public int boost;
 }
 
-public enum MoveTarget { Foe, Self, Area, Ally, }
+public enum MoveTarget { Foe, Self, Area, Ally, AllFoes, AllAllies }
 
 public enum MoveFlag { Contact, Punch, Bite, Sound, }
 
