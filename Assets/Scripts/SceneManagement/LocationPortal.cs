@@ -2,6 +2,8 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
+
 
 
 #if UNITY_EDITOR
@@ -19,6 +21,7 @@ public class LocationPortal : MonoBehaviour, IPlayerTriggerable
     [Header("Destination")]
     [SerializeField] string targetSceneName;
     [SerializeField] string entryPointId;
+
     public bool TriggerRepeatedly => false;
     public string TargetSceneName => targetSceneName;
     public string EntryPointId => entryPointId;
@@ -28,6 +31,7 @@ public class LocationPortal : MonoBehaviour, IPlayerTriggerable
     public SceneDetails TargetScene =>
         FindObjectsByType<SceneDetails>()
             .FirstOrDefault(s => s.SceneName == targetSceneName);
+
 #if UNITY_EDITOR
     public void SetEditorValues(string sceneName, string entryId)
     {
@@ -84,6 +88,24 @@ public class LocationPortal : MonoBehaviour, IPlayerTriggerable
 
         yield return fader.FadeOut(0.5f);
         GameController.I.PauseGame(false);
+    }
+
+    IEnumerator LoadDestinationScene()
+    {
+        var currScene = GameController.I.CurrentScene;
+        if (currScene != null)
+        {
+            var scenesToLoad = currScene.IsInterior ? currScene.ConnectedExteriorScenes : currScene.ConnectedInteriorScenes;
+
+            foreach (var scene in scenesToLoad)
+            {
+                if (!scene.IsLoaded)
+                {
+                    scene.LoadScene();
+                }
+            }
+        }
+        yield break;
     }
 
 #if UNITY_EDITOR

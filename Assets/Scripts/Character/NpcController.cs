@@ -36,60 +36,61 @@ public class NpcController : OverworldEntity, ISavable
     {
         character.LookTowards(initiator.position);
 
-            if (questToComplete != null)
-            {
-                var quest = new Quest(questToComplete);
-                yield return quest.CompleteQuest();
-                questToComplete = null;
-            }
+        if (questToComplete != null)
+        {
+            var quest = new Quest(questToComplete);
+            yield return quest.CompleteQuest();
+            questToComplete = null;
+        }
 
-            if (pokemonGiver != null && pokemonGiver.CanBeGiven())
-            {
-                yield return pokemonGiver.GivePokemon(initiator.GetComponent<PlayerController>());
-            }
-            if (itemGiver != null && itemGiver.CanBeGiven())
-            {
-                yield return itemGiver.GiveItem(initiator.GetComponent<PlayerController>());
-            }
-            else if (healer != null)
-            {
-                yield return healer.Heal(initiator);
-            }
-            else if (questToStart != null)
-            {
-                activeQuest = new Quest(questToStart);
-                yield return activeQuest.StartQuest();
-                questToStart = null;
+        if (pokemonGiver != null && pokemonGiver.CanBeGiven())
+        {
+            yield return pokemonGiver.GivePokemon(initiator.GetComponent<PlayerController>());
+        }
+        // TODO: re-evaluate if this 'else' is needed
+        else if (itemGiver != null && itemGiver.CanBeGiven())
+        {
+            yield return itemGiver.GiveItem(initiator.GetComponent<PlayerController>());
+        }
+        else if (healer != null)
+        {
+            yield return healer.Heal(initiator);
+        }
+        else if (questToStart != null)
+        {
+            activeQuest = new Quest(questToStart);
+            yield return activeQuest.StartQuest();
+            questToStart = null;
 
-                if (activeQuest.CanBeCompleted())
-                {
-                    yield return activeQuest.CompleteQuest();
-                    activeQuest = null;
-                }
-            }
-            else if (activeQuest != null)
+            if (activeQuest.CanBeCompleted())
             {
-                if (activeQuest.CanBeCompleted())
-                {
-                    yield return activeQuest.CompleteQuest();
-                    activeQuest = null;
-                }
-                else
-                {
-                    yield return DialogManager.I.ShowDialog(activeQuest.Base.InProgressDialog);
-                }
+                yield return activeQuest.CompleteQuest();
+                activeQuest = null;
             }
-            else if (merchant != null)
+        }
+        else if (activeQuest != null)
+        {
+            if (activeQuest.CanBeCompleted())
             {
-                yield return merchant.Trade();
+                yield return activeQuest.CompleteQuest();
+                activeQuest = null;
             }
             else
             {
-                yield return DialogManager.I.ShowDialog(dialog);
+                yield return DialogManager.I.ShowDialog(activeQuest.Base.InProgressDialog);
             }
+        }
+        else if (merchant != null)
+        {
+            yield return merchant.Trade();
+        }
+        else
+        {
+            yield return DialogManager.I.ShowDialog(dialog);
+        }
 
-            state = NPCState.Idle;
-            idleTimer = 0f;
+        state = NPCState.Idle;
+        idleTimer = 0f;
     }
 
     protected override void Update()
@@ -126,58 +127,46 @@ public class NpcController : OverworldEntity, ISavable
     {
         var pos = new Vector2(transform.position.x, transform.position.y);
         var index = 0;
-        var colours = new List<Color>()
-        {
-            Color.red,
-            Color.green,
-            Color.blue
-        };
+        var colours = new List<Color>() { Color.red, Color.green, Color.blue };
 
         foreach (Vector2 path in movePattern)
         {
             Vector2 newPosRef = movePattern[index];
 
-            if (newPosRef.x == 0)
-                newPosRef.y *= 1f;
-            else if (newPosRef.y == 0)
-                newPosRef.x *= 1f;
+            if (newPosRef.x == 0) newPosRef.y *= 1f;
+            else if (newPosRef.y == 0) newPosRef.x *= 1f;
 
             Debug.DrawLine(pos, pos + newPosRef, colours[index % 3], 1f);
-
             index += 1;
             pos += newPosRef;
         }
-
     }
+
+    // -------------------------------------------------------------------------
+    // ISavable
+    // -------------------------------------------------------------------------
 
     public object CaptureState()
     {
         var saveData = new NPCQuestSaveData();
-
         saveData.activeQuest = activeQuest?.GetSaveData();
-
         if (questToStart != null)
             saveData.questToStart = new Quest(questToStart).GetSaveData();
         if (questToComplete != null)
             saveData.questToComplete = new Quest(questToComplete).GetSaveData();
-
         return saveData;
     }
 
     public void RestoreState(object state)
     {
         var saveData = state as NPCQuestSaveData;
-
         if (saveData != null)
         {
             activeQuest = (saveData.activeQuest != null) ? new Quest(saveData.activeQuest) : null;
-
             questToStart = (saveData.questToStart != null) ? new Quest(saveData.questToStart).Base : null;
-
             questToComplete = (saveData.questToComplete != null) ? new Quest(saveData.questToComplete).Base : null;
         }
     }
-
 }
 
 public enum NPCState { Idle, Walking, Dialog }

@@ -116,18 +116,23 @@ public class GameController : MonoBehaviour
         PreviousScene = prevScene;
         CurrentScene = newScene;
 
-        foreach (var scene in newScene.ConnectedScenes)
+        // If we are in an exterior scene, then load all connected exterior scenes.
+        // If we are in an interior scene, then load nothing.
+        var scenesToLoad = newScene.IsInterior ? null : newScene.ConnectedExteriorScenes;
+        foreach (var scene in scenesToLoad)
+        {
             scene.LoadScene();
+        }
 
         if (prevScene != null)
         {
             foreach (var scene in prevScene.ConnectedScenes)
             {
-                if (!newScene.ConnectedScenes.Contains(scene) && scene != newScene)
+                if (!scenesToLoad.Contains(scene) && scene != newScene)
                     scene.UnloadScene();
             }
 
-            if (!newScene.ConnectedScenes.Contains(prevScene))
+            if (!scenesToLoad.Contains(prevScene))
                 prevScene.UnloadScene();
         }
 

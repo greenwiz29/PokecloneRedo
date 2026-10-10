@@ -12,7 +12,11 @@ using UnityEditor;
 public class SceneDetails : MonoBehaviour
 {
     [SerializeField] List<SceneDetails> connectedScenes;
+    [SerializeField] bool isInterior;
     [SerializeField] TileBase backgroundTile;
+
+    public List<SceneDetails> ConnectedExteriorScenes { get; private set; }
+    public List<SceneDetails> ConnectedInteriorScenes { get; private set; }
 
     Tilemap ledgeTilemap;
     Tilemap solidTilemap;
@@ -34,6 +38,7 @@ public class SceneDetails : MonoBehaviour
 
     public string SceneName => gameObject.name;
     public bool IsLoaded { get; private set; }
+    public bool IsInterior => isInterior;
     List<SavableEntity> savableEntities;
     public MapArea MapArea { get; private set; }
     public List<SceneDetails> ConnectedScenes => connectedScenes;
@@ -43,6 +48,9 @@ public class SceneDetails : MonoBehaviour
         MapArea = GetComponentInParent<MapArea>();
         if (MapArea == null)
             Debug.LogWarning($"SceneDetails on {name} has no MapArea.");
+
+        ConnectedInteriorScenes = connectedScenes.Where(s => s.isInterior).ToList();
+        ConnectedExteriorScenes = connectedScenes.Where(s => !s.isInterior).ToList();
     }
 
     public SceneEntryPoint GetEntryPoint(string id)
