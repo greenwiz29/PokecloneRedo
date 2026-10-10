@@ -42,7 +42,6 @@ public class DialogManager : MonoSingleton<DialogManager>
         if (waitForInput)
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
 
-
         if (choices != null && choices.Count > 1)
         {
             yield return choiceBox.ShowChoices(choices, onChoiceSelected);
@@ -74,6 +73,16 @@ public class DialogManager : MonoSingleton<DialogManager>
 
         CloseDialog();
         OnDialogFinished?.Invoke();
+    }
+
+    /// <summary>
+    /// Presents a choice box without any preceding line of text.
+    /// Used by YarnDialoguePresenter when Yarn delivers options directly.
+    /// Does not open or close the dialog box — the caller controls that.
+    /// </summary>
+    public IEnumerator ShowChoices(List<string> choices, Action<int> onChoiceSelected)
+    {
+        yield return choiceBox.ShowChoices(choices, onChoiceSelected);
     }
 
     public IEnumerator TypeDialog(string dialog)

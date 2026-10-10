@@ -11,7 +11,13 @@ public class GymLeaderController : TrainerController
     [Header("Quest Progression")]
     [SerializeField] Quest questToStart;
     [SerializeField] Quest questToComplete;
+
+    [Header("World State")]
     [SerializeField] WorldStateFlag gymClearedFlag;
+    // Optional: advancing a story thread counter when this gym is cleared.
+    // Leave blank to skip. Example key: "MainStory"
+    [SerializeField] string storyCounterKey;
+
 
     protected override bool CanTriggerFieldBattle => false;
 
@@ -34,6 +40,12 @@ public class GymLeaderController : TrainerController
     {
         StartCoroutine(GiveRewardItems());
 
+        if (gymClearedFlag != null)
+            WorldStateManager.I.SetFlag(gymClearedFlag);
+ 
+        if (!string.IsNullOrEmpty(storyCounterKey))
+            WorldStateManager.I.AdvanceCounter(storyCounterKey);
+ 
         questToStart?.StartQuest();
         questToComplete?.CompleteQuest();
 
