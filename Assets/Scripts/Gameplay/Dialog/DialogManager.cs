@@ -68,7 +68,7 @@ public class DialogManager : MonoSingleton<DialogManager>
 
         if (choices != null && choices.Count > 1)
         {
-            yield return choiceBox.ShowChoices(choices, onChoiceSelected);
+            yield return ShowChoices(choices, onChoiceSelected);
         }
 
         CloseDialog();
