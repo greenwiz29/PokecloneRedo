@@ -13,6 +13,8 @@ public class VisualAltitudeController
     float timeAtMaxAltitude;
 
     SpriteRenderer shadowRenderer;
+    readonly SpriteMask burrowMask;
+    readonly float spriteWorldHeight;
     Coroutine altitudeRoutine;
     bool overrideActive;
     InteractionPlaneBias bias = InteractionPlaneBias.Neutral;
@@ -41,6 +43,9 @@ public class VisualAltitudeController
         baseLocalY = sprite.transform.localPosition.y;
 
         currentOffset = 0f;
+
+        burrowMask = owner.transform.Find("BurrowMask")?.GetComponentInChildren<SpriteMask>();
+        spriteWorldHeight = sprite.bounds.size.y;
     }
 
     public void Tick()
@@ -53,9 +58,12 @@ public class VisualAltitudeController
         {
             timeAtMaxAltitude = 0f;
         }
+        owner.GetComponent<BoxCollider2D>().enabled = currentOffset <= 2.0f && currentOffset >= -0.5; // TODO: make collision cutoff configurable
 
         ApplyVisualOffset();
         UpdateShadow();
+        if (profile.canBurrow)
+            UpdateBurrowMask();
 
 #if UNITY_EDITOR
         if (overrideActive && bias == InteractionPlaneBias.Diverge && !owner.IsReacting)
@@ -193,6 +201,13 @@ public class VisualAltitudeController
         if (shadowRenderer == null || profile == null)
             return;
 
+        if (profile.canBurrow && currentOffset <= 0f && currentOffset >= -0.75) // TODO: make lower cutoff configurable
+        {
+            // Pokemon is still not completely submerged/burried, so no shadow should display
+            shadowRenderer.enabled = false;
+            return;
+        }
+
         float maxOffset = Mathf.Max(Mathf.Abs(profile.offsetRange.x), Mathf.Abs(profile.offsetRange.y));
 
         if (maxOffset <= Mathf.Epsilon)
@@ -208,6 +223,34 @@ public class VisualAltitudeController
         var c = shadowRenderer.color;
         c.a = alpha;
         shadowRenderer.color = c;
+    }
+
+    void UpdateBurrowMask()
+    {
+        if (burrowMask == null || currentOffset >= 0f)
+        {
+            burrowMask?.gameObject.SetActive(false);
+            return;
+        }
+
+        burrowMask.gameObject.SetActive(true);
+
+        // How much of the sprite is below ground
+        float buried = Mathf.Abs(currentOffset);
+        float visibleHeight = Mathf.Max(0f, spriteWorldHeight - buried);
+
+        // Mask sits at ground level and covers only the visible portion upward
+        float maskLocalY = currentOffset + (visibleHeight * 0.5f);
+        var mp = burrowMask.transform.localPosition;
+        mp.y = maskLocalY;
+        burrowMask.transform.localPosition = mp;
+
+        var ms = burrowMask.transform.localScale;
+        ms.y = visibleHeight / spriteWorldHeight; // assuming mask sprite is sized to match sprite at scale 1
+        burrowMask.transform.localScale = ms;
+
+        // shadow should only be visible if offset magnitude is greater than some cutoff
+
     }
 
     public bool IsNearMaxAltitude()
