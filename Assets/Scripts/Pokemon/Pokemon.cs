@@ -260,13 +260,13 @@ public class Pokemon
         {
             if (isShiny)
             {
-                FrontSprite = battle.FrontFemaleShiny;
-                BackSprite = battle.BackFemaleShiny;
+                FrontSprite = battle.FrontFemaleShiny != null ? battle.FrontFemaleShiny : battle.FrontShiny;
+                BackSprite = battle.BackFemaleShiny != null ? battle.BackFemaleShiny : battle.BackShiny;
             }
             else
             {
-                FrontSprite = battle.FrontFemale;
-                BackSprite = battle.BackFemale;
+                FrontSprite = battle.FrontFemale != null ? battle.FrontFemale : battle.Front;
+                BackSprite = battle.BackFemale != null ? battle.BackFemale : battle.Back;
             }
         }
         else
