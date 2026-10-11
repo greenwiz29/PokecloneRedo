@@ -73,8 +73,9 @@ MonoBehaviour:
       - {fileID: 21300000, guid: c843724b7bc75d1cc89f743cf7129714, type: 3}
       - {fileID: 21300000, guid: 8b147ff18fc796115ac74e7088a85d97, type: 3}
   overworld:
-    possibleBehaviors: []
-    defaultPursuitProfile: {fileID: 0}
+    possibleBehaviors:
+    - {fileID: 11400000, guid: a545c0ba32e10fe4086e4a518fe9afe3, type: 2}
+    defaultPursuitProfile: {fileID: 11400000, guid: 616b881560bfaebf2a69b4d720af4b2b, type: 2}
     verticalPresence:
       canHover: 0
       canFly: 0

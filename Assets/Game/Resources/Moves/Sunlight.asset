@@ -12,6 +12,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d204b79d8437e965ae69e2ec0c2c1a0, type: 3}
   m_Name: Sunlight
   m_EditorClassIdentifier: Assembly-CSharp::MoveBase
+  identityData:
+    id: sunlight
+    displayName: Sunlight
+    description: Causes the sun to shine brightly for 5 turns
+  battleData:
+    type: 2
+    power: 0
+    accuracy: 100
+    pp: 20
+    priority: 0
+    alwaysHits: 0
+    moveType: 2
+    target: 0
+    flags: 
+  effectsData:
+    primary:
+      boosts: []
+      status: 0
+      volatileStatus: 0
+      weather: 4
+      weatherDuration:
+        v: 5
+        hasValue: 1
+    secondary: []
+  specialMechanicsData:
+    isMultiHitMove: 0
+    hitRange: {x: 2, y: 0}
+    recoil:
+      recoilType: 0
+      recoilDamagePercent: 0
+    drainingPercentage: 0
+    critBehavior: 0
+    oneHitKoMoveEffect:
+      isOneHitKnockOut: 0
+      lowerOddsException: 0
+      immunityType: 0
   name: Sunlight
   description: Causes the sun to shine brightly for 5 turns
   type: 2
@@ -19,7 +55,6 @@ MonoBehaviour:
   accuracy: 100
   pp: 20
   priority: 0
-  critChance: 6.25
   alwaysHits: 0
   moveType: 2
   effects:
@@ -32,3 +67,15 @@ MonoBehaviour:
       hasValue: 1
   secondaryEffects: []
   target: 0
+  flags: 
+  isMultiHitMove: 0
+  hitRange: {x: 2, y: 0}
+  recoil:
+    recoilType: 0
+    recoilDamagePercent: 0
+  drainingPercentage: 0
+  critBehavior: 0
+  oneHitKoMoveEffect:
+    isOneHitKnockOut: 0
+    lowerOddsException: 0
+    immunityType: 0

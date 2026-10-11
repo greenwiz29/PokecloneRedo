@@ -73,14 +73,15 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 8a123eb935b053cc0a95b131564b6938, type: 3}
       - {fileID: 21300000, guid: ac67f94f493849fe3b09c603fbb97852, type: 3}
   overworld:
-    possibleBehaviors: []
-    defaultPursuitProfile: {fileID: 0}
+    possibleBehaviors:
+    - {fileID: 11400000, guid: a545c0ba32e10fe4086e4a518fe9afe3, type: 2}
+    defaultPursuitProfile: {fileID: 11400000, guid: 616b881560bfaebf2a69b4d720af4b2b, type: 2}
     verticalPresence:
       canHover: 0
-      canFly: 0
+      canFly: 1
       canBurrow: 0
       usesGroundFooting: 1
-      offsetRange: {x: 0, y: 0}
+      offsetRange: {x: 0, y: 3}
       neutralMode: 0
       neutralBobSpeed: 2
       perMoveCurve:
@@ -110,6 +111,6 @@ MonoBehaviour:
       interactionTolerance: 0.2
       changeIntervalRange: {x: 1.5, y: 3.5}
       divergencePreference: 0
-      canFlyAway: 0
-      flyAwayAltitudeTolerance: 0.1
-      flyAwayHoldTime: 1.5
+      canFlyAway: 1
+      flyAwayAltitudeTolerance: 2.9
+      flyAwayHoldTime: 15

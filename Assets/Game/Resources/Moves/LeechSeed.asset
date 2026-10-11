@@ -12,6 +12,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d204b79d8437e965ae69e2ec0c2c1a0, type: 3}
   m_Name: LeechSeed
   m_EditorClassIdentifier: 
+  identityData:
+    id: leech-seed
+    displayName: Leech Seed
+    description: leech seed
+  battleData:
+    type: 4
+    power: 0
+    accuracy: 65
+    pp: 25
+    priority: 0
+    alwaysHits: 0
+    moveType: 2
+    target: 0
+    flags: 
+  effectsData:
+    primary:
+      boosts: []
+      status: 0
+      volatileStatus: 7
+      weather: 0
+      weatherDuration:
+        v: 0
+        hasValue: 0
+    secondary: []
+  specialMechanicsData:
+    isMultiHitMove: 0
+    hitRange: {x: 2, y: 0}
+    recoil:
+      recoilType: 0
+      recoilDamagePercent: 0
+    drainingPercentage: 0
+    critBehavior: 0
+    oneHitKoMoveEffect:
+      isOneHitKnockOut: 0
+      lowerOddsException: 0
+      immunityType: 0
   name: Leech Seed
   description: leech seed
   type: 4
@@ -31,6 +67,7 @@ MonoBehaviour:
       hasValue: 0
   secondaryEffects: []
   target: 0
+  flags: 
   isMultiHitMove: 0
   hitRange: {x: 2, y: 0}
   recoil:

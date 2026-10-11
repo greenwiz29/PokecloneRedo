@@ -1,79 +1,73 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum MoveType { Physical, Special, Status, }
+public enum MoveType { Physical, Special, Status }
 
 [CreateAssetMenu(fileName = "Move", menuName = "Pokemon/Create new move")]
 public class MoveBase : ScriptableObject
 {
-    [SerializeField] new string name;
+    // New serialized structure.
+    [SerializeField] private MoveIdentityData identityData = new();
+    [SerializeField] private MoveBattleData battleData = new();
+    [SerializeField] private MoveEffectsData effectsData = new();
+    [SerializeField] private MoveSpecialMechanicsData specialMechanicsData = new();
 
-    [TextArea]
-    [SerializeField] string description;
+    // Temporary legacy fields.
+    // Keep these until migration and verification are complete.
+    [HideInInspector, SerializeField] private new string name;
+    [HideInInspector, TextArea, SerializeField] private string description;
+    [HideInInspector, SerializeField] private PokemonType type;
+    [HideInInspector, SerializeField] private int power, accuracy, pp, priority;
+    [HideInInspector, SerializeField] private bool alwaysHits;
+    [HideInInspector, SerializeField] private MoveType moveType;
+    [HideInInspector, SerializeField] private MoveEffects effects;
+    [HideInInspector, SerializeField] private List<SecondaryEffects> secondaryEffects;
+    [HideInInspector, SerializeField] private MoveTarget target;
+    [HideInInspector, SerializeField] private List<MoveFlag> flags;
+    [HideInInspector, SerializeField] private bool isMultiHitMove = false;
+    [HideInInspector, SerializeField] private Vector2Int hitRange = new(2, 0);
+    [HideInInspector, SerializeField] private RecoilMoveEffect recoil = new();
+    [HideInInspector, SerializeField] private int drainingPercentage = 0;
+    [HideInInspector, SerializeField] private CritBehavior critBehavior;
+    [HideInInspector, SerializeField] private OneHitKoMoveEffect oneHitKoMoveEffect = new();
 
-    [SerializeField] PokemonType type;
+    public string Id => identityData.Id;
+    public string Name => identityData.Name;
+    public string Desc => identityData.Description;
 
-    [SerializeField] int power, accuracy, pp, priority;
+    public PokemonType Type => battleData.Type;
+    public int Power => battleData.Power;
+    public int Accuracy => battleData.Accuracy;
+    public bool AlwaysHits => battleData.AlwaysHits;
+    public int PP => battleData.PP;
+    public int Priority => battleData.Priority;
+    public MoveType MoveType => battleData.MoveType;
+    public MoveTarget Target => battleData.Target;
 
-    [SerializeField] bool alwaysHits;
+    public MoveEffects Effects => effectsData.Primary;
+    public List<SecondaryEffects> SecondaryEffects => effectsData.Secondary;
 
-    [SerializeField] MoveType moveType;
-
-    [SerializeField] MoveEffects effects;
-
-    [SerializeField] List<SecondaryEffects> secondaryEffects;
-
-    [SerializeField] MoveTarget target;
-    [SerializeField] List<MoveFlag> flags;
-
-    [SerializeField] bool isMultiHitMove = false;
-    [SerializeField] Vector2Int hitRange = new Vector2Int(2, 0);
-    //Erina's tutorials
-    [SerializeField] RecoilMoveEffect recoil = new RecoilMoveEffect();
-    [SerializeField] int drainingPercentage = 0;
-    [SerializeField] CritBehavior critBehavior;
-    [SerializeField] OneHitKoMoveEffect oneHitKoMoveEffect = new OneHitKoMoveEffect();
-
-    public string Name => name;
-    public string Desc => description;
-    public PokemonType Type => type;
-    public int Power => power;
-    public int Accuracy => accuracy;
-    public bool AlwaysHits => alwaysHits;
-    public int PP => pp;
-    public int Priority => priority;
-    public MoveType MoveType => moveType;
-    public MoveTarget Target => target;
-    public MoveEffects Effects => effects;
-    public List<SecondaryEffects> SecondaryEffects => secondaryEffects;
-    public bool IsMultiHitMove => isMultiHitMove;
-
-    //Erina's tutorials
-    public RecoilMoveEffect Recoil => recoil;
-    public int DrainingPercentage => drainingPercentage;
-    public CritBehavior CriticalBehavior => critBehavior;
-    public OneHitKoMoveEffect OneHitKo => oneHitKoMoveEffect;
+    public bool IsMultiHitMove => specialMechanicsData.IsMultiHitMove;
+    public RecoilMoveEffect Recoil => specialMechanicsData.Recoil;
+    public int DrainingPercentage => specialMechanicsData.DrainingPercentage;
+    public CritBehavior CriticalBehavior => specialMechanicsData.CriticalBehavior;
+    public OneHitKoMoveEffect OneHitKo => specialMechanicsData.OneHitKo;
 
     public int GetHitTimes()
     {
-        if (isMultiHitMove)
-        {
-            if (hitRange.y == 0)
-                return hitRange.x;
-            else
-            {
-                return Random.Range(hitRange.x, hitRange.y + 1);
-            }
-        }
-        else
-            return 1;
+        return specialMechanicsData.GetHitTimes();
     }
 
     public bool HasFlag(MoveFlag flag)
     {
-        return flags.Contains(flag);
+        return battleData.HasFlag(flag);
     }
 }
+
+// Keep the existing SecondaryEffects, EffectSource, MoveEffects,
+// StatBoost, MoveTarget, MoveFlag, RecoilMoveEffect, RecoilType,
+// CritBehavior, and OneHitKoMoveEffect declarations below this class
+// unchanged.
 
 [System.Serializable]
 public class SecondaryEffects : MoveEffects

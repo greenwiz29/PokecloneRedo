@@ -12,6 +12,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d204b79d8437e965ae69e2ec0c2c1a0, type: 3}
   m_Name: SuperSonic
   m_EditorClassIdentifier: 
+  identityData:
+    id: supersonic
+    displayName: Supersonic
+    description: supersonic
+  battleData:
+    type: 1
+    power: 0
+    accuracy: 65
+    pp: 25
+    priority: 0
+    alwaysHits: 0
+    moveType: 2
+    target: 0
+    flags: 03000000
+  effectsData:
+    primary:
+      boosts: []
+      status: 0
+      volatileStatus: 6
+      weather: 0
+      weatherDuration:
+        v: 0
+        hasValue: 0
+    secondary: []
+  specialMechanicsData:
+    isMultiHitMove: 0
+    hitRange: {x: 2, y: 0}
+    recoil:
+      recoilType: 0
+      recoilDamagePercent: 0
+    drainingPercentage: 0
+    critBehavior: 0
+    oneHitKoMoveEffect:
+      isOneHitKnockOut: 0
+      lowerOddsException: 0
+      immunityType: 0
   name: Supersonic
   description: supersonic
   type: 1

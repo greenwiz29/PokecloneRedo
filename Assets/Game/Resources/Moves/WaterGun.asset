@@ -12,24 +12,92 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d204b79d8437e965ae69e2ec0c2c1a0, type: 3}
   m_Name: WaterGun
   m_EditorClassIdentifier: 
+  identityData:
+    id: water-gun
+    displayName: Water Gun
+    description: water gun
+  battleData:
+    type: 3
+    power: 50
+    accuracy: 95
+    pp: 25
+    priority: 0
+    alwaysHits: 0
+    moveType: 1
+    target: 0
+    flags: 
+  effectsData:
+    primary:
+      boosts: []
+      status: 0
+      volatileStatus: 0
+      weather: 0
+      weatherDuration:
+        v: 0
+        hasValue: 0
+    secondary:
+    - boosts:
+      - stat: 4
+        boost: -1
+      status: 0
+      volatileStatus: 0
+      weather: 0
+      weatherDuration:
+        v: 0
+        hasValue: 0
+      chance: 25
+      target: 0
+  specialMechanicsData:
+    isMultiHitMove: 0
+    hitRange: {x: 2, y: 0}
+    recoil:
+      recoilType: 0
+      recoilDamagePercent: 0
+    drainingPercentage: 0
+    critBehavior: 0
+    oneHitKoMoveEffect:
+      isOneHitKnockOut: 0
+      lowerOddsException: 0
+      immunityType: 0
   name: Water Gun
   description: water gun
   type: 3
   power: 50
   accuracy: 95
   pp: 25
+  priority: 0
   alwaysHits: 0
   moveType: 1
   effects:
     boosts: []
     status: 0
     volatileStatus: 0
+    weather: 0
+    weatherDuration:
+      v: 0
+      hasValue: 0
   secondaryEffects:
   - boosts:
     - stat: 4
       boost: -1
     status: 0
     volatileStatus: 0
+    weather: 0
+    weatherDuration:
+      v: 0
+      hasValue: 0
     chance: 25
     target: 0
   target: 0
+  flags: 
+  isMultiHitMove: 0
+  hitRange: {x: 2, y: 0}
+  recoil:
+    recoilType: 0
+    recoilDamagePercent: 0
+  drainingPercentage: 0
+  critBehavior: 0
+  oneHitKoMoveEffect:
+    isOneHitKnockOut: 0
+    lowerOddsException: 0
+    immunityType: 0

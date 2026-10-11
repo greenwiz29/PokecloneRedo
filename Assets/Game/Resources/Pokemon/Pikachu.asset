@@ -73,8 +73,9 @@ MonoBehaviour:
       - {fileID: 21300000, guid: eff77c03c9c5be7dcaec55b41cbe81c2, type: 3}
       - {fileID: 21300000, guid: 858e23479147e9734b8bf7e7fbb5ae84, type: 3}
   overworld:
-    possibleBehaviors: []
-    defaultPursuitProfile: {fileID: 0}
+    possibleBehaviors:
+    - {fileID: 11400000, guid: a545c0ba32e10fe4086e4a518fe9afe3, type: 2}
+    defaultPursuitProfile: {fileID: 11400000, guid: 616b881560bfaebf2a69b4d720af4b2b, type: 2}
     verticalPresence:
       canHover: 0
       canFly: 0
@@ -96,13 +97,22 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 1
-          value: 1
-          inSlope: 0
-          outSlope: 0
+          time: 0.5
+          value: 0.2
+          inSlope: 0.045911252
+          outSlope: 0.045911252
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0
+          inWeight: 0.051966667
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 0
+          inSlope: -0.28428873
+          outSlope: -0.28428873
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.21092993
           outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2

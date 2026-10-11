@@ -13,27 +13,36 @@ MonoBehaviour:
   m_Name: Squirtle
   m_EditorClassIdentifier: 
   identity:
-    name: 
+    name: Squirtle
     dexNumber: 7
-    description: 
+    description: It shelters itself in its shell, then strikes back with spouts of
+      water at every opportunity.
   battle:
-    type1: 0
+    type1: 3
     type2: 0
     baseStats:
-      maxHP: 0
-      attack: 0
-      defense: 0
-      spAttack: 0
-      spDefense: 0
-      speed: 0
-    ability: 0
+      maxHP: 44
+      attack: 48
+      defense: 65
+      spAttack: 50
+      spDefense: 64
+      speed: 43
+    ability: 3
     hiddenAbility: 0
     normalAbilityPercent: 70
-    expYield: 0
-    catchRate: 255
+    expYield: 66
+    catchRate: 45
     genderRatio: 0
   learnset:
-    levelUpMoves: []
+    levelUpMoves:
+    - moveBase: {fileID: 11400000, guid: d017063ff934bbe3ca502cc5d1bec0a9, type: 2}
+      levelLearned: 1
+    - moveBase: {fileID: 11400000, guid: d6d7f5d17e381c7de85d5e218f6edf93, type: 2}
+      levelLearned: 3
+    - moveBase: {fileID: 11400000, guid: ece86ee67b22d4da283dde8f9dd68593, type: 2}
+      levelLearned: 7
+    - moveBase: {fileID: 11400000, guid: 1b020590c65d29cdc8d1d11184ca7d58, type: 2}
+      levelLearned: 10
     itemMoves: []
   evolution:
     evolutions: []
@@ -73,8 +82,9 @@ MonoBehaviour:
       - {fileID: 21300000, guid: b71eb0c3ea5664f7a81dcb68262eb861, type: 3}
       - {fileID: 21300000, guid: 4f0e8b2cc626774b0a9ffdfa7b2551fd, type: 3}
   overworld:
-    possibleBehaviors: []
-    defaultPursuitProfile: {fileID: 0}
+    possibleBehaviors:
+    - {fileID: 11400000, guid: a545c0ba32e10fe4086e4a518fe9afe3, type: 2}
+    defaultPursuitProfile: {fileID: 11400000, guid: 616b881560bfaebf2a69b4d720af4b2b, type: 2}
     verticalPresence:
       canHover: 0
       canFly: 0

@@ -13,27 +13,36 @@ MonoBehaviour:
   m_Name: Charmander
   m_EditorClassIdentifier: 
   identity:
-    name: 
+    name: Charmander
     dexNumber: 4
-    description: 
+    description: Obviously prefers hot places. When it rains, steam is said to spout
+      from the tip of its tail.
   battle:
-    type1: 0
+    type1: 2
     type2: 0
     baseStats:
-      maxHP: 0
-      attack: 0
-      defense: 0
-      spAttack: 0
-      spDefense: 0
-      speed: 0
-    ability: 0
+      maxHP: 39
+      attack: 52
+      defense: 43
+      spAttack: 60
+      spDefense: 50
+      speed: 65
+    ability: 1
     hiddenAbility: 0
     normalAbilityPercent: 70
-    expYield: 0
-    catchRate: 255
+    expYield: 65
+    catchRate: 45
     genderRatio: 0
   learnset:
-    levelUpMoves: []
+    levelUpMoves:
+    - moveBase: {fileID: 11400000, guid: a85be218eee16db62a797e38fca89547, type: 2}
+      levelLearned: 1
+    - moveBase: {fileID: 11400000, guid: 362b7060515402fa0ad24260201cfe7f, type: 2}
+      levelLearned: 3
+    - moveBase: {fileID: 11400000, guid: c36648d0160960242bb765e17650407b, type: 2}
+      levelLearned: 7
+    - moveBase: {fileID: 11400000, guid: 1c865e722566d8a86a9873c72048e15a, type: 2}
+      levelLearned: 10
     itemMoves: []
   evolution:
     evolutions: []
@@ -73,8 +82,9 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 7ae59ca36d68c054f96458e8b04986ee, type: 3}
       - {fileID: 21300000, guid: e866f4e84b7e05d01a4958d590560f79, type: 3}
   overworld:
-    possibleBehaviors: []
-    defaultPursuitProfile: {fileID: 0}
+    possibleBehaviors:
+    - {fileID: 11400000, guid: a545c0ba32e10fe4086e4a518fe9afe3, type: 2}
+    defaultPursuitProfile: {fileID: 11400000, guid: 616b881560bfaebf2a69b4d720af4b2b, type: 2}
     verticalPresence:
       canHover: 0
       canFly: 0

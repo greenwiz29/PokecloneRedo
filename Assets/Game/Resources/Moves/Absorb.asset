@@ -12,6 +12,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d204b79d8437e965ae69e2ec0c2c1a0, type: 3}
   m_Name: Absorb
   m_EditorClassIdentifier: Assembly-CSharp::MoveBase
+  identityData:
+    id: absorb
+    displayName: Absorb
+    description: A nutrient-draining attack. The user's HP is restored by up to half
+      the damage dealt to the target.
+  battleData:
+    type: 4
+    power: 20
+    accuracy: 100
+    pp: 25
+    priority: 0
+    alwaysHits: 0
+    moveType: 1
+    target: 0
+    flags: 
+  effectsData:
+    primary:
+      boosts: []
+      status: 0
+      volatileStatus: 0
+      weather: 0
+      weatherDuration:
+        v: 0
+        hasValue: 0
+    secondary: []
+  specialMechanicsData:
+    isMultiHitMove: 0
+    hitRange: {x: 2, y: 0}
+    recoil:
+      recoilType: 0
+      recoilDamagePercent: 0
+    drainingPercentage: 50
+    critBehavior: 0
+    oneHitKoMoveEffect:
+      isOneHitKnockOut: 0
+      lowerOddsException: 0
+      immunityType: 0
   name: Absorb
   description: A nutrient-draining attack. The user's HP is restored by up to half
     the damage dealt to the target.
@@ -20,7 +57,6 @@ MonoBehaviour:
   accuracy: 100
   pp: 25
   priority: 0
-  critChance: 6.25
   alwaysHits: 0
   moveType: 1
   effects:
@@ -33,9 +69,15 @@ MonoBehaviour:
       hasValue: 0
   secondaryEffects: []
   target: 0
+  flags: 
   isMultiHitMove: 0
   hitRange: {x: 2, y: 0}
   recoil:
     recoilType: 0
     recoilDamagePercent: 0
   drainingPercentage: 50
+  critBehavior: 0
+  oneHitKoMoveEffect:
+    isOneHitKnockOut: 0
+    lowerOddsException: 0
+    immunityType: 0
