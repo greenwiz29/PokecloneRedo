@@ -17,8 +17,8 @@ MonoBehaviour:
     dexNumber: 999
     description: 
   battle:
-    type1: 0
-    type2: 0
+    type1: 9
+    type2: 10
     baseStats:
       maxHP: 0
       attack: 0
@@ -26,25 +26,27 @@ MonoBehaviour:
       spAttack: 0
       spDefense: 0
       speed: 0
-    ability: 0
+    ability: 13
     hiddenAbility: 0
     normalAbilityPercent: 70
-    expYield: 0
+    expYield: 9999
     catchRate: 255
     genderRatio: 0
   learnset:
-    levelUpMoves: []
+    levelUpMoves:
+    - moveBase: {fileID: 11400000, guid: d6d7f5d17e381c7de85d5e218f6edf93, type: 2}
+      levelLearned: 1
     itemMoves: []
   evolution:
     evolutions: []
   visuals:
     battle:
-      front: {fileID: 0}
-      back: {fileID: 0}
+      front: {fileID: -6885498132332409789, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
+      back: {fileID: -6885498132332409789, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
       frontFemale: {fileID: 0}
       backFemale: {fileID: 0}
-      frontShiny: {fileID: 0}
-      backShiny: {fileID: 0}
+      frontShiny: {fileID: 9112020770366926958, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
+      backShiny: {fileID: 9112020770366926958, guid: f64ca9a0e50d2214aa7054deb58e16bc, type: 3}
       frontFemaleShiny: {fileID: 0}
       backFemaleShiny: {fileID: 0}
     overworld:
@@ -57,8 +59,9 @@ MonoBehaviour:
       walkLeftShiny: []
       walkRightShiny: []
   overworld:
-    possibleBehaviors: []
-    defaultPursuitProfile: {fileID: 0}
+    possibleBehaviors:
+    - {fileID: 11400000, guid: a545c0ba32e10fe4086e4a518fe9afe3, type: 2}
+    defaultPursuitProfile: {fileID: 11400000, guid: 616b881560bfaebf2a69b4d720af4b2b, type: 2}
     verticalPresence:
       canHover: 0
       canFly: 0
