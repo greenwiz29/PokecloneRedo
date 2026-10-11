@@ -1,14 +1,14 @@
-DexNumber,Level,Move
-1,1,Tackle
-1,3,Growl
-1,7,Vine Whip
-2,1,Tackle
-2,3,Growl
-4,1,Leer
-4,3,Scratch
-4,7,Ember
-4,10,Sunlight
-7,1,Tackle
-7,3,Growl
-7,7,Water Gun
-7,10,Double Kick
+DexNumber,Level,MoveId
+1,1,tackle
+1,3,growl
+1,7,vine-whip
+2,1,tackle
+2,3,growl
+4,1,leer
+4,3,scratch
+4,7,ember
+4,10,sunlight
+7,1,tackle
+7,3,growl
+7,7,water-gun
+7,10,double-kick

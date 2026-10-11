@@ -12,25 +12,6 @@ public class MoveBase : ScriptableObject
     [SerializeField] private MoveEffectsData effectsData = new();
     [SerializeField] private MoveSpecialMechanicsData specialMechanicsData = new();
 
-    // Temporary legacy fields.
-    // Keep these until migration and verification are complete.
-    [HideInInspector, SerializeField] private new string name;
-    [HideInInspector, TextArea, SerializeField] private string description;
-    [HideInInspector, SerializeField] private PokemonType type;
-    [HideInInspector, SerializeField] private int power, accuracy, pp, priority;
-    [HideInInspector, SerializeField] private bool alwaysHits;
-    [HideInInspector, SerializeField] private MoveType moveType;
-    [HideInInspector, SerializeField] private MoveEffects effects;
-    [HideInInspector, SerializeField] private List<SecondaryEffects> secondaryEffects;
-    [HideInInspector, SerializeField] private MoveTarget target;
-    [HideInInspector, SerializeField] private List<MoveFlag> flags;
-    [HideInInspector, SerializeField] private bool isMultiHitMove = false;
-    [HideInInspector, SerializeField] private Vector2Int hitRange = new(2, 0);
-    [HideInInspector, SerializeField] private RecoilMoveEffect recoil = new();
-    [HideInInspector, SerializeField] private int drainingPercentage = 0;
-    [HideInInspector, SerializeField] private CritBehavior critBehavior;
-    [HideInInspector, SerializeField] private OneHitKoMoveEffect oneHitKoMoveEffect = new();
-
     public string Id => identityData.Id;
     public string Name => identityData.Name;
     public string Desc => identityData.Description;

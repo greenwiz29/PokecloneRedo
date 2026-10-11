@@ -13,13 +13,13 @@ public static class PokemonLearnsetCsvImporter
     {
         public int DexNumber;
         public int Level;
-        public string MoveName;
+        public string MoveId;
     }
 
     private class ImportRowItem
     {
         public int DexNumber;
-        public string MoveName;
+        public string MoveId;
     }
 
     private class ResolvedRowLevelUp
@@ -51,7 +51,7 @@ public static class PokemonLearnsetCsvImporter
 
         try
         {
-            columns = CsvImporter.BuildColumnMap(rows[0], new List<string>() { "dexNumber", "level", "move" });
+            columns = CsvImporter.BuildColumnMap(rows[0], new List<string>() { "dexNumber", "level", "moveId" });
         }
         catch (Exception exception)
         {
@@ -87,7 +87,7 @@ public static class PokemonLearnsetCsvImporter
             {
                 row.DexNumber,
                 row.Level,
-                MoveName = row.MoveName.Trim()
+                MoveId = row.MoveId.Trim()
             })
             .Where(group => group.Count() > 1)
             .Select(group => group.Key)
@@ -98,7 +98,7 @@ public static class PokemonLearnsetCsvImporter
             report.Errors.Add(
                 $"CSV contains duplicate level-up entry: " +
                 $"Dex #{duplicate.DexNumber}, Level {duplicate.Level}, " +
-                $"Move '{duplicate.MoveName}'.");
+                $"MoveId '{duplicate.MoveId}'.");
         }
 
         if (report.Errors.Count > 0)
@@ -109,7 +109,7 @@ public static class PokemonLearnsetCsvImporter
         if (report.Errors.Count > 0)
             return report;
 
-        Dictionary<string, MoveBase> movesByName = FindExistingMoves(report);
+        Dictionary<string, MoveBase> movesById = FindExistingMoves(report);
 
         if (report.Errors.Count > 0)
             return report;
@@ -128,13 +128,13 @@ public static class PokemonLearnsetCsvImporter
                 continue;
             }
 
-            string moveName = row.MoveName.Trim();
+            string moveId = row.MoveId.Trim();
 
-            if (!movesByName.TryGetValue(moveName, out MoveBase move))
+            if (!movesById.TryGetValue(moveId, out MoveBase move))
             {
                 report.Errors.Add(
                     $"CSV row for Dex #{row.DexNumber}, Level {row.Level}: " +
-                    $"no MoveBase asset named '{moveName}' was found.");
+                    $"no MoveBase asset with ID '{moveId}' was found.");
 
                 continue;
             }
@@ -200,7 +200,7 @@ public static class PokemonLearnsetCsvImporter
 
         try
         {
-            columns = CsvImporter.BuildColumnMap(rows[0], new List<string>() { "dexNumber", "move" });
+            columns = CsvImporter.BuildColumnMap(rows[0], new List<string>() { "dexNumber", "moveId" });
         }
         catch (Exception exception)
         {
@@ -235,7 +235,7 @@ public static class PokemonLearnsetCsvImporter
             .GroupBy(row => new
             {
                 row.DexNumber,
-                MoveName = row.MoveName.Trim()
+                MoveId = row.MoveId.Trim()
             })
             .Where(group => group.Count() > 1)
             .Select(group => group.Key)
@@ -246,7 +246,7 @@ public static class PokemonLearnsetCsvImporter
             report.Errors.Add(
                 $"Items CSV contains duplicate move entry: " +
                 $"Dex #{duplicate.DexNumber}, " +
-                $"Move '{duplicate.MoveName}'.");
+                $"Move '{duplicate.MoveId}'.");
         }
 
         if (report.Errors.Count > 0)
@@ -257,7 +257,7 @@ public static class PokemonLearnsetCsvImporter
         if (report.Errors.Count > 0)
             return report;
 
-        Dictionary<string, MoveBase> movesByName = FindExistingMoves(report);
+        Dictionary<string, MoveBase> movesById = FindExistingMoves(report);
 
         if (report.Errors.Count > 0)
             return report;
@@ -276,13 +276,13 @@ public static class PokemonLearnsetCsvImporter
                 continue;
             }
 
-            string moveName = row.MoveName.Trim();
+            string moveId = row.MoveId.Trim();
 
-            if (!movesByName.TryGetValue(moveName, out MoveBase move))
+            if (!movesById.TryGetValue(moveId, out MoveBase move))
             {
                 report.Errors.Add(
                     $"CSV row for Dex #{row.DexNumber}: " +
-                    $"no MoveBase asset named '{moveName}' was found.");
+                    $"no MoveBase asset with ID '{moveId}' was found.");
 
                 continue;
             }
@@ -383,7 +383,7 @@ public static class PokemonLearnsetCsvImporter
 
     private static Dictionary<string, MoveBase> FindExistingMoves(PokemonLevelUpImportReport report)
     {
-        Dictionary<string, MoveBase> result = new(StringComparer.OrdinalIgnoreCase);
+        Dictionary<string, MoveBase> result = new(StringComparer.Ordinal);
 
         string[] guids = AssetDatabase.FindAssets("t:MoveBase", new[] { moveFolder });
 
@@ -396,24 +396,27 @@ public static class PokemonLearnsetCsvImporter
             if (move == null)
                 continue;
 
-            string moveName = move.Name.Trim();
+            string moveId = move.Id?.Trim();
 
-            if (string.IsNullOrEmpty(moveName))
+            if (string.IsNullOrEmpty(moveId))
             {
                 report.Errors.Add(
-                    $"MoveBase asset '{path}' has an empty name.");
+                    $"MoveBase asset '{path}' has no stable ID.");
                 continue;
             }
 
-            if (result.ContainsKey(moveName))
+            if (result.TryGetValue(moveId, out MoveBase existingMove))
             {
+                string existingPath =
+                    AssetDatabase.GetAssetPath(existingMove);
+
                 report.Errors.Add(
-                    $"Multiple MoveBase assets have the name " +
-                    $"'{moveName}'.");
+                    $"Duplicate MoveBase ID '{moveId}' found in " +
+                    $"'{existingPath}' and '{path}'.");
                 continue;
             }
 
-            result.Add(moveName, move);
+            result.Add(moveId, move);
         }
 
         return result;
@@ -455,7 +458,7 @@ public static class PokemonLearnsetCsvImporter
 
         row.Level = CsvImporter.ParseInt(GetRequired("level"), "level", rowNumber);
 
-        row.MoveName = GetRequired("move");
+        row.MoveId = GetRequired("moveId");
 
         if (row.DexNumber <= 0)
         {
@@ -504,7 +507,7 @@ public static class PokemonLearnsetCsvImporter
 
         row.DexNumber = CsvImporter.ParseInt(GetRequired("dexNumber"), "dexNumber", rowNumber);
 
-        row.MoveName = GetRequired("move");
+        row.MoveId = GetRequired("moveId");
 
         if (row.DexNumber <= 0)
         {
